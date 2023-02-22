@@ -1,0 +1,16 @@
+.page-view
+  width 100%
+  height 100%
+  margin 0 auto
+  display flex
+  flex-direction column
+  overflow hidden
+// 适配 iphone 底部刘海
+.footer
+  padding-bottom 0
+  // IOS <11.2
+  padding-bottom constant(safe-area-inset-bottom)
+  // iso >11.2
+  padding-bottom env(safe-area-inset-bottom)
+  // 安全距离设置后，一定要设置背景，不然滚动的内容在下方可以看到
+  background-color #fff
