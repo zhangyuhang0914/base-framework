@@ -42,7 +42,7 @@ onHide(() => {
 </style>
 
 <style lang="stylus">
-@import './assets/css/import.styl'
+@import './assets/css/app.styl'
 </style>
 
 <style>

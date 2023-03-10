@@ -51,7 +51,6 @@ export const request = (options) => {
         'responseJson': 'YES'
       },
       success (response) {
-        console.log('success', response)
         const status = +response.statusCode
         const data = response.data || {}
         if (status === 200 || status === 304) {
