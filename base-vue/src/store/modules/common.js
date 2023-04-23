@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { store } from '../index'
 
 export const userCommonStore = defineStore({
   id: 'common',
@@ -32,3 +33,7 @@ export const userCommonStore = defineStore({
     ]
   }
 })
+
+export function userCommonStoreHook () {
+  return userCommonStore(store)
+}
