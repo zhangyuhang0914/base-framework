@@ -17,7 +17,7 @@ export function getToken () {
 }
 
 export function setToken (token) {
-  return Cookies.set(TokenKey, token, { expires: Expires }) // 有效期为360
+  return Cookies.set(TokenKey, token, { expires: Expires }) // 有效期为7天
 }
 
 export function removeToken () {
