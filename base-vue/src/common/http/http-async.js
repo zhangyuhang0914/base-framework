@@ -4,7 +4,7 @@
  * @Autor        : ZYH
  * @Date         : 2023-04-23 17:01:20
  * @LastEditors  : ZYH
- * @LastEditTime : 2023-04-23 18:02:30
+ * @LastEditTime : 2023-04-24 15:55:20
  */
 
 import axios from 'axios'
@@ -69,10 +69,12 @@ instance.interceptors.request.use(
 
     console.log('url', options, options.params)
     if (options.cancelFn) {
+      console.log('url1', options, options.params, options.cancelFn)
       options.cancelToken = new cancelToken(function executor (c) {
         options.cancelFn && options.cancelFn(c)
       })
     }
+    return options
   },
   error => {
     return Promise.reject(error)
@@ -117,6 +119,9 @@ instance.interceptors.response.use(
               }
               break
           }
+          break
+        default:
+          $message(errMessage)
           break
       }
       // 禁用全局错误提示
