@@ -1,5 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
+// 加载进度条配置
+NProgress.configure({
+  showSpinner: false // 是否显示进度条右下方加载的小圆圈动画
+})
 // 环境信息
 const { BASE_URL } = import.meta.env
 
@@ -21,6 +27,19 @@ const router = createRouter({
   strict: true,
   history: createWebHistory(BASE_URL),
   routes
+})
+
+// 路由钩子
+router.beforeEach((to, from, next) => {
+  console.log('路由钩子1', to, from, next, NProgress)
+  // 进度条
+  NProgress.start()
+  next()
+})
+router.afterEach((to, from, next) => {
+  console.log('路由钩子2', to, from, next)
+  // 删除loading
+  NProgress.done()
 })
 
 export default router

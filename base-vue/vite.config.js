@@ -60,7 +60,7 @@ export default defineConfig({
     // 设置 http 代理
     proxy: {
       '/apis': {
-        target: '',
+        target: 'http://192.168.1.246:19601/iframework',
         changeOrigin: true,
         rewrite: path => path.resolve(/^\/api/, '')
       }

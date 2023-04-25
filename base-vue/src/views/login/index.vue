@@ -1,6 +1,5 @@
 <template lang="pug">
 .login-wrap
-  span 123
   el-button(type="primary" @click="loginFn") {{ primary }}
 </template>
 
