@@ -14,6 +14,13 @@ export default defineComponent({
   // components: {  },
   setup() {
     const router = useRouter()
+    // const renderButton = () => {
+    //   render: () => {
+    //     return h{
+    //       h('div', 123321)
+    //     }
+    //   }
+    // }
     return {
       back: () => {
         router.replace('')

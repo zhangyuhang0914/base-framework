@@ -31,13 +31,13 @@ const router = createRouter({
 
 // 路由钩子
 router.beforeEach((to, from, next) => {
-  console.log('路由钩子1', to, from, next, NProgress)
+  // console.log('路由钩子1', to, from, next, NProgress)
   // 进度条
   NProgress.start()
   next()
 })
 router.afterEach((to, from, next) => {
-  console.log('路由钩子2', to, from, next)
+  // console.log('路由钩子2', to, from, next)
   // 删除loading
   NProgress.done()
 })

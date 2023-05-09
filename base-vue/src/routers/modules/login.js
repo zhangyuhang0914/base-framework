@@ -4,7 +4,7 @@ const routers = [
     name: 'Login',
     component: () => import('@/views/login/index.vue'),
     meta: {
-      title: 'login',
+      title: 'Login',
       ignoreAuth: true
     }
   }
