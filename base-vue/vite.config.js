@@ -28,7 +28,7 @@ export default defineConfig({
         /\.vue$/,
         /\.vue\?vue/ // .vue
       ],
-      imports: ['vue', 'uni-app'],
+      imports: ['vue'],
       resolvers: [ElementPlusResolver()]
     }),
     Components({
