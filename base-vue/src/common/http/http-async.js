@@ -3,14 +3,14 @@
  * @Desc         :
  * @Autor        : ZYH
  * @Date         : 2023-04-23 17:01:20
- * @LastEditors  : ZYH
- * @LastEditTime : 2023-04-24 17:11:24
+ * @LastEditors  : ZhangYuHang
+ * @LastEditTime : 2023-06-25 14:00:39
  */
 
 import axios from 'axios'
 import qs from 'querystring'
 import { API as configApi } from '@/conf/index'
-import { getJsessionId } from '@/utils/cookies'
+import { getJsessionId } from '@/utils/cookie'
 import { storageLocal } from '@/utils/storage'
 import { userCommonStoreHook } from '@/store/modules/common'
 import { useRouter } from 'vue-router'
@@ -70,6 +70,7 @@ instance.interceptors.request.use(
     console.log('url', options, options.params)
     if (options.cancelFn) {
       console.log('url1', options, options.params, options.cancelFn)
+      // eslint-disable-next-line prettier/prettier
       options.cancelToken = new cancelToken(function executor (c) {
         options.cancelFn && options.cancelFn(c)
       })

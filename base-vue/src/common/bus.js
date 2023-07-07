@@ -12,18 +12,18 @@ class Bus {
     // 收集订阅信息,调度中心
     this.list = {}
   }
-  getInstance () {
+  getInstance() {
     return Bus.instance
   }
 
   // 订阅
-  $on (name, fn) {
+  $on(name, fn) {
     this.list[name] = this.list[name] || []
     this.list[name].push(fn)
   }
 
   // 发布
-  $emit (name, data) {
+  $emit(name, data) {
     if (this.list[name]) {
       this.list[name].forEach(fn => {
         fn(data)
@@ -32,7 +32,7 @@ class Bus {
   }
 
   // 取消订阅
-  $off (name) {
+  $off(name) {
     if (this.list[name]) {
       delete this.list[name]
     }

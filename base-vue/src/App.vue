@@ -1,17 +1,9 @@
 <template lang="pug">
-ElConfigProvider(:locale="zhCn")
+ElConfigProvider
   router-view(v-slot="{ Component }")
     component(:is="Component")
 </template>
 <script setup>
-// 语言
-import { storageLocal } from '@/utils/storage'
-import { useI18n } from 'vue-i18n'
-import zhCn from 'element-plus/lib/locale/lang/zh-cn'
-import { ElConfigProvider } from 'element-plus'
-// 设置i18n国际化语言
-useI18n().locale.value =
-  storageLocal.getItem('responsive-locale')?.locale ?? 'zh_CN'
 // // 默认事件
 // const firbitFn = (e) => {
 //   e.preventDefault()

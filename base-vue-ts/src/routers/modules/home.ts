@@ -16,5 +16,4 @@ const routers: AppRouteModule[] = [
   }
 ]
 
-
 export default routers

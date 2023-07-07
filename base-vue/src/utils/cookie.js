@@ -12,14 +12,14 @@ const TokenKey = 'JSESSIONID'
 
 const Expires = '7'
 
-export function getJsessionId () {
+export function getJsessionId() {
   return Cookies.get(TokenKey)
 }
 
-export function setJsessionId (token) {
+export function setJsessionId(token) {
   return Cookies.set(TokenKey, token, { expires: Expires }) // 有效期为7天
 }
 
-export function remoceJsessionid () {
+export function remoceJsessionid() {
   return Cookies.remove(TokenKey)
 }

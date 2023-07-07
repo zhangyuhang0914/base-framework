@@ -9,6 +9,10 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 // 静态资源压缩
 import VitePluginCompression from 'vite-plugin-compression'
+// 浏览器兼容
+import legacyPlugin from '@vitejs/plugin-legacy'
+// eslint
+import eslintPlugin from 'vite-plugin-eslint'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -46,6 +50,14 @@ export default defineConfig({
       algorithm: 'gzip',
       // 压缩算法
       ext: '.gz'
+    }),
+    // 增加下面的配置项,这样在运行时就能检查eslint规范
+    eslintPlugin({
+      include: ['src/**/*.js', 'src/**/*.vue', 'src/*.js', 'src/*.vue']
+    }),
+    legacyPlugin({
+      targets: ['chrome 52'], // 需要兼容的目标列表，可以设置多个
+      additionalLegacyPolyfills: ['regenerator-runtime/runtime'] // 面向IE11时需要此插件
     })
   ],
   server: {
@@ -60,9 +72,11 @@ export default defineConfig({
     // 设置 http 代理
     proxy: {
       '/apis': {
-        target: 'http://192.168.1.246:19601/iframework',
+        target: 'http://192.168.1.246:1117/jgfw-webspider',
         changeOrigin: true,
-        rewrite: path => path.resolve(/^\/api/, '')
+        secure: false,
+        rewrite: path => path.replace('/jgfw-webspider', ''),
+        ws: true
       }
     }
   }

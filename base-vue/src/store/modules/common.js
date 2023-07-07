@@ -10,10 +10,10 @@ export const userCommonStore = defineStore({
     }
   },
   actions: {
-    updateName (name) {
+    updateName(name) {
       this.name = name
     },
-    setToken (token) {
+    setToken(token) {
       this.token = token
     }
   },
@@ -34,6 +34,6 @@ export const userCommonStore = defineStore({
   }
 })
 
-export function userCommonStoreHook () {
+export function userCommonStoreHook() {
   return userCommonStore(store)
 }

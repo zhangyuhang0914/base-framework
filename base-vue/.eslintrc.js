@@ -36,6 +36,8 @@ module.exports = {
     'arrow-body-style': 'off',
     'prefer-arrow-callback': 'off',
     // 关闭名称校验
-    'vue/multi-word-component-names': 'off'
+    'vue/multi-word-component-names': 'off',
+    // 关闭声明未使用
+    'no-unused-vars': 0
   }
 }

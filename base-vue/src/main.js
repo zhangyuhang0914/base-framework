@@ -4,8 +4,10 @@ import router from './routers'
 import { setupStore } from './store/index'
 import { getConf } from '@/conf/conf'
 import { injectResponsiveStorage } from '@/utils/storage/responsive'
-import { useI18n } from '@/i18n/i18n'
+import utilsFn from '@/plugins/utils'
 import '@/plugins/flexible'
+// 引入主题
+import '@/assets/theme/index.css'
 import elementPlusFn from '@/plugins/element'
 
 // 创建vue实例
@@ -22,8 +24,8 @@ getConf(app).then(async config => {
   setupStore(app)
   // 挂载element
   elementPlusFn(app)
-  // i18n国际化
-  app.use(useI18n)
+  // 全局工具注册
+  utilsFn(app)
   // 挂载实例
   app.mount('#app')
 })
