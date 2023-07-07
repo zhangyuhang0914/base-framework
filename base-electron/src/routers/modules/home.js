@@ -1,15 +1,13 @@
 const routers = [
   {
     path: '/',
-    name: ''
-  },
-  {
-    path: '/404',
-    name: '404',
-    component: () => import('@/views/errorPage/404.vue'),
+    name: '',
+    redirect: {
+      name: 'task'
+    },
+    component: () => import('@/views/template/layout/index.vue'),
     meta: {
-      title: '404',
-      ignoreAuth: true
+      ignoreAuth: false // 是否不需要验证权限
     }
   }
 ]

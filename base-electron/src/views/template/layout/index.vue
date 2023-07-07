@@ -1,19 +1,28 @@
 <template lang="pug">
 .layout-wrap
-  el-button(type="primary") {{ '按钮' }}
-  span {{ conText }}
+  .layout-top
+    HeaderCommon
+  .layout-bottom
+    router-view(v-slot="{ Component }")
+      transition(name="fade" mode="out-in" v-if="$route.meta.keepAlive")
+        keep-alive
+          component(
+            :key="$route.name"
+            :is="Component"
+          )
+      transition(name="fade" mode="out-in" v-if="!$route.meta.keepAlive")
+        component(
+          :key="$route.name"
+          :is="Component"
+        )
 </template>
 
 <script>
-import { ref } from 'vue'
+import HeaderCommon from '@/views/template/layout/headerCommon/index.vue'
 export default {
   name: 'layout',
-  setup() {
-    const conText = ref('今天周五')
-    return {
-      conText
-    }
-  }
+  components: { HeaderCommon },
+  setup() {}
 }
 </script>
 
