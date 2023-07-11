@@ -1,6 +1,6 @@
 {
   "name": "self-service-machine",
-  "description": "自助机系统",
+  "description": "襄阳交通自助服务一体化",
   "private": true,
   "version": "1.0.0",
   "type": "commonjs",

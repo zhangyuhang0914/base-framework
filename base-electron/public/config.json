@@ -4,8 +4,9 @@
     "remark": "默认语言",
     "value": "zh_CN"
   },
-  "org-name": {
+  "systemInfo": {
     "remark": "公司名称",
-    "value": "武汉佳软信息技术有限公司"
+    "value": "武汉佳软信息技术有限公司",
+    "name": "襄阳交通自助服务一体化"
   }
 }

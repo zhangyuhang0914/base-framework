@@ -1,3 +1,5 @@
+'use strict'
+
 const routers = [
   {
     path: '/404',
