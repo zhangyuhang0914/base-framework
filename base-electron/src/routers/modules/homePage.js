@@ -6,7 +6,7 @@ const routers = [
     redirect: {
       name: 'HomePage'
     },
-    component: () => import('@/views/template/layout/index.vue'),
+    component: () => import('@/views/template/layout.vue'),
     meta: {
       ignoreAuth: false
     },
@@ -17,7 +17,7 @@ const routers = [
         meta: {
           title: '首页'
         },
-        component: () => import('@/views/homePage/index.vue')
+        component: () => import('@/views/home-page/index.vue')
       }
     ]
   }

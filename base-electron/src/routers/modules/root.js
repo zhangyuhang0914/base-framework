@@ -7,7 +7,7 @@ const routers = [
     redirect: {
       name: 'HomePage'
     },
-    component: () => import('@/views/template/layout/index.vue'),
+    component: () => import('@/views/template/layout.vue'),
     meta: {
       ignoreAuth: false // 是否不需要验证权限
     }

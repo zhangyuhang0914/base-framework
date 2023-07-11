@@ -6,7 +6,7 @@ const routers = [
     redirect: {
       name: 'Test'
     },
-    component: () => import('@/views/template/layout/index.vue'),
+    component: () => import('@/views/template/layout.vue'),
     meta: {
       ignoreAuth: false
     },

@@ -15,7 +15,7 @@ export default {
     const router = useRouter()
     const handleClick = () => {
       router.push({
-        name: 'homePage'
+        name: 'HomePage'
       })
     }
     onMounted(() => {
