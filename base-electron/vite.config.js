@@ -10,6 +10,8 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import eslintPlugin from 'vite-plugin-eslint'
 
+const BASE_URL = process.env.NODE_ENV === 'production' ? './' : '/' // 设置文根
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -49,6 +51,7 @@ export default defineConfig({
       '@': resolve(__dirname, 'src')
     }
   },
+  base: BASE_URL,
   server: {
     port: 8086,
     host: '0.0.0.0',
