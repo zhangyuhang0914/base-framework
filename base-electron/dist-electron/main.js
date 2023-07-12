@@ -21,7 +21,7 @@ const createWindow = () => {
       // 沙箱 上下文隔离
       nodeIntegration: true
       // 允许html页面上的 javascipt 代码访问 nodejs 环境api代码的能力（与node集成的意思）
-      // webSecurity: false // 跨域
+      // webSecurity: false, // 跨域
     }
   });
   if (process.env.NODE_ENV !== "development") {

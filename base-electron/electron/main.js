@@ -25,8 +25,8 @@ const createWindow = () => {
     // icon: '', // 窗口图标
     webPreferences: {
       contextIsolation: false, // 沙箱 上下文隔离
-      nodeIntegration: true // 允许html页面上的 javascipt 代码访问 nodejs 环境api代码的能力（与node集成的意思）
-      // webSecurity: false // 跨域
+      nodeIntegration: true, // 允许html页面上的 javascipt 代码访问 nodejs 环境api代码的能力（与node集成的意思）
+      // webSecurity: false, // 跨域
     }
   })
   // 判断开发环境 或者使用 isPackaged 判断应用是否已打包
