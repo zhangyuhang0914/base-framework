@@ -3,13 +3,13 @@
  * @Autor        : ZhangYuHang
  * @Date         : 2023-07-07 11:46:09
  * @LastEditors  : ZhangYuHang
- * @LastEditTime : 2023-07-07 13:39:02
+ * @LastEditTime : 2023-07-12 11:10:34
  */
 import ElementPlus, { ElMessage } from 'element-plus'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 export const $message = (message, type, params) => {
   ElMessage({
-    type: type,
+    type: type || 'warning',
     message: message,
     duration: 1500,
     grouping: true,

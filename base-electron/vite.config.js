@@ -40,6 +40,7 @@ export default defineConfig({
     eslintPlugin({
       include: ['src/**/*.js', 'src/**/*.vue', 'src/*.js', 'src/*.vue']
     }),
+    // 主进程配置
     electron({
       entry: 'electron/main.js'
     }),
@@ -60,9 +61,8 @@ export default defineConfig({
       '/jgfw-webspider': {
         target: 'http://192.168.1.246:1117/',
         changeOrigin: true,
-        secure: false,
-        rewrite: path => path.replace('/jgfw-webspider', ''),
-        ws: false
+        secure: false
+        // ws: false
       }
     }
   }

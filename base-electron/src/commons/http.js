@@ -4,20 +4,27 @@ import { BASE_CONFIG } from '../conf/index'
 import myEncrypt from '@/utils/my-encrypt.js'
 import { SHA1 } from '@/utils/utils.js'
 import qs from 'qs'
+import { $message } from '@/plugins/element'
 
-axios.defaults.headers.common['Content-Type'] =
-  'application/json; charset=utf-8'
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-axios.defaults.timeout = 30 * 1000 // 设置超时时间
+// 申请一个新的http实例
+const instance = axios.create({
+  headers: {
+    'Content-Type': 'application/json; charset=utf-8',
+    'X-Requested-With': 'XMLHttpRequest'
+  },
+  timeout: 30 * 1000 // 设置超时时间
+})
 
 // 请求拦截器
-axios.interceptors.request.use(
+instance.interceptors.request.use(
   config => {
+    let url = config.url || ''
     // 表单提交
     const method = config.method.toUpperCase()
-    if (method === 'POST' && config.submitType === 'form') {
+    if (method === 'POST' && config.isForm) {
       config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
       config.data = qs.stringify(config.data)
+      delete config['isForm']
     }
     // 设置加密
     if (config.secure === 'YES') {
@@ -34,11 +41,7 @@ axios.interceptors.request.use(
       config.headers['pick'] = SHA1(data)
     }
     // 添加请求前缀
-    let ajaxPath = BASE_CONFIG[config.apiType || 'defaultAjaxPath']
-    let url = config.url
-    if (ajaxPath && !url.startsWith('http') && !url.startsWith('https')) {
-      config.url = ajaxPath + url
-    }
+    config.url = BASE_CONFIG[config.apiType || 'defaultAjaxPath'] + url
     return config
   },
   error => {
@@ -48,7 +51,7 @@ axios.interceptors.request.use(
 )
 
 // 响应拦截器
-axios.interceptors.response.use(
+instance.interceptors.response.use(
   response => {
     // 对响应数据做点什么
     try {
@@ -65,26 +68,75 @@ axios.interceptors.response.use(
             // 成功
             return response
           } else {
+            $message(data.msg, 'error')
             return Promise.reject(response)
           }
         } else {
+          $message(data.msg, 'error')
           return Promise.reject(response)
         }
       }
     } catch (e) {
       console.error('返回数据格式错误，请检查！')
-      return Promise.reject(response)
+      return Promise.reject(response.data ? response.data : response)
     }
   },
   error => {
-    return Promise.reject(error.response)
+    if (error.response) {
+      const data = error.response.data
+      const status = error.response.status
+      console.error(error.config.url, status, JSON.stringify(data))
+      let errMessage = data.msg || data.message || '服务忙，请稍后重试(error)'
+      switch (status) {
+        case 401:
+          router.replace({
+            path: '/login'
+          })
+          break
+        case 404:
+          errMessage = '404 Not Found'
+          break
+        case 500: {
+          const code = +data.code || ''
+          switch (code) {
+            case 1003:
+              // 没有登录
+              errMessage = '没有登录'
+              break
+            default:
+              errMessage = data.msg || '服务忙，请稍后重试(500)'
+              break
+          }
+          break
+        }
+      }
+    } else {
+      if (axios.isCancel(error)) {
+        console.error('请求被取消', error.msg)
+        return Promise.reject(error)
+      } else {
+        // 默认放一个空对象避免其他地方报错
+        error.response = {}
+        console.error(
+          (error.config && error.config.url) || '无url',
+          '请求接口超过一分钟无响应'
+        )
+        $message(
+          navigator.onLine
+            ? '您与服务器的连接已经断开，请联系管理员处理'
+            : '网络已断开连接', 'error'
+        )
+      }
+    }
+    return error
   }
 )
 
 /**
  * 跳转到404
  */
-function forwardNotFound() {
+function forwardNotFound () {
   router.push({ name: '404' })
 }
-export default axios
+
+export default instance

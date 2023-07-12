@@ -5,16 +5,7 @@
   .header-right
     .operation-group
       el-button(type="primary" @click="handleHome") {{ '主页' }}
-      el-input.search(
-        v-model="searchValue"
-        class="w-50 m-2"
-        placeholder="搜索"
-        @change="changeSearch"
-        @keyup.enter
-      )
-        template(#prefix)
-          el-icon
-            Search
+      el-button(type="primary" @click="handleSearch") {{ '搜索' }}
       el-button(type="primary" @click="handleLogin") {{ '登录' }}
 </template>
 
@@ -39,9 +30,10 @@ export default {
       })
     }
     // 搜索
-    const searchValue = ref('')
-    const changeSearch = value => {
-      console.log('changeSearch', value)
+    const handleSearch = () => {
+      router.push({
+        name: 'Test'
+      })
     }
     // 登录
     const handleLogin = () => {
@@ -51,9 +43,8 @@ export default {
     }
     return {
       systemInfo,
-      searchValue,
       handleHome,
-      changeSearch,
+      handleSearch,
       handleLogin
     }
   }

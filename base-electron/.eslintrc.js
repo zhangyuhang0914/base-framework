@@ -32,7 +32,7 @@ module.exports = {
     withDefaults: 'readonly'
   },
   rules: {
-    'prettier/prettier': 'error',
+    'prettier/prettier': 'off',
     'arrow-body-style': 'off',
     'prefer-arrow-callback': 'off',
     // 关闭名称校验
