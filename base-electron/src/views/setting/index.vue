@@ -43,7 +43,8 @@ export default {
       {
         label: '正式环境',
         value: '1118'
-      }, {
+      },
+      {
         label: '测试环境',
         value: '1117'
       }
@@ -56,41 +57,37 @@ export default {
     })
     const terminalInfo = reactive([
       {
-        label: '名称',
+        label: '名称：',
         key: 'name',
         value: '名称11'
-      }, {
-        label: '编号',
+      },
+      {
+        label: '编号：',
         key: 'code',
         value: '编号11'
-      }, {
-        label: '摆放位置',
+      },
+      {
+        label: '摆放位置：',
         key: 'location',
         value: '摆放位置11'
-      }, {
-        label: '用途说明',
+      },
+      {
+        label: '用途说明：',
         key: 'desc',
         value: '用途说明11'
       }
     ])
     // 退出自助机
     const handleQuit = () => {
-      console.log('退出自助机')
       Store.quit()
     }
     // 进入页面
     const handleEnter = () => {
-      formRef.value.validate((valid, fields) => {
-        if (valid) {
-          if (form.locationUrl && form.terminal) {
-            Store.setItem('base_url', `${form.locationUrl}:${form.terminal}`)
-          }
-          router.push({
-            name: 'HomePage'
-          })
-        } else {
-          console.log('error submit!', fields)
-        }
+      if (form.locationUrl && form.terminal) {
+        Store.setItem('base_url', `${form.locationUrl}:${form.terminal}`)
+      }
+      router.push({
+        name: 'HomePage'
       })
     }
     return {

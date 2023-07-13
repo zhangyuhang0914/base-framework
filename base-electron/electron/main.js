@@ -14,8 +14,8 @@ const createWindow = () => {
   const electronStore = new Store()
   // BorwserWindow 创建并控制浏览器窗口
   const webBrowserWindow = new BrowserWindow({
-    width: 1000,
-    height: 800,
+    width: 1600,
+    height: 1200,
     // frame: false, // 无窗口
     // fullscreen: true, // 全屏
     // minimizable: false, // 决定窗口是否可被用户手动最小化

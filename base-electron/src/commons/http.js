@@ -9,7 +9,7 @@ import { Store } from '@/commons/store'
 
 let BASE_URL = ''
 Store.getItem('base_url').then((result) => {
-  BASE_URL = `http://${result}`
+  BASE_URL = result ? `http://${result}` : ''
 })
 // 申请一个新的http实例
 const instance = axios.create({

@@ -8,8 +8,8 @@ if (require("electron-squirrel-startup")) {
 const createWindow = () => {
   const electronStore = new Store();
   const webBrowserWindow = new BrowserWindow({
-    width: 1e3,
-    height: 800,
+    width: 1600,
+    height: 1200,
     // frame: false, // 无窗口
     // fullscreen: true, // 全屏
     // minimizable: false, // 决定窗口是否可被用户手动最小化
