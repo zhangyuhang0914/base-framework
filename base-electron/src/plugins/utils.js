@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron'
-import Store from 'electron-store'
+const Store = require('electron-store')
+// import Store from 'electron-store'
 import validate from '@/utils/validate'
 import * as $utils from '@/utils/utils'
 

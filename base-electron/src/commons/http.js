@@ -1,11 +1,16 @@
 import axios from 'axios'
-import router from '../routers'
-import { BASE_CONFIG } from '../conf/index'
+import router from '@/routers'
+import { BASE_CONFIG } from '@/conf/index'
 import myEncrypt from '@/utils/my-encrypt.js'
 import { SHA1 } from '@/utils/utils.js'
 import qs from 'qs'
 import { $message } from '@/plugins/element'
+import { getCurrentInstance } from 'vue'
 
+const global = getCurrentInstance().appContext.config.globalProperties
+const HOST = global.$electronStore.get('host')
+const PORT = global.$electronStore.get('port')
+const BASE_URL = `${HOST}:${PORT}`
 // 申请一个新的http实例
 const instance = axios.create({
   headers: {
@@ -41,7 +46,7 @@ instance.interceptors.request.use(
       config.headers['pick'] = SHA1(data)
     }
     // 添加请求前缀
-    config.url = BASE_CONFIG[config.apiType || 'defaultAjaxPath'] + url
+    config.url = BASE_URL + BASE_CONFIG[config.apiType || 'defaultAjaxPath'] + url
     return config
   },
   error => {

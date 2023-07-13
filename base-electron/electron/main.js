@@ -1,15 +1,11 @@
 // app 控制应用程序的事件生命周期
-const { app, BrowserWindow, ipcMain } = require('electron')
-const Store = require('electron-store')
+const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron')
 const path = require('path')
 
 // 解决安装包重复启动问题
 if (require('electron-squirrel-startup')) {
   app.quit()
 }
-
-// 实例化 electron-store
-const electronStore = new Store()
 
 // 定义全局变量 获取窗口实力
 const createWindow = () => {
@@ -26,7 +22,8 @@ const createWindow = () => {
     webPreferences: {
       contextIsolation: false, // 沙箱 上下文隔离
       nodeIntegration: true, // 允许html页面上的 javascipt 代码访问 nodejs 环境api代码的能力（与node集成的意思）
-      // webSecurity: false, // 跨域
+      // preload: path.join(__dirname, 'preload.js')
+      // backgroundThrottling: false,   // 设置应用在后台正常运行
     }
   })
   // 判断开发环境 或者使用 isPackaged 判断应用是否已打包
@@ -34,9 +31,6 @@ const createWindow = () => {
     webBrowserWindow.loadFile(path.join(__dirname, '../index.html'))
   } else {
     // package.json 中 chcp 65001 解决中文乱码问题
-    // console.log('webBrowserWindow', process, process.env['VITE_DEV_SERVER_URL'])
-    // 测试地址
-    // webBrowserWindow.loadURL('https://www.baidu.com/')
     webBrowserWindow.loadURL(process.env['VITE_DEV_SERVER_URL'])
   }
   // 获取当前窗口的会话对象
@@ -52,10 +46,34 @@ const createWindow = () => {
   })
   // 开发者工具（开发环境调试专用）
   webBrowserWindow.webContents.openDevTools()
+  // 拦截主进程中的事件
+  webBrowserWindow.webContents.on('before-input-event', (event, keyborad) => {
+    // 禁止打开控制台
+    if (keyborad.control && keyborad.shift && keyborad.key.toLowerCase() === 'i') {
+      // event.preventDefault()
+    }
+  })
+
+  // ipc通信
+  ipcMain.on('quitApp', (event, data) => {
+    if (data) {
+      app.quit()
+    }
+  })
 }
 
 // Electron已完成初始化时被触发 假如应用程序尚未就绪 则订阅ready事件
-app.whenReady().then(createWindow)
+app.whenReady().then(() => {
+  createWindow()
+  // 注册快捷键
+  globalShortcut.register('CommandOrControl+Tab', () => {
+    app.quit()
+  })
+})
+// 当应用退出时取消注册的快捷键
+app.on('will-quit', () => {
+  globalShortcut.unregisterAll()
+})
 // 当所有的窗口都被关闭时触发
 app.on('window-all-closed', () => {
   // 查询操作系统
@@ -68,9 +86,4 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow()
   }
-})
-
-// 主进程传入store状态到渲染层
-ipcMain.handle('getElectronSore', () => {
-  return electronStore
 })

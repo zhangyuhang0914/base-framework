@@ -5,7 +5,7 @@
   el-input(v-model="toolParameter.latheNumber" @focus="onInputFocus('latheNumber')")
   el-input(v-model="toolParameter.tid" @focus="onInputFocus('tid')" placeholder="")
   .showKeyboard(v-if="showKeyboard")
-    SimpleKeyboard(ref="SimpleKeyboard" @onChange="onChangeKeyboard" @parentMethods="parentMethods")
+    SimpleKeyboard(ref="SimpleKeyboardRef" @onChange="onChangeKeyboard" @parentMethods="parentMethods")
 </template>
 
 <script>
@@ -38,15 +38,14 @@ export default {
     const showKeyboard= ref(false)
     // 选择输入框
     const changeIpt = ref('')
-    const SimpleKeyboard = ref(null)
+    const SimpleKeyboardRef = ref(null)
     // 输入框聚焦事件
     const onInputFocus = val => {
       showKeyboard.value = true
       changeIpt.value = val
       // 父组件调用子组件的方法
       nextTick(() => {
-        console.log('SimpleKeyboard', SimpleKeyboard, SimpleKeyboard.value, SimpleKeyboard.value.onKeysPress)
-        SimpleKeyboard.value.onKeysPress('{clear}')
+        SimpleKeyboardRef.value.onKeysPress('{clear}')
       })
     }
     // 键盘按下事件
@@ -75,7 +74,7 @@ export default {
       captchaImgUrl,
       toolParameter,
       showKeyboard,
-      SimpleKeyboard,
+      SimpleKeyboardRef,
       getCaptcha,
       handleClick,
       onInputFocus,

@@ -1,11 +1,9 @@
 "use strict";
-const { app, BrowserWindow, ipcMain } = require("electron");
-const Store = require("electron-store");
+const { app, BrowserWindow, globalShortcut, ipcMain } = require("electron");
 const path = require("path");
 if (require("electron-squirrel-startup")) {
   app.quit();
 }
-const electronStore = new Store();
 const createWindow = () => {
   const webBrowserWindow = new BrowserWindow({
     width: 1e3,
@@ -21,7 +19,8 @@ const createWindow = () => {
       // 沙箱 上下文隔离
       nodeIntegration: true
       // 允许html页面上的 javascipt 代码访问 nodejs 环境api代码的能力（与node集成的意思）
-      // webSecurity: false, // 跨域
+      // preload: path.join(__dirname, 'preload.js')
+      // backgroundThrottling: false,   // 设置应用在后台正常运行
     }
   });
   if (process.env.NODE_ENV !== "development") {
@@ -37,8 +36,25 @@ const createWindow = () => {
     }
   });
   webBrowserWindow.webContents.openDevTools();
+  webBrowserWindow.webContents.on("before-input-event", (event, keyborad) => {
+    if (keyborad.control && keyborad.shift && keyborad.key.toLowerCase() === "i")
+      ;
+  });
+  ipcMain.on("quitApp", (event, data) => {
+    if (data) {
+      app.quit();
+    }
+  });
 };
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  createWindow();
+  globalShortcut.register("CommandOrControl+Tab", () => {
+    app.quit();
+  });
+});
+app.on("will-quit", () => {
+  globalShortcut.unregisterAll();
+});
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
@@ -48,7 +64,4 @@ app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
-});
-ipcMain.handle("getElectronSore", () => {
-  return electronStore;
 });

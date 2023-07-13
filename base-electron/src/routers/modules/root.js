@@ -5,9 +5,9 @@ const routers = [
     path: '/',
     name: '',
     redirect: {
-      name: 'HomePage'
+      name: 'Setting'
     },
-    component: () => import('@/views/template/layout.vue'),
+    // component: () => import('@/views/template/layout.vue'),
     meta: {
       ignoreAuth: false // 是否不需要验证权限
     }
