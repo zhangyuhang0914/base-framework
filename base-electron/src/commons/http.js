@@ -5,12 +5,12 @@ import myEncrypt from '@/utils/my-encrypt.js'
 import { SHA1 } from '@/utils/utils.js'
 import qs from 'qs'
 import { $message } from '@/plugins/element'
-import { getCurrentInstance } from 'vue'
+import { Store } from '@/commons/store'
 
-const global = getCurrentInstance().appContext.config.globalProperties
-const HOST = global.$electronStore.get('host')
-const PORT = global.$electronStore.get('port')
-const BASE_URL = `${HOST}:${PORT}`
+let BASE_URL = ''
+Store.getItem('base_url').then((result) => {
+  BASE_URL = `http://${result}`
+})
 // 申请一个新的http实例
 const instance = axios.create({
   headers: {

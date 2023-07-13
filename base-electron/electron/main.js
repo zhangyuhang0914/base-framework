@@ -1,6 +1,7 @@
 // app 控制应用程序的事件生命周期
 const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron')
 const path = require('path')
+const Store = require('electron-store')
 
 // 解决安装包重复启动问题
 if (require('electron-squirrel-startup')) {
@@ -9,6 +10,8 @@ if (require('electron-squirrel-startup')) {
 
 // 定义全局变量 获取窗口实力
 const createWindow = () => {
+  // 创建 Store 实例
+  const electronStore = new Store()
   // BorwserWindow 创建并控制浏览器窗口
   const webBrowserWindow = new BrowserWindow({
     width: 1000,
@@ -53,12 +56,30 @@ const createWindow = () => {
       // event.preventDefault()
     }
   })
+  // 将 ElectronStore 实例传递给渲染进程
+  webBrowserWindow.webContents.on('did-finish-load', () => {
+    webBrowserWindow.webContents.send('store-instance', electronStore.store)
+  })
 
   // ipc通信
-  ipcMain.on('quitApp', (event, data) => {
+  ipcMain.on('quit-app', (event, data) => {
     if (data) {
       app.quit()
     }
+  })
+  ipcMain.on('set-store-data', (event, key, value) => {
+    // 存储数据到 ElectronStore
+    electronStore.set(key, value)
+  })
+  ipcMain.on('get-store-data', (event, key) => {
+    // 从 ElectronStore 获取数据并发送回渲染进程
+    const data = electronStore.get(key)
+    event.reply('get-data-reply', { key, data })
+  })
+  ipcMain.on('delete-store-data', (event, key) => {
+    // 从 ElectronStore 删除数据
+    console.log('delete-store-data', key)
+    electronStore.delete(key)
   })
 }
 

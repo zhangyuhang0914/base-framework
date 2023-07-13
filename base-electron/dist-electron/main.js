@@ -1,10 +1,12 @@
 "use strict";
 const { app, BrowserWindow, globalShortcut, ipcMain } = require("electron");
 const path = require("path");
+const Store = require("electron-store");
 if (require("electron-squirrel-startup")) {
   app.quit();
 }
 const createWindow = () => {
+  const electronStore = new Store();
   const webBrowserWindow = new BrowserWindow({
     width: 1e3,
     height: 800,
@@ -40,10 +42,24 @@ const createWindow = () => {
     if (keyborad.control && keyborad.shift && keyborad.key.toLowerCase() === "i")
       ;
   });
-  ipcMain.on("quitApp", (event, data) => {
+  webBrowserWindow.webContents.on("did-finish-load", () => {
+    webBrowserWindow.webContents.send("store-instance", electronStore.store);
+  });
+  ipcMain.on("quit-app", (event, data) => {
     if (data) {
       app.quit();
     }
+  });
+  ipcMain.on("set-store-data", (event, key, value) => {
+    electronStore.set(key, value);
+  });
+  ipcMain.on("get-store-data", (event, key) => {
+    const data = electronStore.get(key);
+    event.reply("get-data-reply", { key, data });
+  });
+  ipcMain.on("delete-store-data", (event, key) => {
+    console.log("delete-store-data", key);
+    electronStore.delete(key);
   });
 };
 app.whenReady().then(() => {

@@ -9,8 +9,8 @@ lerna-debug.log*
 
 node_modules
 dist
-scjgswj-intranet-h5
 dist-ssr
+dist-electron
 *.local
 package-lock.json
 

@@ -1,6 +1,6 @@
 <template lang="pug">
 .system-setting
-  el-form(ref="formRef" :model="form" :rules="rules" label-width="120px")
+  el-form(ref="formRef" :model="form" label-width="120px")
     el-row(:gutter="24")
       el-col(:span="16")
         el-form-item(prop="locationUrl" label="服务器地址")
@@ -30,6 +30,7 @@
 <script>
 import { ref, reactive, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
+import { Store } from '@/commons/store'
 export default {
   name: 'HeaderCommon',
   setup() {
@@ -53,15 +54,6 @@ export default {
       locationUrl: '192.168.1.246',
       terminal: ''
     })
-    console.log('electronStore', global.$electronStore)
-    const rules = reactive({
-      locationUrl: [
-        { required: true, message: '请输入服务器地址', trigger: ['change', 'blur'] }
-      ],
-      terminal: [
-        { required: true, message: '请选择终端', trigger: ['change', 'blur'] }
-      ]
-    })
     const terminalInfo = reactive([
       {
         label: '名称',
@@ -83,19 +75,28 @@ export default {
     ])
     // 退出自助机
     const handleQuit = () => {
-      global.$ipcRenderer.send('quitApp', true)
+      console.log('退出自助机')
+      Store.quit()
     }
     // 进入页面
     const handleEnter = () => {
-      router.push({
-        name: 'HomePage'
+      formRef.value.validate((valid, fields) => {
+        if (valid) {
+          if (form.locationUrl && form.terminal) {
+            Store.setItem('base_url', `${form.locationUrl}:${form.terminal}`)
+          }
+          router.push({
+            name: 'HomePage'
+          })
+        } else {
+          console.log('error submit!', fields)
+        }
       })
     }
     return {
       terminalList,
       formRef,
       form,
-      rules,
       terminalInfo,
       handleQuit,
       handleEnter
