@@ -7,7 +7,7 @@
   "main": "dist-electron/main.js",
   "scripts": {
     "serve": "chcp 65001 && vite --mode devlopment",
-    "build": "vite build && electron-builder --mode production",
+    "build": "vite build && electron-builder",
     "preview": "vite preview",
     "prettier": "prettier --write ."
   },
@@ -19,16 +19,22 @@
     "directories": {
       "output": "dist-electron"
     },
+    "files": [
+      "dist-electron/**/*"
+    ],
     "nsis": {
       "oneClick": false,
       "allowElevation": true,
       "allowToChangeInstallationDirectory": true,
+      "installerIcon": "./public/images/icon.ico",
+      "uninstallerIcon": "./public/images/icon.ico",
+      "installerHeaderIcon": "./public/images/icon.ico",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "自助机"
     },
     "win": {
-      "icon": "",
+      "icon": "./public/images/icon.ico",
       "artifactName": "${productName}_${version}.${ext}",
       "target": [
         {
@@ -38,9 +44,11 @@
             "x64"
           ]
         }
-      ]
+      ],
+      "requestedExecutionLevel": "asInvoker"
     },
     "mac": {
+      "icon": "./public/images/icon.ico",
       "artifactName": "${productName}_${version}.${ext}"
     },
     "linux": {}
@@ -49,12 +57,10 @@
     "@element-plus/icons-vue": "^2.1.0",
     "axios": "^1.4.0",
     "crypto-js": "^4.1.1",
-    "electron": "^25.2.0",
-    "electron-builder": "^24.4.0",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^5.0.0",
     "element-plus": "^2.3.7",
-    "js-cookie": "^3.0.5",
+    "jsqr": "^1.4.0",
     "moment": "^2.29.4",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.4",
@@ -65,6 +71,7 @@
     "vite-plugin-electron": "^0.12.0",
     "vite-plugin-electron-renderer": "^0.14.5",
     "vue": "^3.2.47",
+    "vue-esign": "^1.1.4",
     "vue-router": "^4.2.3"
   },
   "devDependencies": {
@@ -73,6 +80,8 @@
     "@vue/eslint-config-prettier": "^7.1.0",
     "autoprefixer": "^10.4.14",
     "babel-eslint": "^10.1.0",
+    "electron": "^25.2.0",
+    "electron-builder": "^24.4.0",
     "eslint": "^8.44.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.15.1",
@@ -86,6 +95,7 @@
     "unplugin-vue-components": "^0.25.1",
     "vite": "^4.3.9",
     "vite-plugin-eslint": "^1.8.1",
+    "vite-plugin-optimizer": "^1.4.2",
     "vite-plugin-vue-setup-extend": "^0.4.0"
   },
   "eslintIgnore": [

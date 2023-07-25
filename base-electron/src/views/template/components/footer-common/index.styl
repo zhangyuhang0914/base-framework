@@ -1,11 +1,46 @@
 .footer-box-wrap
-  height 72px
+  height 100%
   display flex
   align-items center
   justify-content space-between
-  background #1B80D2
-  padding 0 20px
+  padding 0 36px
   overflow hidden
   font-size 22px
   color #FFFFFF
-  font-weight bold
+  font-weight 500
+  font-size 18px
+  background linear-gradient(270deg, rgba(54, 164, 255, 0.2), rgba(122, 193, 255, 0.2))
+  opacity 0.8
+  .footer-left
+    display flex
+    align-items center
+    .after-box
+      padding-right 20px
+    .after-box::after
+      content ''
+      width 1px
+      height 25px
+      background #fff
+    .item-info
+      display flex
+      align-items center
+      .current-location
+        display flex
+        align-items center
+      .toggle
+        padding 4px 18px
+        margin 0 20px 0 10px
+        border-radius 15px 15px 15px 15px
+        background #7ac1ffff
+        display flex
+        align-items center
+        justify-content center
+        font-size 16px
+        cursor pointer
+  .footer-right
+    display flex
+    align-items center
+    cursor pointer
+    & > img
+      width 22px
+      padding 10px

@@ -3,9 +3,9 @@
 </template>
 
 <script>
-import Keyboard from 'simple-keyboard'
+import SimpleKeyboard from 'simple-keyboard'
 import 'simple-keyboard/build/css/index.css'
-import layout from 'simple-keyboard-layouts/build/layouts/chinese.js' // 中文输入法
+import layout from 'simple-keyboard-layouts/build/layouts/chinese' // 中文输入法
 import { ref, defineProps, reactive, onMounted, watch } from 'vue'
 export default {
   name: 'SimpleKeyboard',
@@ -16,7 +16,7 @@ export default {
     },
     input: {
       type: [Number, String],
-      default: '',
+      default: ''
     },
     maxLength: {
       type: [Number, String],
@@ -24,7 +24,7 @@ export default {
     }
   },
   emits: ['parentMethods', 'onChange', 'onKeyPress'],
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const keyboard = ref(null)
     const displayDefault = reactive({
       '{bksp}': 'backspace',
@@ -52,19 +52,23 @@ export default {
         return false
       } else if (button === '{change}') {
         // 切换中英文输入法
-        if (keyboard.value.options.layoutCandidates && Object.keys(keyboard.value.options.layoutCandidates).length !== 0) {
+        // if (
+        //   keyboard.value.options.layoutCandidates &&
+        //   Object.keys(keyboard.value.options.layoutCandidates).length !== 0
+        // )
+        if (keyboard.value.options.layoutCandidates !== null) {
           displayDefault['{change}'] = '英文'
           // 切换至英文
           keyboard.value.setOptions({
             layoutCandidates: null,
-            display: displayDefault,
+            display: displayDefault
           })
         } else {
           // 切换至中文
           displayDefault['{change}'] = '中文'
           keyboard.value.setOptions({
             layoutCandidates: layout.layoutCandidates,
-            display: displayDefault,
+            display: displayDefault
           })
         }
       } else if (button === '{clear}') {
@@ -81,19 +85,22 @@ export default {
       if (button === '{shift}' || button === '{lock}') handleShift()
     }
     // 切换shift/默认布局
-    const handleShift = (val) => {
+    const handleShift = () => {
       console.log('keyboard', keyboard.value)
       let currentLayout = keyboard.value.options.layoutName
       let shiftToggle = currentLayout === 'default' ? 'shift' : 'default'
       keyboard.value.setOptions({
-        layoutName: shiftToggle,
+        layoutName: shiftToggle
       })
     }
-    watch(() => props.input, value => {
-      keyboard.value.setInput(value)
-    })
+    watch(
+      () => props.input,
+      value => {
+        keyboard.value.setInput(value)
+      }
+    )
     onMounted(() => {
-      keyboard.value = new Keyboard(props.keyboardClass, {
+      keyboard.value = new SimpleKeyboard(props.keyboardClass, {
         onChange: onChange,
         onKeyPress: onKeysPress,
         layoutCandidates: layout.layoutCandidates,
@@ -120,12 +127,12 @@ export default {
         buttonTheme: [
           {
             class: 'hg-red close',
-            buttons: '{close}',
+            buttons: '{close}'
           },
           {
             class: 'change',
-            buttons: '{change}',
-          },
+            buttons: '{change}'
+          }
         ],
         // 输入限制长度
         maxLength: props.maxLength

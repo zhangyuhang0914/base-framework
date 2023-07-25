@@ -1,151 +1,76 @@
 <template lang="pug">
 .login-wrap
-  el-form(ref="formRef" :model="form" :rules="rules" size="large" label-width="120px")
-    el-form-item(prop="username" label="用户名")
-      el-input(v-model="form.username" @blur="checkIsBindUKey")
-    el-form-item(prop="password" label="密码")
-      el-input(v-model="form.password" type="password")
-    el-form-item(prop="captcha" label="验证码")
-      el-input(v-model="form.captcha")
-        template(#append)
-          img(:src="captchaImgUrl" @click="getCaptcha")
-    el-form-item
-      el-button(type="primary" @click="loginFn") {{ '登录' }}
+  .containerBox
+    .title {{ '选择登录方式' }}
+    .content
+      .login-box(v-for="(item, index) in loginPage" :key="index" :class="item.customClass" @click="loginFn(item)")
+        .show-image
+          img(:src="`${BASE_URL}${item.imagesUrl}`")
+        .title-box {{ item.label }}
+  .test-inlet(@click="toggleHidden")
 </template>
 
 <script>
-import { onMounted, reactive } from 'vue'
-import { imageCaptcha } from '@/apis/common'
-import { login, initConfig, isUserBindUKey } from '@/apis/login'
-// import { loadCaCert, caSignData } from '@/utils/gm/gmBjCaSecurity'
-import myEncrypt from '@/utils/my-encrypt.js'
+import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { $message } from '@/plugins/element'
 export default {
   name: 'Login',
   setup() {
+    const BASE_URL = import.meta.env.BASE_URL
     const router = useRouter()
-    // 登录
-    const gm = ref({
-      serverRandom: '',
-      gmJson: '',
-      gmEnable: '',
-      pwdType: ''
-    })
-    const captchaImgUrl = ref('')
-    const formRef = ref(null)
-    const form = reactive({
-      username: 'admin',
-      password: '123-!@#',
-      captcha: '',
-      captchaId: ''
-    })
-    const rules = reactive({
-      username: [
-        { required: true, message: '请输入用户名', trigger: ['change', 'blur'] }
-      ],
-      password: [
-        { required: true, message: '请输入密码', trigger: ['change', 'blur'] }
-      ],
-      captcha: [
-        { required: true, message: '请输入验证码', trigger: ['change', 'blur'] }
-      ]
-    })
-    // 获取验证码
-    const getCaptcha = () => {
-      form.captchaId = Date.now()
-      captchaImgUrl.value = imageCaptcha(form.captchaId)
-    }
-    //初始化国密配置
-    const initGmConfig = () => {
-      initConfig()
-        .then(res => {
-          let data = res.data
-          gm.value.gmEnable = data.gmEnable
-          if (gm.value.gmEnable && gm.value.gmEnable === '0') {
-            gm.value.serverRandom = data.serverRandom
+    const loginPage = reactive([
+      {
+        customClass: 'card-login',
+        label: '自然人身份证登录',
+        imagesUrl: 'images/login/card-login.png',
+        type: 0,
+        urlName: 'CardLogin'
+      },
+      {
+        customClass: 'user-ehb-login',
+        label: '自然人身份证登录',
+        imagesUrl: 'images/login/user-ehb-login.png',
+        type: 1,
+        urlName: 'EhbLogin'
+      },
+      {
+        customClass: 'enterprise-ehb-login',
+        label: '企业法人鄂汇办扫码登录',
+        imagesUrl: 'images/login/enterprise-ehb-login.png',
+        type: 2,
+        urlName: 'EhbLogin'
+      }
+    ])
+    const counter = ref(0)
+    const loginFn = item => {
+      const type = item.type
+      if (type === 0) {
+        router.push({
+          name: item.urlName
+        })
+      } else {
+        router.push({
+          name: item.urlName,
+          params: {
+            type: item.type
           }
         })
-        .catch(err => {
-          console.log('err', err.msg)
+      }
+    }
+    const toggleHidden = () => {
+      counter.value += 1
+      if (counter.value === 5) {
+        router.push({
+          name: 'Test'
         })
+      }
     }
-    const checkIsBindUKey = () => {
-      isUserBindUKey(form.username)
-        .then(res => {
-          if (res.data) {
-            gm.value.pwdType = 'upas'
-            // loadCaCert()
-          } else {
-            gm.value.pwdType = 'pas'
-          }
-        })
-        .catch(err => {
-          console.log('err', err.msg)
-        })
-    }
-    const signAndEncrypt = password => {
-      //加密之前再校验下U盾状态
-      // var result = loadCaCert()
-      // if (!result) {
-      //   return result
-      // }
-      // //获取随机数
-      // var random = password + '' + gm.value.serverRandom
-      // //加签
-      // var sign = caSignData(random)
-      // var gmData = {
-      //   random: random,
-      //   sign: sign
-      // }
-      // gm.value.gmJson = JSON.stringify(gmData)
-      // return result
-    }
-    const loginFn = () => {
-      formRef.value.validate((valid, fields) => {
-        if (valid) {
-          let params = JSON.parse(JSON.stringify(form))
-          let password = myEncrypt(myEncrypt(params.password))
-          params.password = password
-          if (gm.value.pwdType === 'upas') {
-            //加密并签名
-            var result = signAndEncrypt(params.password)
-            if (!result) {
-              params.password = ''
-              $message('未检测到唯一USB_KEY设备')
-              return
-            }
-          }
-          login(params)
-            .then(result => {
-              if (+result === 0) {
-                $message('登录成功', 'success')
-                router.push({
-                  name: 'HomePage'
-                })
-              }
-            })
-            .catch(err => {
-              getCaptcha()
-            })
-        } else {
-          console.log('error submit!', fields)
-        }
-      })
-    }
-    onMounted(() => {
-      getCaptcha()
-      //初始化国密配置
-      initGmConfig()
-    })
+    onMounted(() => {})
     return {
-      captchaImgUrl,
-      formRef,
-      form,
-      rules,
-      getCaptcha,
-      checkIsBindUKey,
-      loginFn
+      BASE_URL,
+      loginPage,
+      loginFn,
+      toggleHidden
     }
   }
 }

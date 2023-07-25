@@ -39,6 +39,7 @@ module.exports = {
     'vue/multi-word-component-names': 'off',
     'no-useless-escape': 0,
     'no-unused-vars': 'off',
-    'no-debugger': 0
+    'no-debugger': 0,
+    'vue/no-mutating-props': 0
   }
 }

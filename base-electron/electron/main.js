@@ -1,4 +1,4 @@
-// app 控制应用程序的事件生命周期
+// app 控制应用程序的事件生命周期  监听键盘事件  ipc通信
 const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron')
 const path = require('path')
 const Store = require('electron-store')
@@ -7,7 +7,6 @@ const Store = require('electron-store')
 if (require('electron-squirrel-startup')) {
   app.quit()
 }
-
 // 定义全局变量 获取窗口实力
 const createWindow = () => {
   // 创建 Store 实例
@@ -16,7 +15,7 @@ const createWindow = () => {
   const webBrowserWindow = new BrowserWindow({
     width: 1600,
     height: 1200,
-    // frame: false, // 无窗口
+    // frame: false, // 禁用默认的窗口样式和工具栏
     // fullscreen: true, // 全屏
     // minimizable: false, // 决定窗口是否可被用户手动最小化
     // alwaysOnTop: false, // 窗口是否永远在别的窗口的上面
@@ -25,7 +24,9 @@ const createWindow = () => {
     webPreferences: {
       contextIsolation: false, // 沙箱 上下文隔离
       nodeIntegration: true, // 允许html页面上的 javascipt 代码访问 nodejs 环境api代码的能力（与node集成的意思）
-      // preload: path.join(__dirname, 'preload.js')
+      // preload: path.join(__dirname, 'preload.js'),
+      // 允许访问摄像头和麦克风
+      allowMediaDevices: true,
       // backgroundThrottling: false,   // 设置应用在后台正常运行
     }
   })
@@ -41,12 +42,20 @@ const createWindow = () => {
   // 设置内容安全策略
   session.setPermissionRequestHandler((webContents, permission, callback) => {
     if (permission === 'securityPolicy') {
-      // 设置自定义的内容安全策略
+      // 自定义内容安全策略
       const contentSecurityPolicy = "default-src 'self'; script-src 'self'"
-      // 将内容安全策略返回给渲染进程
       return callback(contentSecurityPolicy)
     }
   })
+  // 响应 session 的权限请求
+  session.setPermissionRequestHandler((_, permission, callback) => {
+    // if (webBrowserWindow.webContents.getURL() === 'http://hostlocal:8086/') {
+    //   return callback(true)
+    // }
+    // 默认响应全部请求
+    callback(true)
+  })
+  session.setPermissionCheckHandler(() => true)
   // 开发者工具（开发环境调试专用）
   webBrowserWindow.webContents.openDevTools()
   // 拦截主进程中的事件
@@ -56,7 +65,7 @@ const createWindow = () => {
       // event.preventDefault()
     }
   })
-  // 将 ElectronStore 实例传递给渲染进程
+  // 传递实例
   webBrowserWindow.webContents.on('did-finish-load', () => {
     webBrowserWindow.webContents.send('store-instance', electronStore.store)
   })

@@ -5,12 +5,8 @@ import myEncrypt from '@/utils/my-encrypt.js'
 import { SHA1 } from '@/utils/utils.js'
 import qs from 'qs'
 import { $message } from '@/plugins/element'
-import { Store } from '@/commons/store'
+import { getBaseUrl } from '@/utils/utils'
 
-let BASE_URL = ''
-Store.getItem('base_url').then((result) => {
-  BASE_URL = result ? `http://${result}` : ''
-})
 // 申请一个新的http实例
 const instance = axios.create({
   headers: {
@@ -22,7 +18,14 @@ const instance = axios.create({
 
 // 请求拦截器
 instance.interceptors.request.use(
-  config => {
+  async config => {
+    let BASE_URL = ''
+    if (config.test) {
+      BASE_URL = `http://${config.testUrl}`
+    } else {
+      // 防止手动页面刷新后pinia store状态丢失
+      BASE_URL = `http://${await getBaseUrl()}`
+    }
     let url = config.url || ''
     // 表单提交
     const method = config.method.toUpperCase()
@@ -72,6 +75,9 @@ instance.interceptors.response.use(
           } else if (data.code === 0) {
             // 成功
             return response
+          } else if (response.config && response.config.test) {
+            // 测试接口连通
+            return response
           } else {
             $message(data.msg, 'error')
             return Promise.reject(response)
@@ -102,8 +108,7 @@ instance.interceptors.response.use(
           errMessage = '404 Not Found'
           break
         case 500: {
-          const code = +data.code || ''
-          switch (code) {
+          switch (status) {
             case 1003:
               // 没有登录
               errMessage = '没有登录'
@@ -115,6 +120,7 @@ instance.interceptors.response.use(
           break
         }
       }
+      $message(errMessage)
     } else {
       if (axios.isCancel(error)) {
         console.error('请求被取消', error.msg)

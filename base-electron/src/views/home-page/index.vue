@@ -1,85 +1,94 @@
 <template lang="pug">
 .home-page-wrap
-  span(@click="handleClick") {{ msg }}
-  img(:src="captchaImgUrl" @click="getCaptcha")
-  el-input(v-model="toolParameter.latheNumber" @focus="onInputFocus('latheNumber')")
-  el-input(v-model="toolParameter.tid" @focus="onInputFocus('tid')" placeholder="")
-  .showKeyboard(v-if="showKeyboard")
-    SimpleKeyboard(ref="SimpleKeyboardRef" @onChange="onChangeKeyboard" @parentMethods="parentMethods")
+  .service-block.c-scroll-block
+    .c-title {{ '服务专区' }}
+    .scroll-item-list
+      .c-item-service(v-for="(item, index) in serviceList" :key="index" @click="handleService(item)")
+        img(:src="`${BASE_URL}${item.imgUrl}.png`")
+        span {{ item.name }}
+  .handle-matter-block.c-scroll-block
+    .c-title {{ '事项办理专区' }}
+    .scroll-item-list
+      .c-item-service(v-for="(item, index) in itemList" :key="index" @click="handleItem(item)")
+        img(:src="`${BASE_URL}${item.imgUrl}.png`")
+        span {{ item.name }}
 </template>
 
 <script>
-import { onMounted, shallowReactive, ref, nextTick } from 'vue'
+import { onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { imageCaptcha } from '@/apis/common'
-import SimpleKeyboard from '@/components/simple-keyboard/index.vue'
 export default {
   name: 'HomePage',
-  components: { SimpleKeyboard },
   setup() {
+    const BASE_URL = import.meta.env.BASE_URL
     const router = useRouter()
-    const msg = '我是首页'
-    const handleClick = () => {
+    const serviceList = reactive([
+      {
+        id: 0,
+        name: '办件查询',
+        imgUrl: 'images/home/handle-select'
+      },
+      {
+        id: 1,
+        name: '证照下载',
+        imgUrl: 'images/home/handle-document-download'
+      },
+      {
+        id: 2,
+        name: '自助办理',
+        imgUrl: 'images/home/handle-self'
+      },
+      {
+        id: 3,
+        name: '办事预约',
+        imgUrl: 'images/home/handle-reservation'
+      }
+    ])
+    const itemList = reactive([
+      {
+        id: 0,
+        name: '交通建设',
+        imgUrl: 'images/home/handle-traffic-build'
+      },
+      {
+        id: 1,
+        name: '道路运输',
+        imgUrl: 'images/home/handle-traffic'
+      },
+      {
+        id: 2,
+        name: '港航海事',
+        imgUrl: 'images/home/handle-shipping'
+      },
+      {
+        id: 3,
+        name: '公路管理',
+        imgUrl: 'images/home/handle-road-manager'
+      }
+    ])
+    const handleService = item => {
+      // 暂时写死
       router.push({
-        name: 'Test'
+        name: item.itemUrl || 'DocumentInquiry'
       })
     }
-    // 获取验证码
-    const captchaImgUrl = ref('')
-    const getCaptcha = () => {
-      captchaImgUrl.value = imageCaptcha(Date.now())
-    }
-    // 键盘
-    const toolParameter = shallowReactive({
-      latheNumber: '',
-      tid: ''
-    })
-    // 键盘默认隐藏
-    const showKeyboard= ref(false)
-    // 选择输入框
-    const changeIpt = ref('')
-    const SimpleKeyboardRef = ref(null)
-    // 输入框聚焦事件
-    const onInputFocus = val => {
-      showKeyboard.value = true
-      changeIpt.value = val
-      // 父组件调用子组件的方法
-      nextTick(() => {
-        SimpleKeyboardRef.value.onKeysPress('{clear}')
+    const handleItem = item => {
+      // 暂时写死
+      router.push({
+        name: item.itemUrl || 'ItemSelection',
+        query: {
+          title: item.title || '',
+          itemId: item.itemId || ''
+        }
       })
     }
-    // 键盘按下事件
-    const onChangeKeyboard = input => {
-      if (changeIpt.value == 'latheNumber') {
-        toolParameter.latheNumber = input
-      } else if (changeIpt.value == 'tid') {
-        toolParameter.tid = input
-      }
-    }
-    // 调用父组件方法
-    const parentMethods = (funcName) => {
-      if (funcName === 'closekeyboard') {
-        closekeyboard()
-      }
-    }
-    // 点击关闭隐藏键盘
-    const closekeyboard = () => {
-      showKeyboard.value = false
-    }
-    onMounted(() => {
-      getCaptcha()
-    })
+    onMounted(() => {})
     return {
-      msg,
-      captchaImgUrl,
-      toolParameter,
-      showKeyboard,
-      SimpleKeyboardRef,
-      getCaptcha,
-      handleClick,
-      onInputFocus,
-      onChangeKeyboard,
-      parentMethods
+      BASE_URL,
+      serviceList,
+      itemList,
+      handleService,
+      handleItem
     }
   }
 }

@@ -7,6 +7,10 @@
  * @LastEditTime : 2023-07-07 11:50:51
  */
 
+import { userCommonStoreHook } from '@/stores/modules/common'
+import { Store } from '@/commons/store'
+const commonStore = userCommonStoreHook()
+
 // 是否空值
 export const isEmpty = v => {
   switch (typeof v) {
@@ -35,6 +39,17 @@ export const isEmpty = v => {
 
 export const getFormatDate = date => {
   return `${date[0]}-${date[1]}-${date[2]}`
+}
+
+// 异步获取 base_url
+export const getBaseUrl = async () => {
+  if (!commonStore.baseUrl) {
+    const result = await Store.getItem('base_url')
+    commonStore.setBaseUrl(result)
+    return result
+  } else {
+    return commonStore.baseUrl
+  }
 }
 
 /* eslint-disable */
@@ -67,7 +82,7 @@ export const SHA1 = s => {
     },
     k = [1518500249, 1859775393, -1894007588, -899497514],
     m = [1732584193, -271733879, null, null, -1009589776]
-  ;(m[2] = ~m[0]), (m[3] = ~m[1])
+    ; (m[2] = ~m[0]), (m[3] = ~m[1])
   for (i = 0; i < s.length; i += 16) {
     var o = m.slice(0)
     for (j = 0; j < 80; j++)

@@ -1,24 +1,38 @@
 import { defineStore } from 'pinia'
 import { store } from '../index'
+import CameraStream from '@/commons/camera-stream'
 
 export const userCommonStore = defineStore({
   id: 'common',
   state: () => {
     return {
-      token: '',
+      baseUrl: '', // 缓存服务器地址
+      cameraInstance: null, // 摄像头
       userInfo: '',
       reloadPage: false // 缓存页面重新加载页面
     }
   },
   actions: {
-    setToken(token) {
-      this.token = token
+    setBaseUrl (baseUrl) {
+      this.baseUrl = baseUrl
     },
-    setUserInfo(info) {
+    setUserInfo (info) {
       this.userInfo = info
     },
-    setReloadPage(flg) {
+    setReloadPage (flg) {
       this.reloadPage = flg
+    }
+  },
+  getters: {
+    getCameraInstance: state => data => {
+      return state.cameraInstance = new CameraStream({
+        width: data.width,
+        height: data.height,
+        types: data.types,
+        containerId: data.containerId,
+        jsqrCallback: data.jsqrCallback,
+        photoCallback: data.photoCallback
+      })
     }
   },
   persist: {
@@ -38,6 +52,6 @@ export const userCommonStore = defineStore({
   }
 })
 
-export function userCommonStoreHook() {
+export function userCommonStoreHook () {
   return userCommonStore(store)
 }

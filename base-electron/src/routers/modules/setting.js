@@ -4,11 +4,12 @@ const routers = [
   {
     path: '/setting',
     name: 'Setting',
-    component: () => import('@/views/setting/index.vue'),
     meta: {
-      ignoreAuth: false
-    }
+      title: '首页'
+    },
+    component: () => import('@/views/setting/index.vue')
   }
 ]
 
 export default routers
+

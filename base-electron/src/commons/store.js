@@ -10,12 +10,21 @@ class ElectronProxy {
     this.ipcRenderer.send('quit-app', true)
   }
 
-  // 存
+  // 取主进程数据
+  getMainData (key) {
+    return new Promise((resolve, reject) => {
+      this.ipcRenderer.on(key, (event, data) => {
+        resolve(event, data)
+      })
+    })
+  }
+
+  // 存 store 数据
   setItem (key, value) {
     this.ipcRenderer.send('set-store-data', key, value)
   }
 
-  // 获取数据
+  // 取 store 数据
   getItem (key) {
     return new Promise((resolve, reject) => {
       const dataObject = {}
@@ -28,7 +37,7 @@ class ElectronProxy {
     })
   }
 
-  // 删
+  // 删 store 数据
   deleteItem (key) {
     this.ipcRenderer.send('delete-store-data', key)
   }

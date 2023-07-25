@@ -9,6 +9,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import eslintPlugin from 'vite-plugin-eslint'
+import optimizer from 'vite-plugin-optimizer' // 引入调启window屏幕键盘
 
 const BASE_URL = process.env.NODE_ENV === 'production' ? './' : '/' // 设置文根
 
@@ -44,8 +45,21 @@ export default defineConfig({
     electron({
       entry: 'electron/main.js'
     }),
-    electronRender()
+    electronRender(),
+    optimizer({
+      child_process: () => ({
+        find: /^(node:)?child_process$/,
+        code: `const child_process = import.meta.glob('child_process'); export { child_process as default }`
+      })
+    })
   ],
+  css: {
+    preprocessorOptions: {
+      stylus: {
+        imports: [resolve(__dirname, './src/assets/common/theme.styl')]
+      }
+    }
+  },
   resolve: {
     // 设置快捷指向
     alias: {
