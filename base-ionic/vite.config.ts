@@ -22,6 +22,10 @@ export default defineConfig({
       '@': resolve(__dirname, './src')
     }
   },
+  build: {
+    // 指定输出路径
+    outDir: 'dist-ionic'
+  },
   base: BASE_URL,
   server: {
     port: 8806,
@@ -35,9 +39,5 @@ export default defineConfig({
         secure: false
       }
     }
-  },
-  test: {
-    globals: true,
-    environment: 'jsdom'
   }
 })

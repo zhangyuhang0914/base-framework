@@ -12,6 +12,9 @@
     "lint:fix": "eslint --ext .ts,.tsx,.vue --fix ."
   },
   "dependencies": {
+    "@capacitor/android": "^5.2.2",
+    "@capacitor/core": "^5.2.2",
+    "@capacitor/ios": "^5.2.2",
     "@ionic/vue": "^7.0.0",
     "@ionic/vue-router": "^7.0.0",
     "ionicons": "^7.0.0",
@@ -20,6 +23,7 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@capacitor/cli": "^5.2.2",
     "@vitejs/plugin-legacy": "^4.0.2",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^8.0.0",
@@ -37,6 +41,7 @@
     "prettier": "^3.0.1",
     "pug": "^3.0.2",
     "stylus": "^0.57.0",
+    "terser": "^5.19.2",
     "typescript": "^5.1.6",
     "vite": "^4.3.9",
     "vite-plugin-vue-setup-extend": "^0.4.0",
