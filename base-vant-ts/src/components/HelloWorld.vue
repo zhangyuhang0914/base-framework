@@ -1,5 +1,5 @@
 <template>
-  <h1>{{ msg }}</h1>
+  <h1>{{ 'msg' }}</h1>
 
   <div class="card">
     <button type="button" @click="handleCount">count is {{ count }}</button>
@@ -26,8 +26,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import Bus, { TEST_EVENT_BUS } from '@/commons/bus'
-defineProps<{ msg: string }>()
-// ref<SelectOption[]>([])
 const count = ref(0)
 const handleCount = (): void => {
   count.value++

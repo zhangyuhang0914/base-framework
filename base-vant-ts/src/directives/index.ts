@@ -3,7 +3,7 @@
  * @Autor        : ZhangYuHang
  * @Date         : 2023-08-14 14:59:06
  * @LastEditors  : ZhangYuHang
- * @LastEditTime : 2023-08-21 10:56:09
+ * @LastEditTime : 2023-08-21 11:37:36
  */
 import { App } from 'vue'
 
@@ -15,7 +15,7 @@ for (const key in files) {
     modules[moduleKey] = (files as Record<string, any>)[key].default
   }
 }
-console.log('modules', modules)
+// console.log('modules', modules)
 
 export const directivesHook = (app: App) => {
   for (const key in modules) {
