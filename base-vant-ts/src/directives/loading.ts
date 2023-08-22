@@ -15,7 +15,7 @@ function remove(el: any) {
 
 export default {
   mounted(el: any, binding: any, vnode: any) {
-    console.log('mounted', el)
+    // console.log('mounted', el)
     const div = document.createElement('div')
     const app = createApp(loading)
     const instance = app.mount(div)
@@ -23,14 +23,13 @@ export default {
     if (binding.value) {
       append(el)
     }
-    console.log(binding.msg)
     if (binding.msg !== undefined) {
       // 在此判断是否有title值
       el.instance.setTitle(binding.msg) //  // setTitle 使我们在loading组件中定义的方法，可返回第一段代码查看
     }
   },
   updated(el: any, binding: any, vnode: any) {
-    console.log('updated')
+    // console.log('updated')
     if (binding.msg !== undefined) {
       // 在此判断是否有title值
       el.instance.setTitle(binding.msg) //  // setTitle 使我们在loading组件中定义的方法，可返回第一段代码查看

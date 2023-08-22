@@ -1,5 +1,5 @@
 <template>
-  <div class="test-loading" v-loading="loading">
+  <div class="test-loading" v-loading="loading" v-longpress="onPress()">
     <h1>{{ 'msg' }}</h1>
     <div class="card">
       <button type="button" @click="handleCount">count is {{ count }}</button>
@@ -36,6 +36,11 @@ const handleCount = (): void => {
     name: 'zhangyuhang',
     company: 'JR'
   })
+}
+const onPress = () => {
+  return (e: any) => {
+    console.log(e)
+  }
 }
 onMounted(() => {
   Bus.$on(TEST_EVENT_BUS, (data: any) => {

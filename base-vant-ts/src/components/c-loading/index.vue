@@ -47,9 +47,9 @@ export default defineComponent({
     transition-timing-function ease-in, ease
     transition-delay 0s, 0.2s
     span
-      width 32px
-      height 32px
-      border 4.3px solid #53B9FF
+      width 35px
+      height 35px
+      border 3.7px solid #53B9FF
       border-radius 50%
       box-sizing border-box
       display inline-block
