@@ -16,12 +16,12 @@ const BASE_PATH: any = isProd ? configApi.production : configApi.development
 
 // 导出Request类，可以用来自定义传递配置来创建实例
 export class Request {
-  private baseUrl: string = BASE_PATH
+  // private baseUrl: any = BASE_PATH
   // axios 实例
-  private instance: AxiosInstance
+  public instance: AxiosInstance
   // 基础配置
   private baseConfig: httpRequestConfig = {
-    baseURL: this.baseUrl,
+    // baseURL: this.baseUrl['DEFAULT'],
     headers: {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json; charset=UTF-8'
@@ -32,7 +32,6 @@ export class Request {
   constructor(options: httpRequestConfig) {
     // 使用axios.create创建axios实例
     this.instance = axios.create(Object.assign(this.baseConfig, options))
-
     this.instance.interceptors.request.use(
       (options: httpRequestConfig) => {
         // 简化类型设置
@@ -57,6 +56,11 @@ export class Request {
           options.data = qs.stringify(options.data)
         }
 
+        let url: any = options.url
+        let ajaxPath = BASE_PATH[options.apiType || 'defaultAjaxPath']
+        if (ajaxPath && !url.startsWith('http') && !url.startsWith('https')) {
+          options.url = ajaxPath + url
+        }
         return options
       },
       (error: AxiosError) => {
@@ -136,33 +140,27 @@ export class Request {
   }
 
   public get<T = any>(
-    url: string,
     config?: AxiosRequestConfig
   ): Promise<AxiosResponse<ApiResponse<T>>> {
-    return this.instance.get(url, config)
+    return this.instance.get(config?.url as string, config)
   }
 
   public post<T = any>(
-    url: string,
-    data?: any,
     config?: AxiosRequestConfig
   ): Promise<AxiosResponse<ApiResponse<T>>> {
-    return this.instance.post(url, data, config)
+    return this.instance.post(config?.url as string, config?.data, config)
   }
 
   public put<T = any>(
-    url: string,
-    data?: any,
     config?: AxiosRequestConfig
   ): Promise<AxiosResponse<ApiResponse<T>>> {
-    return this.instance.put(url, data, config)
+    return this.instance.put(config?.url as string, config?.data, config)
   }
 
   public delete<T = any>(
-    url: string,
     config?: AxiosRequestConfig
   ): Promise<AxiosResponse<ApiResponse<T>>> {
-    return this.instance.delete(url, config)
+    return this.instance.delete(config?.url as string, config)
   }
 }
 

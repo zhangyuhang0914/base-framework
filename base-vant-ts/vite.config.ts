@@ -43,8 +43,8 @@ export default defineConfig({
     open: true, // 启动服务是否自动打开浏览器
     cors: true, // 跨域
     proxy: {
-      '/iframework': {
-        target: 'http://192.168.1.246:19604/',
+      '/webspiderweb': {
+        target: 'http://jtt.hubei.gov.cn/',
         changeOrigin: true,
         secure: false
       }

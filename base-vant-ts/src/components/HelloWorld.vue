@@ -28,6 +28,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import Bus, { TEST_EVENT_BUS } from '@/commons/bus'
+import { getList } from '@/api/hbjt/common'
 const count = ref(0)
 const loading = ref(true)
 const handleCount = (): void => {
@@ -46,6 +47,17 @@ onMounted(() => {
   Bus.$on(TEST_EVENT_BUS, (data: any) => {
     console.log('data', TEST_EVENT_BUS, data)
   })
+  let params = {
+    url: '/bmdt/jtyw/list.json',
+    page: 1
+  }
+  getList(params)
+    .then(result => {
+      console.log('result', result)
+    })
+    .catch(err => {
+      console.log('err', err)
+    })
 })
 </script>
 
