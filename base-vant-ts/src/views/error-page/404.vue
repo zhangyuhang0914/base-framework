@@ -1,7 +1,7 @@
 <template lang="pug">
 .error-page
   .content.noFound 404
-  .content {{ $t('您访问的页面不存在') }}
+  .content {{ '您访问的页面不存在' }}
   .foot(@click="back") back
 </template>
 <script lang="ts">

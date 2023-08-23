@@ -3,7 +3,8 @@ import { httpRequestConfig } from '@/commons/http/types.d'
 
 export const getList = (params: { url: string; page: number }) => {
   const param: httpRequestConfig = {
-    url: `/api/haiyun/all?url=${params.url}&page=${params.page}`
+    url: `/api/haiyun/all`,
+    params: params
   }
   return http.get(param)
 }
