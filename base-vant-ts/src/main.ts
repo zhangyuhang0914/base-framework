@@ -7,6 +7,10 @@ import vantPlugins from '@/plugins/vant'
 import { directivesHook } from '@/directives/index'
 import { SplashScreen } from '@capacitor/splash-screen'
 import '@/plugins/flexible'
+// 引入css样式
+import 'vant/es/toast/style'
+import 'vant/es/notify/style'
+import 'vant/es/dialog/style'
 
 const app = createApp(App)
 
