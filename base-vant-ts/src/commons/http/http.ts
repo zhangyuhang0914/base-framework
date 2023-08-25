@@ -13,6 +13,8 @@ import * as qs from 'querystring'
 // 获取接口根路径
 const isProd = import.meta.env.MODE === 'production'
 const BASE_PATH: any = isProd ? configApi.production : configApi.development
+// 获取接口地址
+const BASE_URL: any = import.meta.env.VITE_APP_HBJT_BASE_URL
 
 // 导出Request类，可以用来自定义传递配置来创建实例
 export class Request {
@@ -59,7 +61,7 @@ export class Request {
         let url: any = options.url
         let ajaxPath = BASE_PATH[options.apiType || 'defaultAjaxPath']
         if (ajaxPath && !url.startsWith('http') && !url.startsWith('https')) {
-          options.url = ajaxPath + url
+          options.url = BASE_URL + ajaxPath + url
         }
         return options
       },
