@@ -16,6 +16,7 @@
     "@capacitor/core": "^5.2.2",
     "@capacitor/device": "^5.0.6",
     "@capacitor/ios": "^5.2.2",
+    "@capacitor/splash-screen": "^5.0.6",
     "@ionic/vue": "^7.0.0",
     "@ionic/vue-router": "^7.0.0",
     "@vueuse/core": "^10.3.0",

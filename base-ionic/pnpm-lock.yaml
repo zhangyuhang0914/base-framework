@@ -6,6 +6,7 @@ specifiers:
   '@capacitor/core': ^5.2.2
   '@capacitor/device': ^5.0.6
   '@capacitor/ios': ^5.2.2
+  '@capacitor/splash-screen': ^5.0.6
   '@ionic/vue': ^7.0.0
   '@ionic/vue-router': ^7.0.0
   '@vitejs/plugin-legacy': ^4.0.2
@@ -43,6 +44,7 @@ dependencies:
   '@capacitor/core': 5.2.2
   '@capacitor/device': 5.0.6_@capacitor+core@5.2.2
   '@capacitor/ios': 5.2.2_@capacitor+core@5.2.2
+  '@capacitor/splash-screen': 5.0.6_@capacitor+core@5.2.2
   '@ionic/vue': 7.2.2
   '@ionic/vue-router': 7.2.2
   '@vueuse/core': 10.3.0_vue@3.3.4
@@ -1296,6 +1298,14 @@ packages:
     resolution: {integrity: sha512-6nNhB+G9tamJFMdvPOIATEPIXlh3GNXMq8eeY3xrFO72bBTmQpXdbDQmMJeBbpVlkEnFoVUXiSxAu6O0E9x9Lw==}
     peerDependencies:
       '@capacitor/core': ^5.2.0
+    dependencies:
+      '@capacitor/core': 5.2.2
+    dev: false
+
+  /@capacitor/splash-screen/5.0.6_@capacitor+core@5.2.2:
+    resolution: {integrity: sha512-9B8wSm89D+LlshFw8B+mjPU8pJNf1WOx2mkMjMvcH0/EqxNaE+ZaO8lPCX+9WvWSEZs3O3l11qiSnOFHeK0t9A==}
+    peerDependencies:
+      '@capacitor/core': ^5.0.0
     dependencies:
       '@capacitor/core': 5.2.2
     dev: false
