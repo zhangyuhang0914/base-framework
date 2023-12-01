@@ -11,18 +11,17 @@ import elementPlusFn from '@/plugins/element'
 
 const app = createApp(App)
 
-console.log('app', import.meta, app, App)
 // 获取初始化配置信息
 getConf(app).then(async config => {
   app.use(router)
-  // await router.isReady()
+  await router.isReady()
   // 默认状态处理
   injectResponsiveStorage(config)
   // 状态管理
   setupStore(app)
   elementPlusFn(app)
+  app.use(useI18n)
   // 指令
   directivesHook(app)
-  app.use(useI18n)
   app.mount('#app')
 })

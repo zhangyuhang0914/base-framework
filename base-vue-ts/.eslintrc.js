@@ -12,7 +12,6 @@ module.exports = {
     'prettier',
     '@vue/prettier',
     '@vue/prettier/@typescript-eslint',
-    'plugin:prettier/recommended'
   ],
   plugins: ['prettier'],
   // 对Babel解析器的包装使其与 ESLint 兼容。
@@ -35,7 +34,17 @@ module.exports = {
     'prettier/prettier': 'error',
     'arrow-body-style': 'off',
     'prefer-arrow-callback': 'off',
-    // 关闭名称校验
-    'vue/multi-word-component-names': 'off'
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    /*关闭驼峰命名规则*/
+    'vue/multi-word-component-names': 0,
+    'prefer-const': [
+      'off',
+      {
+        destructuring: 'any',
+        ignoreReadBeforeAssign: false
+      }
+    ],
+    '@typescript-eslint/ban-ts-comment': 'off' // 禁使用 @ts-ignore
   }
 }

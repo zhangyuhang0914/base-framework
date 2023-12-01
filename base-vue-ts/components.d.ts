@@ -6,7 +6,10 @@ import '@vue/runtime-core'
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     CLoading: typeof import('./src/components/c-loading/index.vue')['default']
+    CSelect: typeof import('./src/components/c-select/index.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElOption: typeof import('element-plus/es')['ElOption']
+    ElSelect: typeof import('element-plus/es')['ElSelect']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

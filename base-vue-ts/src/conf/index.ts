@@ -9,12 +9,12 @@ export const API = {
   // 开发环境
   development: {
     DEFAULT: import.meta.env.BASE_URL,
-    DEMO: '/api/',
+    DEMO: '/jgswappms'
   },
   // 生产环境
   production: {
     DEFAULT: import.meta.env.BASE_URL,
-    DEMO: '/api',
+    DEMO: '/jgswappms'
   }
 }
 const isProd = import.meta.env.MODE === 'production'

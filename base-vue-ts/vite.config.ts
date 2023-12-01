@@ -1,14 +1,15 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
-// import styleImport from 'vite-plugin-style-import' // 按需引入
 import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 import ElementPlus from 'unplugin-element-plus/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 // https://vitejs.dev/config/
-const BASE_URL = '/base/'
+
+// 设置文根
+const BASE_URL = process.env.NODE_ENV === 'production' ? './' : '/'
 
 export default defineConfig({
   plugins: [
@@ -16,6 +17,7 @@ export default defineConfig({
     VueSetupExtend(),
     ElementPlus(),
     AutoImport({
+      imports: ['vue', 'vue-router', 'pinia'],
       resolvers: [ElementPlusResolver()]
     }),
     Components({
@@ -25,7 +27,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       stylus: {
-        imports: [resolve(__dirname, './src/assets/css/imports.styl')]
+        imports: [resolve(__dirname, './src/assets/css/components/theme.styl')]
       }
     }
   },
@@ -39,20 +41,16 @@ export default defineConfig({
   server: {
     port: 8899,
     host: '0.0.0.0',
-    // hmr: {
-    //   host: 'localhost',
-    //   port: 8899
-    // },
     https: false,
     open: false, // 启动服务是否自动打开浏览器
     cors: true, // 跨域
     // 代理
     proxy: {
-      '/apis': {
-        target: '',
+      '/jgswappms': {
+        // target: 'http://59.225.205.32:8888', // 四川机关事务局-生产环境-内网
+        target: 'http://202.61.90.152:28888', // 四川机关事务局-生产环境-互联网
         changeOrigin: true,
-        rewrite: path => path.replace('/apis/', '/')
-        // rewrite: path => path.resolve(/^\/api/, '') //
+        secure: false
       }
     }
   }

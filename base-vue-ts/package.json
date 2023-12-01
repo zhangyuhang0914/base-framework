@@ -11,16 +11,17 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^1.1.4",
-    "@types/crypto-js": "^4.1.1",
-    "@types/js-cookie": "^3.0.1",
     "@types/node": "^17.0.23",
+    "@types/js-cookie": "^3.0.2",
+    "@types/crypto-js": "^4.1.1",
     "@vueuse/core": "^8.4.2",
     "crypto-js": "^4.1.1",
     "element-plus": "~2.2.13",
     "js-audio-recorder": "^1.0.7",
-    "js-cookie": "^3.0.1",
     "jsencrypt": "^3.2.1",
+    "js-cookie": "^3.0.1",
     "moment": "^2.29.2",
+    "nprogress": "^0.2.0",
     "pinia": "^2.0.13",
     "vue": "^3.2.25",
     "vue-clipboard3": "^2.0.0",
@@ -50,7 +51,6 @@
     "unplugin-element-plus": "^0.4.0",
     "unplugin-vue-components": "^0.19.3",
     "vite": "^2.9.0",
-    "vite-plugin-style-import": "1.4.1",
     "vite-plugin-vue-setup-extend": "^0.4.0",
     "vue-tsc": "^0.29.8"
   }
