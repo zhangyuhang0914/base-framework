@@ -44,6 +44,9 @@ export default defineComponent({
     const focusChange = (event: Event) => {
       console.log('focusChange', event)
     }
+    onMounted(() => {
+      console.log('onMounted')
+    })
     return {
       selectChange,
       visibleChange,

@@ -1,18 +1,18 @@
 export const getApps = (props: AnyObject) => {
   return [
     {
-      name: 'microDispatch',
-      entry: import.meta.env.MODE === 'production' ? window.location.origin + '/icpMicDispatch/' : `//${window.location.hostname}:7911/`,
+      name: 'mic-pc-home',
+      entry: process.env.NODE_ENV === 'production' ? window.location.origin + '/micPcHome/' : `//${window.location.hostname}:8081/`,
       container: '#frameSection',
-      activeRule: '/mic-dispatch',
-      props: props
+      activeRule: '/mic-pc-home',
+      props: Object.assign(props, { name: 'mic-pc-home' })
     },
     {
-      name: 'microScreen',
-      entry: import.meta.env.MODE === 'production' ? window.location.origin + '/icpMicScreen/' : `//${window.location.hostname}:7912/`,
+      name: 'mic-pc-dispatch',
+      entry: process.env.NODE_ENV === 'production' ? window.location.origin + '/micPcDispatch/' : `//${window.location.hostname}:8082/`,
       container: '#frameSection',
-      activeRule: '/mic-screen',
-      props: props
+      activeRule: '/mic-pc-dispatch',
+      props: Object.assign(props, { name: 'mic-pc-dispatch' })
     }
   ]
 }

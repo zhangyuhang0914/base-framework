@@ -1,0 +1,52 @@
+@require './reset.styl'
+@require './transition.styl'
+.ellipsis
+  width 100%
+  overflow hidden
+  white-space nowrap
+  word-break break-all
+  text-overflow ellipsis
+.p-relative
+  position relative
+.page-wrap
+  height 100%
+  width 100%
+  display flex
+  flex-direction column
+  & > div
+    flex none
+.c-flex
+  display flex
+  align-items center
+  justify-content center
+.pointer
+  cursor pointer
+/* 修改滚动条样式 */
+::-webkit-scrollbar
+  width 7px
+  height 4px
+::-webkit-scrollbar-track
+  background transparent // rgb(239, 239, 239)
+  border-radius 2px
+::-webkit-scrollbar-thumb
+  background #bfbfbf
+  border-radius 10px
+::-webkit-scrollbar-thumb:hover
+  background #bbb
+::-webkit-scrollbar-thumb:window-inactivever
+  background #bbb
+::-webkit-scrollbar-corner
+  background #ccc
+/* 修改placeholder默认样式 */
+::-webkit-input-placeholder /* WebKit browsers */
+  color #C4C6CF
+  line-height 40px
+:-moz-placeholder /* Mozilla Firefox 4 to 18 */
+  color #C4C6CF
+  line-height 40px
+::-moz-placeholder /* Mozilla Firefox 19+ */
+  color #C4C6CF
+  line-height 40px
+:-ms-input-placeholder /* Internet Explorer 10+ */
+  color #C4C6CF
+  line-height 40px

@@ -1,0 +1,30 @@
+// - 公用样式
+@require './commons/common'
+@require './components/*'
+html, body
+  height 100%
+  width 100%
+#app
+  height 100%
+  width 100%
+  font-size 14px
+  color #03091B
+  background #F6F6F9
+  text-align center
+.page-wrap
+  overflow hidden
+  .system-header
+    height 62px
+    background-color $backgroundColor
+    display flex
+    align-items center
+    justify-content center
+  .wrapper
+    height 100%
+    width 100%
+    #frameSection
+      height 100%
+      width 100%
+      & > div
+        height 100%
+        width 100%

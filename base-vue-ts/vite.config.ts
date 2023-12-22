@@ -39,7 +39,7 @@ export default defineConfig({
   },
   base: BASE_URL,
   server: {
-    port: 8899,
+    port: 8082,
     host: '0.0.0.0',
     https: false,
     open: false, // 启动服务是否自动打开浏览器
