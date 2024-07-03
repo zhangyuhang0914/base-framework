@@ -16,7 +16,7 @@ NProgress.configure({
 // 环境信息
 const { BASE_URL } = import.meta.env
 // 获取所有路由
-let routes: any = [
+const routes: any = [
   {
     path: '/:pathMatch(.*)*',
     redirect: '/404'

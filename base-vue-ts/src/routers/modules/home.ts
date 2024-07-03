@@ -5,7 +5,7 @@ const routers: AppRouteModule[] = [
     path: '/',
     name: '',
     redirect: {
-      name: 'Platform'
+      name: 'Test'
     }
   }
 ]
