@@ -1,0 +1,46 @@
+.layoutMain
+  padding-top 0
+  .topTab
+    :deep(.u-tabs__wrapper__scroll-view-wrapper)
+      width 100%
+    :deep(.u-tabs__wrapper__nav__item__text)
+      white-space nowrap
+      overflow hidden
+      text-overflow ellipsis
+  .mainContainer
+    height calc(100% - 86rpx)
+    up-row.rowBox
+      :deep(.u-row)
+        width auto
+    .policyType
+      padding 40rpx 60px
+      :deep(.u-button--plain.u-button--primary)
+        background-color #DAECFE
+    .scrollContent
+      height 100%
+      padding-bottom 20rpx
+      padding-top 20rpx
+      box-sizing border-box
+      &.policyScrollContent
+        height calc(100% - 85px)
+        padding-top 0
+      .scroll-view
+        height 100%
+        .scrollBox
+          height 100%
+          .scrollItem
+            border-bottom 1px solid #E6E6E6
+            margin 0 40rpx
+            padding 20rpx 0
+            line-height 40rpx
+            &:nth-last-child(2)
+              border-bottom none
+            .topTitle
+              font-weight bold
+            .bottomText
+              color #909399
+              font-size 24rpx
+              margin-top 10rpx
+              .publisher
+                margin-right 20rpx
+

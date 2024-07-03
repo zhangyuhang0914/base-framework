@@ -1,0 +1,88 @@
+// - 公用样式
+.c-flex
+  display flex
+  justify-content center
+  align-items center
+.details-division
+  height 20px
+/* 修改滚动条样式 */
+::-webkit-scrollbar
+  width 7px
+  height 4px
+::-webkit-scrollbar-track
+  background transparent // rgb(239, 239, 239)
+  border-radius 2px
+::-webkit-scrollbar-thumb
+  background #bfbfbf
+  border-radius 10px
+::-webkit-scrollbar-thumb:hover
+  background #bbb
+::-webkit-scrollbar-thumb:window-inactivever
+  background #bbb
+::-webkit-scrollbar-corner
+  background #ccc
+/* 修改placeholder默认样式 */
+::-webkit-input-placeholder /* WebKit browsers */
+  color #C4C6CF
+  line-height 40px
+:-moz-placeholder /* Mozilla Firefox 4 to 18 */
+  color #C4C6CF
+  line-height 40px
+::-moz-placeholder /* Mozilla Firefox 19+ */
+  color #C4C6CF
+  line-height 40px
+:-ms-input-placeholder /* Internet Explorer 10+ */
+  color #C4C6CF
+  line-height 40px
+.containerBox
+  width 94%
+  height calc(100% - 40px)
+  margin 20px auto
+  background #ffffff
+  border-radius 10px
+  & > .title
+    height 50px
+    text-align center
+    line-height 50px
+    background $background
+    font-weight bold
+    font-size 22px
+    color #FFFFFF
+    border-radius 10px 10px 0 0
+  & > .content
+    padding 20px
+    box-sizing border-box
+    height calc(100% - 50px)
+    overflow auto
+*
+  margin 0px
+  padding 0px
+// 显示一行多出来的省略
+.textOverflow
+  white-space nowrap
+  overflow hidden
+  text-overflow ellipsis
+  word-wrap normal
+  word-break normal
+// 显示两行多出来的省略
+.textLine2Overflow
+  overflow hidden
+  text-overflow ellipsis
+  display -webkit-box
+  -webkit-line-clamp 2
+  line-clamp 2
+  -webkit-box-orient vertical
+video
+  object-fit cover
+.customDlg
+  height calc(100% - 100px)
+  margin-top 50px !important
+  .el-dialog__body
+    padding 20px !important
+    height calc(100% - 54px - 70px)
+    box-sizing border-box
+    overflow auto
+  &.customNoFooterDlg
+    .el-dialog__body
+      height calc(100% - 54px)
+

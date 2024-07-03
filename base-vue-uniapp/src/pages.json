@@ -1,0 +1,55 @@
+{
+  "pages": [
+    // pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "uni-app"
+      }
+    }
+  ],
+  // "tabBar": {
+  //   "color": "#7A7E83",
+  //   "selectedColor": "#3cc51f",
+  //   "borderStyle": "black",
+  //   "backgroundColor": "#ffffff",
+  //   "list": [
+  //     {
+  //       "pagePath": "pages/index/index"
+  //     },
+  //     {
+  //       "pagePath": "pages/affairs/index"
+  //     },
+  //     {
+  //       "pagePath": "pages/service/index"
+  //     },
+  //     {
+  //       "pagePath": "pages/user/index"
+  //     }
+  //   ]
+  // },
+  "globalStyle": {
+    // 导航栏标题颜色及状态栏前景颜色，仅支持 black/white
+    "navigationBarTextStyle": "black",
+    // 顶部导航栏(状态栏)背景颜色
+    "navigationBarBackgroundColor": "#F8F8F8",
+    // 是否开启下拉刷新，触发下拉刷新时，配合页面生命周期onPullDownRefresh使用
+    "enablePullDownRefresh": false,
+    // 当enablePullDownRefresh为 true 时，下拉显示出来的窗口的背景色
+    "backgroundColor": "#F8F8F8",
+    // 下拉 loading 的样式，仅支持 dark/light
+    "backgroundTextStyle": "dark",
+    // 是否自定义顶部导航栏(状态栏) 自定义 custom、默认显示 default
+    "navigationStyle": "custom"
+  },
+  "easycom": {
+    "autoscan": true,
+    // 自定义组件库
+    "custom": {
+      // 匹配uni ui组件库
+      "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue",
+      // 匹配uview-plus ui组件库
+      "^u-(.*)": "uview-plus/components/u-$1/u-$1.vue"
+    }
+  }
+}

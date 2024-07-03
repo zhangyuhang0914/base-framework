@@ -1,0 +1,48 @@
+.custom-bar
+  width 100%
+  position flex
+  top 0
+  left 0
+  right 0
+  z-index 9
+  .custom-bar-header
+    height 100%
+    position relative
+    display flex
+    align-items center
+    justify-content center
+    .c-header-box
+      display flex
+      .icon-jiantou-zuo
+        position absolute
+        left 30rpx
+        bottom 24rpx
+        font-size 40rpx
+        /deep/ .u-icon
+          .u-icon__icon
+            font-size 36rpx !important
+      .c-title
+        font-size 36rpx
+        font-weight bold
+    .c-header-avatar
+      height 100%
+      display flex
+      align-items center
+      position absolute
+      left 40rpx
+      .avatar-box
+        width 64rpx
+        height 80%
+        image-rendering -moz-crisp-edges
+        image-rendering -o-crisp-edges
+        image-rendering -webkit-optimize-contrast
+        image-rendering crisp-edges
+        -ms-interpolation-mode nearest-neighbor
+      .name-box
+        color #333333
+        padding 0 30rpx
+        font-size 32rpx
+.active-stick
+  position flex
+.default-stick
+  position sticky

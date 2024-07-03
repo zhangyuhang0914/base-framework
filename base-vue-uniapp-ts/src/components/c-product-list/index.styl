@@ -1,0 +1,109 @@
+.finance-product-wrap
+  height 100%
+  background-color #DAECFE
+  display flex
+  flex-direction column
+  .search-input
+    padding 48rpx 24rpx 90rpx 24rpx
+  .product-scroll-content
+    position relative
+    height calc(100% - 48rpx - 90rpx - 120rpx)
+    padding 44rpx 0 0 0
+    background #FFFFFF
+    border-radius 24rpx 24rpx 0 0
+    .product-filter
+      position absolute
+      top -64rpx
+      right 24rpx
+      width 120rpx
+      padding 0 12rpx 0 20rpx
+      color #FFFFFF
+      font-weight bold
+      border-radius 16rpx 16rpx 0 0
+      background linear-gradient(45deg, #397CFB, #51ACFF)
+      display flex
+      align-items center
+      justify-content center
+      /deep/ .u-icon
+        .u-icon__icon
+          padding 0 0 0 16rpx
+          color #FFFFFF !important
+          font-weight bold !important
+    .filter-main
+      position absolute
+      width 100%
+      background antiquewhite
+      z-index 9
+    .scroll-view
+      height 100%
+      // height calc(100% + 100rpx)
+      // padding-bottom 120rpx
+      // box-sizing border-box
+      .scroll-box
+        height 100%
+        .scroll-item
+          padding 0 24rpx
+          margin 0 0 24rpx 0
+          line-height 40rpx
+      .no-data-view
+        padding 50rpx
+    .filter-popup
+      /deep/ .u-popup
+        .u-transition
+          height 77%
+          .u-popup__content
+            height 100%
+            .scroll-view
+              /* 减去按钮高度 + 底部安全距离 */
+              height calc(100% - 140rpx - 34rpx)
+              padding 36rpx 24rpx
+              box-sizing border-box
+              .c-common-header
+                .slot-box
+                  position relative
+                  .open
+                    display flex
+                    align-items center
+                    .show-txt
+                      color #66b1ff
+                    .u-icon
+                      .u-icon__icon
+                        padding 0 24rpx 0 8rpx
+                        color #66b1ff !important
+              .form-check
+                padding 0 0 24rpx 0
+                display flex
+                flex-wrap wrap
+                align-items center
+                .value-item
+                  width 30%
+                  border 2rpx solid #D7DAE2
+                  background-color #FFFFFF
+                  border-radius 88rpx
+                  text-align center
+                  margin 28rpx 16rpx 0 0
+                .is-active
+                  color #1975F1
+                  border 2rpx solid #1975F1
+                  background-color rgba(144, 205, 244, 0.25)
+                .auto-width
+                  width 47%
+              .is-hide
+                height 475rpx
+                overflow hidden
+            .footer-opeation
+              width 100%
+              height 140rpx
+              padding 0 24rpx
+              display flex
+              justify-content space-between
+              align-items center
+              box-sizing border-box
+              .close-btn
+                width 48%
+              .confirm-btn
+                width 48%
+                .u-button
+                  color #FFFFFF
+                  border 2rpx solid #D7DAE2
+                  background #1975f1

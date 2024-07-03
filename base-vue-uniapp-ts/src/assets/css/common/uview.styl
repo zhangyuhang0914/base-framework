@@ -1,0 +1,209 @@
+// 搜索框
+.search-input
+  position relative
+  .u-search
+    .u-search__content
+      border 2rpx solid #D7DAE2 !important
+      border-radius 12rpx !important
+      background-color #FFFFFF !important
+      .u-search__content__input--placeholder, .u-search__content__input
+        height 72rpx !important
+        background-color #FFFFFF !important
+        padding 0 102rpx 0 0
+  .search-btn
+    position absolute
+    top 54rpx
+    right 60rpx
+    font-size 27rpx
+    font-weight bold
+    color #0182D9
+    z-index 9
+  .search-btn:before
+    content ''
+    position relative
+    top 4rpx
+    right 32rpx
+    border-right 4rpx solid #E7E7E7
+// 输入框
+.input-placeholder
+  color #CCCCCC !important
+// tab 页签
+.custom-tab-bar
+  .u-tabbar-item
+    line-height 38rpx
+    .iconfont
+      font-size 36rpx
+    .active-icon
+      color #479AFD
+// 表单
+.row-form
+  :deep(.u-form)
+    .u-form-item
+      .u-form-item__body
+        padding 18rpx 0
+        .u-form-item__body__right
+          .u-form-item__body__right__content
+            .u-form-item__body__right__content__slot
+              .u-input
+                .u-input__content
+                  .u-input__content__field-wrapper
+                    .u-input__content__field-wrapper__field
+                      border none !important
+                  .u-input__content__subfix-icon
+                    .event-info
+                      color #0182D9
+              .u-textarea
+                padding 16px 16px 16px 0 !important
+                .u-textarea__count
+                  color #333333 !important
+              .c-column-select
+                .select
+                  .uni-stat__select
+                    .uni-select
+                      border none !important
+                      .uni-select__selector
+                        left -8rpx !important
+                .suffix-right
+                  position absolute
+                  right 0
+                  top 36rpx
+                  color #0182d9
+                  font-size 28rpx
+    .require
+      .u-form-item
+        .u-form-item__body
+          .u-form-item__body__left
+            position relative
+            .u-form-item__body__left__content__label:before
+              content '*'
+              position absolute
+              top 0
+              left -18rpx
+              color #FF0000
+// 表单
+:deep(.u-form)
+  .u-form-item
+    position relative
+    .u-form-item__body
+      padding-bottom 40rpx !important
+      .u-form-item__body__left
+        border-bottom 2rpx solid #dadde7
+      .u-form-item__body__right
+        border-bottom 2rpx solid #dadde7
+        .u-form-item__body__right__content
+          .u-form-item__body__right__content__slot
+            position relative
+            .item-label
+              color #333333
+              padding 0 0 16rpx 0
+              font-size 36rpx
+              font-weight bold
+            .u-input
+              .u-input__content
+                .u-input__content__field-wrapper__field
+                  height 100rpx
+            .captcha-input
+              .u-input__content
+                .u-input__content__field-wrapper__field
+                  height 100rpx
+            .mask-click
+              position absolute
+              bottom 0
+              width 100%
+              height 72rpx
+              z-index 9
+    .u-form-item__body__right__message
+      margin-left 0 !important
+      position absolute
+      bottom 0
+// 底部tab
+:deep(.u-tabbar)
+  .u-tabbar__content
+    border none
+    box-shadow 0 4rpx 40rpx 0 #86868642
+    .u-tabbar__content__item-wrapper
+      padding-top 20rpx
+      line-height 50rpx
+      bottom constant(safe-area-inset-bottom)
+      bottom env(safe-area-inset-bottom)
+      .u-tabbar-item
+        .u-tabbar-item__icon
+          .active-icon
+            .u-icon
+              .u-icon__icon
+                font-size 42rpx !important
+                // color #333333
+                color #479AFD !important
+          .default-icon
+            .u-icon
+              .u-icon__icon
+                font-size 42rpx !important
+                color #ABA9AA !important
+.tabs-list
+  :deep(.u-tabs)
+    margin 30rpx 0
+    .u-tabs__wrapper
+      .u-tabs__wrapper__scroll-view-wrapper
+        .u-tabs__wrapper__scroll-view
+          width 89%
+          margin-left 44rpx
+          background #fff
+          .u-tabs__wrapper__nav
+            border-radius 16rpx
+            padding 18rpx 0
+            .u-tabs__wrapper__nav__item
+              width 30%
+              background #fff
+              padding 0
+            .u-tabs__wrapper__nav__line
+              display none
+// u-row
+up-row
+  .u-row
+    width 100%
+// form
+.upFormBox
+  padding 25rpx
+  :deep(.u-input__content__field-wrapper__field)
+    border none !important
+    width 100%
+  :deep(.u-form-item__body__left)
+    border-bottom 1px solid #DADDE7
+    padding-left 20rpx
+  :deep(.u-form-item__body__right)
+    border-bottom 1px solid #DADDE7
+  .require
+    .u-form-item
+      .u-form-item__body
+        .u-form-item__body__left
+          position relative
+          .u-form-item__body__left__content__label:before
+            content '*'
+            position absolute
+            top 0
+            left -18rpx
+            color #FF0000
+  .bottomBtn
+    flex 1
+    margin-top 50rpx
+// up-modal
+.custromModel
+  .modalContent
+    width 100%
+    .modalTitle
+      font-size 16px
+      padding-bottom 50rpx
+    .modalBody
+      box-sizing border-box
+      max-height 800rpx
+    .modalBottom
+      display flex
+      align-items center
+      justify-content space-around
+      padding-top 50rpx
+      up-button
+        flex 1
+.text-right
+  text-align right
+.text-center
+  text-align center

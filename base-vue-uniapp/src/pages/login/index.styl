@@ -1,0 +1,264 @@
+.login-wrap
+  width 100%
+  // height 1260rpx
+  height 68%
+  position absolute
+  top 0
+  background-repeat no-repeat
+  background-size 100% 100%
+  background-position 100% 100%
+  .c-login-box
+    padding 30% 0 20% 30rpx
+    color #fff
+    font-size 46rpx
+    line-height 64rpx
+.login-box
+  height 67%
+  // padding 50rpx 56rpx
+  background #fff
+  border-radius 50rpx 50rpx 0 0
+  position absolute
+  bottom 0
+  left 0
+  right 0
+  display flex
+  flex-direction column
+  .title
+    font-weight bold
+    font-size 46rpx
+    padding 50rpx 56rpx 0 56rpx
+  .login-from
+    padding 0 56rpx 50rpx 56rpx
+    :deep(.u-form)
+      .u-form-item
+        position relative
+        .u-form-item__body
+          // padding-bottom 20px
+          .u-form-item__body__right
+            .u-form-item__body__right__content
+              .u-form-item__body__right__content__slot
+                .u-input
+                  .u-input__content__field-wrapper__field
+                    height 100rpx
+                    border-bottom 2rpx solid #DADDE7
+                    padding-left 70rpx
+                .captcha-input
+                  .u-input__content__field-wrapper__field
+                    height 100rpx
+                    border-bottom 2rpx solid #DADDE7
+                    padding 0 210rpx 0 70rpx
+              .icon-prefix
+                width 58rpx
+                height 58rpx
+                display flex
+                align-items center
+                justify-content center
+                background-repeat no-repeat
+                background-position 50% 50%
+                position absolute
+                left 0
+                top 44rpx
+                background-size 68%
+              .icon-suffix
+                width 189rpx
+                height 82rpx
+                display flex
+                align-items center
+                justify-content center
+                background-repeat no-repeat
+                background-position 100% 100%
+                position absolute
+                right 0
+                top 40rpx
+                background-size 100%
+        .u-form-item__body__right__message
+          margin-left 0 !important
+          position absolute
+          bottom 0
+    .submit-btn
+      :deep(.u-button)
+        height 90rpx
+        margin-top 10rpx
+        border-radius 60rpx
+        background linear-gradient(90deg, #0052D9, #1CA2FF)
+        color #fff
+        font-weight bold
+        font-size 34rpx
+    .register-box
+      display flex
+      flex-direction row
+      align-items center
+      justify-content space-between
+      padding 10rpx 0
+      font-size 32rpx
+      color #898989
+  .register-select
+    display flex
+    flex-direction column
+    padding 40rpx 30rpx
+    border-radius 16rpx
+    .register-tips
+      height 160rpx
+      box-shadow 0rpx 0rpx 40rpx 0rpx rgba(0, 0, 0, 0.1)
+      display flex
+      align-items center
+      padding 0 40rpx
+      font-size 32rpx
+      .register-layout
+        width 100%
+        height 100%
+        display flex
+        flex-direction row
+        align-items center
+        .icon-register
+          width 64rpx
+          height 64rpx
+          background-repeat no-repeat
+          background-position 50% 50%
+          background-size 100% 100%
+        .span-register
+          padding 0 10px
+      .go-register
+        width 250rpx
+        font-weight bold
+        text-align center
+        :deep(.u-button)
+          height 72rpx
+          background linear-gradient(90deg, #0052d9, #1ca2ff)
+          box-shadow 0 8rpx 40rpx 0 rgba(27, 158, 253, 0.2)
+          border-radius 54rpx
+          color #fff
+          font-size 32rpx
+    .register-tips:nth-child(1)
+      margin-bottom 40rpx
+  .register-toggle
+    font-weight bold
+    padding 40rpx 56rpx 0 56rpx
+    :deep(.u-tabs)
+      .u-tabs__wrapper
+        .u-tabs__wrapper__scroll-view-wrapper
+          .u-tabs__wrapper__scroll-view
+            .u-tabs__wrapper__nav
+              .u-tabs__wrapper__nav__item
+                .u-tabs__wrapper__nav__item__text
+                  font-size 40rpx !important
+              .u-tabs__wrapper__nav__line
+                width 76rpx !important
+                height 12rpx !important
+                background linear-gradient(90deg, #0052D9, #1CA2FF) !important
+                left -18rpx !important
+  .user-register-form
+    flex 1
+    overflow-x hidden
+    overflow-y auto
+    :deep(.u-form)
+      .account-info
+        box-shadow 0 0 20rpx 0 rgba(0, 0, 0, 0.1)
+        border-radius 30rpx
+        margin 40rpx 36rpx
+        padding 45rpx 40rpx 40rpx 40rpx
+        position relative
+        .header-info
+          position absolute
+          top -12rpx
+          background linear-gradient(81deg, #0052D9, #1CA2FF)
+          border-radius 8rpx
+          color #fff
+          padding 2rpx 30rpx
+        .form-item .u-form-item .u-form-item__body__right__message
+          bottom -24rpx
+        .u-form-item .u-form-item__body__right__content__slot
+          .mask-click
+            position absolute
+            width 100%
+            height 104rpx
+            padding-left 70rpx
+            z-index 9
+      .user-base-info
+        box-shadow 0 0 20rpx 0 rgba(0, 0, 0, 0.1)
+        border-radius 30rpx
+        margin 40rpx 36rpx
+        padding 45rpx 40rpx 40rpx 40rpx
+        position relative
+        .header-info
+          position absolute
+          top -12rpx
+          background linear-gradient(81deg, #0052D9, #1CA2FF)
+          border-radius 8rpx
+          color #fff
+          padding 2rpx 30rpx
+        .u-form-item .u-form-item__body__right__content__slot
+          .mask-click
+            position absolute
+            width 100%
+            height 104rpx
+            padding-left 70rpx
+            z-index 9
+      .c-footer
+        display flex
+        flex-direction row
+        align-items center
+        justify-content space-between
+        padding 0 72rpx 40rpx 68rpx
+        .submit-btn
+          width 63%
+          .u-button
+            width 100%
+            height 96rpx
+            background linear-gradient(90deg, #0052D9, #1CA2FF)
+            border-radius 12rpx
+            color #fff
+            font-weight bold
+            font-size 34rpx
+        .back-btn
+          width 35%
+          .u-button
+            height 96rpx
+            background #CACACA
+            border-radius 12rpx
+            color #fff
+            font-weight bold
+            font-size 34rpx
+  .forgot-form
+    :deep(.u-form)
+      padding 0 56rpx
+      .u-form-item
+        position relative
+        .u-form-item__body
+          // padding-bottom 20px
+          .u-form-item__body__right
+            .u-form-item__body__right__content
+              .u-form-item__body__right__content__slot
+                .captcha-button
+                  .u-input__content__field-wrapper__field
+                    height 100rpx
+                    border-bottom 2rpx solid #DADDE7
+                    padding 0 210rpx 0 70rpx
+      .form-item .u-form-item .u-form-item__body__right__message
+        bottom -24rpx
+    .c-footer
+      display flex
+      flex-direction row
+      align-items center
+      justify-content space-between
+      // padding 0 72rpx 40rpx 68rpx
+      padding 20rpx 52rpx 40rpx 55rpx
+      .submit-btn
+        width 63%
+        :deep(.u-button)
+          width 100%
+          height 96rpx
+          background linear-gradient(90deg, #0052D9, #1CA2FF)
+          border-radius 12rpx
+          color #fff
+          font-weight bold
+          font-size 34rpx
+      .back-btn
+        width 35%
+        :deep(.u-button)
+          height 96rpx
+          background #CACACA
+          border-radius 12rpx
+          color #fff
+          font-weight bold
+          font-size 34rpx

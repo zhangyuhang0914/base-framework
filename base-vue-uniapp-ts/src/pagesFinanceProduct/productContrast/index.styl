@@ -1,0 +1,190 @@
+.roduct-contrast-wrap
+  height 100%
+  background-color #DAECFE
+  display flex
+  justify-content center
+  .scroll-view
+    position relative
+    top 60rpx
+    width 94%
+    height calc(100% - 60rpx)
+    background-color #FFFFFF
+    box-shadow 0 0 13rpx 0 #4285f61c
+    border-radius 12rpx 12rpx 0 0
+    .scroll-box
+      height 100%
+      .table
+        width 100%
+        height 100%
+        display flex
+        flex-direction column
+        .tr:first-child
+          .td:nth-child(1)
+            border-top 2rpx solid #E4EAF1 !important
+          .td:nth-child(2)
+            border-top 2rpx solid #E4EAF1 !important
+            display flex
+            justify-content space-between
+            .values
+              margin 0 0 24rpx 0
+              color #333333
+              font-size 32rpx
+              font-weight bold
+              display -webkit-box
+              -webkit-box-orient vertical
+              -webkit-line-clamp 2
+              overflow hidden
+          .td:nth-child(3)
+            border-top 2rpx solid #E4EAF1 !important
+            display flex
+            justify-content space-between
+            .values
+              margin 0 0 24rpx 0
+              color #333333
+              font-size 32rpx
+              font-weight bold
+              display -webkit-box
+              -webkit-box-orient vertical
+              -webkit-line-clamp 2
+              overflow hidden
+        .tr
+          display flex
+          justify-content flex-start
+          align-items center
+          text-align center
+          font-size 30rpx
+          border-left none
+          .equal-label
+            display flex
+            flex-direction column
+            align-items center
+            /deep/ .u-switch
+              margin 24rpx 0
+          .td:nth-child(1)
+            width 30%
+            border 2rpx solid #E4EAF1
+            border-top none
+            border-left none
+            font-weight bold
+          .td:nth-child(2)
+            width 35%
+            border 2rpx solid #E4EAF1
+            border-top none
+            border-left none
+            .values
+              color #909399
+              font-size 24rpx
+          .td:nth-child(3)
+            width 35%
+            border-bottom 2rpx solid #E4EAF1
+            .values
+              color #909399
+              font-size 24rpx
+          .td
+            height 100%
+            padding 24rpx
+            box-sizing border-box
+            word-break break-all
+            display flex
+            justify-content center
+            align-items center
+            flex-direction column
+            .operation-box
+              width 100%
+              border-radius 12rpx
+              .operation:nth-child(1)
+                margin 0 0 24rpx 0
+              .operation
+                padding 0rpx 24rpx
+                background #e5f0ff
+                display flex
+                align-items center
+                justify-content center
+                .iconfont
+                  color #0182D9
+                  font-size 22rpx
+                  font-weight bold
+                .text
+                  padding 0 0 0 12rpx
+                  color #0182D9
+                  font-size 24rpx
+          .select-product-main
+            display flex
+            justify-content center !important
+            .operation-box
+              .operation
+                .text
+                  flex none
+  .filter-popup
+    /deep/ .u-popup
+      .u-transition
+        height 77%
+        .u-popup__content
+          height 100%
+          .popup-scroll-view
+            /* 减去按钮高度 + 底部安全距离 */
+            height calc(100% - 140rpx - 34rpx)
+            padding 36rpx 24rpx
+            box-sizing border-box
+            .search-input
+              padding 48rpx 24rpx
+            .form-check
+              padding 0 0 24rpx 0
+              display flex
+              flex-wrap wrap
+              align-items center
+              .value-item
+                width 30%
+                border 2rpx solid #D7DAE2
+                background-color #FFFFFF
+                border-radius 88rpx
+                text-align center
+                margin 28rpx 16rpx 0 0
+              .is-active
+                color #1975F1
+                border 2rpx solid #1975F1
+                background-color rgba(144, 205, 244, 0.25)
+              .auto-width
+                width 47%
+            .popup-scroll-box
+              height 100%
+              .popup-scroll-item
+                position relative
+                margin 0 0 24rpx 0
+                .active-checkbox
+                  position absolute
+                  right 0
+                  bottom 0
+                  width 0
+                  height 0
+                  border-bottom 72rpx solid #19be6b
+                  border-left 72rpx solid transparent
+                  z-index 9
+                  .active-icon
+                    .u-icon
+                      .u-icon__icon
+                        color #FFFFFF !important
+                        font-size 36rpx !important
+                        position absolute !important
+                        right 0
+                        top 35rpx !important
+          .footer-opeation
+            width 100%
+            height 140rpx
+            padding 0 24rpx
+            display flex
+            justify-content space-between
+            align-items center
+            box-sizing border-box
+            .reset-btn
+              width 48%
+              .u-button
+                color #858585
+                border 2rpx solid #D7DAE2
+                background #f1f1f1
+            .confirm-btn
+              width 48%
+              .u-button
+                color #FFFFFF
+                border 2rpx solid #D7DAE2
+                background #1975f1

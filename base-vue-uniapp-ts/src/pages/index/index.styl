@@ -1,0 +1,130 @@
+.main-box
+  height 100%
+  .srcoll-box
+    width 100%
+    height 100%
+    display flex
+    flex-direction column
+    .carousel-container
+      width 100%
+    .common-services
+      padding 24rpx
+      .services-main
+        display flex
+        justify-content space-around
+        align-items center
+        padding 12rpx 0 0 0
+        .services-item-box
+          display flex
+          flex-direction column
+          align-items center
+          justify-content center
+          .icon-box
+            width 104rpx
+            height 104rpx
+            border-radius 32rpx
+            display flex
+            align-items center
+            justify-content center
+            .iconfont
+              font-size 48rpx !important
+              color #FFFFFF !important
+          .title
+            padding-top 16rpx
+            font-weight bold
+          .finance-product
+            background linear-gradient(135deg, #4FA0FA, #82CEFF)
+          .credit-report-services
+            background linear-gradient(135deg, #ED716F, #F79797)
+          .cooper-institution
+            background linear-gradient(135deg, #8E8AE5, #91B1FF)
+          .policy-file
+            background linear-gradient(135deg, #5CC6C0, #69DCBC)
+    .hot-recommendation
+      padding 0 24rpx
+      .product-box
+        .product-operation
+          .operation-box
+            margin-right 24rpx
+    .finance-products
+      padding 24rpx
+    .statistics-container
+      padding 0 24rpx
+      .statistics-main
+        height 400rpx
+        margin 15rpx 0 36rpx 0
+        display flex
+        justify-content space-between
+        .statistics-enterprises
+          width calc((100% / 3))
+          line-height 60rpx
+          background-repeat no-repeat
+          background-size 100% 100%
+          background-position 100% 100%
+          display flex
+          flex-direction column
+          align-items center
+          justify-content center
+          .value
+            font-size 34rpx
+            font-weight bold
+            word-break break-all
+          .label
+            font-size 24rpx
+        .statistics-data
+          width calc((100% - 100% / 3) - 24rpx)
+          display grid
+          grid-template-columns 50% 50%
+          grid-template-rows 47% 47.5%
+          row-gap 24rpx
+          .stats-box
+            padding 0 0 0 24rpx
+            line-height 48rpx
+            background-repeat no-repeat
+            background-size 100% 100%
+            background-position 100% 100%
+            display flex
+            flex-direction column
+            justify-content center
+            .value
+              font-size 34rpx
+              font-weight bold
+              word-break break-all
+            .label
+              font-size 24rpx
+          .stats-box:nth-child(1)
+            width calc(100% - 48rpx)
+          .stats-box:nth-child(2)
+            width calc(100% - 24rpx)
+          .stats-box:nth-child(3)
+            width calc(100% - 48rpx)
+          .stats-box:nth-child(4)
+            width calc(100% - 24rpx)
+    .explain-container
+      position relative
+      width 100%
+      padding 0 24rpx
+      box-sizing border-box
+      & > image
+        width 100%
+        height 144rpx
+        background-repeat no-repeat
+        background-size 100% 100%
+        background-position 100% 100%
+      /deep/ u-button
+        position absolute
+        right 72rpx
+        top 44rpx
+        .u-button
+          height 68rpx !important
+          background #FFFFFF
+          border none
+          .txt
+            font-size 24rpx
+            color #207AF9
+          .u-icon
+            .u-icon__icon
+              position relative
+              left 4rpx !important
+              color #207AF9 !important
+              font-size 28rpx !important

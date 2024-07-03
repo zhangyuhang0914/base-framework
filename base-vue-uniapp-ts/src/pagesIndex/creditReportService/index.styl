@@ -1,0 +1,56 @@
+.layoutMain
+  padding-top 120rpx
+  .mainContainer
+    padding 0 25rpx
+    .serviveMain
+      height calc(100% + 100rpx)
+      background-color #FFFFFF
+      border-left 2rpx solid #D5E6F6
+      border-right 2rpx solid #D5E6F6
+      box-shadow 0 0 13px 0 #4285f61c
+      border-radius 12rpx 12rpx 0 0
+      position relative
+      top -100rpx
+      .topTab
+        min-height 200rpx
+        background-color #1975F1
+        border-radius 12rpx
+        display flex
+        align-items center
+        justify-content center
+        .tabItem
+          width 25%
+          padding 0 10rpx
+          box-sizing border-box
+          text-align center
+          .iconBox
+            width 64rpx
+            height 64rpx
+            border-radius 50%
+            background #4794fb
+            margin 0 auto
+          view
+            color #D5E6F6
+            font-size 16px
+          &.hover
+            view
+              color #ffffff
+            .iconBox
+              background #ffffff
+              .iconfont
+                color #1975F1
+        :deep(.u-tabs__wrapper__scroll-view-wrapper)
+          width 100%
+        :deep(.u-tabs__wrapper__nav__item__text)
+          white-space nowrap
+          overflow hidden
+          text-overflow ellipsis
+      .scrollContent
+        height calc(100% - 200rpx)
+        padding-top 50rpx
+        box-sizing border-box
+        .scroll-view
+          height 100%
+          .content
+            padding 50rpx
+            padding-top 0

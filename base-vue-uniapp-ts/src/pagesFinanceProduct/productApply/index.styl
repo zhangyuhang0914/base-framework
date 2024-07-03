@@ -1,0 +1,119 @@
+.layout-main
+  height 100%
+  padding-top 120rpx
+  background-color #DAECFE
+  line-height 32rpx
+  .main-container
+    height calc(100% - 100rpx)
+    padding 0 25rpx
+    background-color #FFFFFF
+    border-radius 30rpx
+    .product-apply-main
+      height calc(100% + 100rpx)
+      box-shadow 0 0 22rpx 0 #4285f61c
+      border-radius 12rpx 12rpx 0 0
+      position relative
+      top -100rpx
+      .scroll-view
+        height 100%
+        overflow-x hidden
+        overflow-y auto
+        .apply-main
+          border 2rpx solid #D5E6F6
+          box-shadow 0 0 24rpx 0 #4285f61c
+          .header-apply
+            height 180rpx
+            padding 24rpx
+            border-radius 16rpx
+            display flex
+            align-items center
+            box-sizing border-box
+            image-rendering -moz-crisp-edges
+            image-rendering -o-crisp-edges
+            image-rendering -webkit-optimize-contrast
+            image-rendering crisp-edges
+            -ms-interpolation-mode nearest-neighbor
+            .logo-img
+              width 160rpx
+              height 80rpx
+              background-repeat no-repeat
+              background-size 100%
+            .header-title-box
+              padding 0 0 0 24rpx
+              line-height 48rpx
+              .title
+                color #FFFFFF
+                font-weight bold
+                font-size 32rpx
+              .institutions-name
+                color #FFFFFF
+                font-size 24rpx
+          .content-main
+            background-color #FFFFFF
+            .loan-data
+              padding 36rpx 32rpx 0 32rpx
+              display flex
+              flex-wrap wrap
+              .c-column
+                width 50%
+                margin 0 0 24rpx 0
+                line-height 36rpx
+                .value
+                  color #f3841f
+                  font-size 30rpx
+                  font-weight bold
+                .label
+                  color #909399
+                  font-size 24rpx
+              .loan-limit-box
+                .value
+                  color #dd3c32 !important
+            .product-info
+              .product-apply-form
+                padding 0 48rpx
+          .footer-operation
+            padding 0 48rpx 36rpx 48rpx
+            /deep/ .u-button
+              margin 36rpx 0 0 0 !important
+              font-size 32rpx !important
+      .contact-popup
+        /deep/ .u-popup
+          .u-popup__content
+            border-radius 16rpx
+            .popup-header
+              position relative
+              padding 48rpx 0 24rpx 0
+              text-align center
+              .title
+                font-size 30rpx
+                font-weight bold
+              .popup-close
+                position absolute
+                top 24rpx
+                right 24rpx
+                background #EBF5FF
+                padding 6rpx
+                border-radius 50%
+                display flex
+                align-items center
+                justify-content center
+                /deep/ .u-icon
+                  .u-icon__icon
+                    color #CCCCCC !important
+                    font-size 24rpx !important
+            .contact-form
+              padding 0 48rpx
+              // .u-form-item__body
+              // padding 18rpx 0 0 0 !important
+              // // .u-input__content__field-wrapper__field
+              // // height 92rpx !important
+              // .u-form-item__body__right__message
+              // bottom -32rpx !important
+            .popup-footer
+              padding 48rpx 0 0 0
+              .larger-btn
+                display flex
+                align-items center
+                justify-content center
+                .u-button
+                  width 50%

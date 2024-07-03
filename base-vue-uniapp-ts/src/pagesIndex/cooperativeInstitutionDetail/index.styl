@@ -1,0 +1,91 @@
+.layout-main
+  height 100%
+  padding-top 120rpx
+  background-color #DAECFE
+  line-height 32rpx
+  .main-container
+    height calc(100% - 100rpx)
+    padding 0 25rpx
+    background-color #FFFFFF
+    border-radius 30rpx
+    .institution-detail-main
+      height calc(100% + 100rpx)
+      box-shadow 0 0 22rpx 0 #4285f61c
+      border-radius 12rpx 12rpx 0 0
+      position relative
+      top -100rpx
+      .scroll-view
+        height 100%
+        .detail-main
+          border 2rpx solid #D5E6F6
+          box-shadow 0 0 24rpx 0 #4285f61c
+          .header-detail
+            height 180rpx
+            padding 24rpx
+            border-radius 16rpx
+            display flex
+            align-items center
+            box-sizing border-box
+            image-rendering -moz-crisp-edges
+            image-rendering -o-crisp-edges
+            image-rendering -webkit-optimize-contrast
+            image-rendering crisp-edges
+            -ms-interpolation-mode nearest-neighbor
+            .logo-img
+              width 160rpx
+              height 80rpx
+              background-repeat no-repeat
+              background-size 100%
+            .header-title-box
+              padding 0 0 0 24rpx
+              line-height 48rpx
+              .title
+                color #FFFFFF
+                font-weight bold
+                font-size 32rpx
+              .institutions-name
+                color #FFFFFF
+                font-size 24rpx
+          .content-main
+            background-color #FFFFFF
+            .customer-intro
+              color #909399
+              font-size 28rpx
+              padding 12rpx 36rpx
+              font-weight 500
+              line-height 49rpx
+            .active-txt
+              display -webkit-box
+              -webkit-box-orient vertical
+              -webkit-line-clamp 5
+              overflow hidden
+            .institution-list
+              padding 12rpx 24rpx
+              .institution-item
+                padding 24rpx 36rpx
+                margin 0 0 24rpx 0
+                border 2rpx solid #D5E6F6
+                background #f1f7fe
+                box-shadow 0 0 13rpx 0 #4285f61c
+                border-radius 12rpx
+                line-height 52rpx
+                .values-box
+                  display flex
+                  .label
+                    flex none
+                    color #909399
+                  .value
+                    font-weight 500
+.custom-btn
+  display flex
+  justify-content center
+  align-items center
+  /deep/ .u-button
+    width 36%
+    height 60rpx
+    margin 24rpx 0 0 0
+    border 2rpx solid #1975F1
+    border-radius 36rpx
+    background #E5F0FF
+    color #1975F1
+    font-size 28rpx

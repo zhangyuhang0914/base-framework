@@ -1,0 +1,284 @@
+// - 变量、插件、函数
+@import './uview.styl'
+@import './uni.styl'
+@import './iconfont.styl'
+.page-view
+  width 100%
+  height 100%
+  margin 0 auto
+  display flex
+  flex-direction column
+  overflow hidden
+  color #222
+layout
+  height 100%
+view
+  color #333333
+// 输入框
+input
+  padding 0 18rpx
+textarea
+  padding 0 18rpx
+.flex
+  display flex
+  flex-direction row
+.flex-column
+  display flex
+  flex-direction column
+.flex-center
+  display flex
+  align-items center
+  justify-content center
+.larger-btn
+  .u-button
+    height 92rpx !important
+    margin 24rpx 0 !important
+    font-size 32rpx !important
+    font-weight bold
+.close-btn
+  .u-button
+    color #858585 !important
+    border 2rpx solid #d7dae2 !important
+    background-color #f1f1f1 !important
+.formItemH50
+  min-height 50px
+  display flex
+  align-items center
+// 产品详情
+.product-box
+  position relative
+  width 100%
+  height 100%
+  padding 60rpx 18rpx 24rpx 18rpx
+  background linear-gradient(to bottom, #D5E6F6, #FFFFFF)
+  border 2rpx solid #E5EDFB
+  box-shadow 0 0 13rpx 0 #4285f61c
+  box-sizing border-box
+  border-radius 12rpx
+  display flex
+  flex-direction column
+  justify-content space-between
+  .product-tips
+    position absolute
+    top 0
+    right 0
+    max-width 70%
+    height 38rpx
+    display flex
+    align-items center
+    background linear-gradient(45deg, #ecf5ff, #f7fbff)
+    padding 12rpx 16rpx
+    border-radius 0 12rpx
+    .icon-shigong
+      padding 0 12rpx 0 0
+      font-size 28rpx !important
+      color #3798D6 !important
+    .title
+      color #3798D6
+      font-size 24rpx
+      line-height 28rpx
+      display -webkit-box
+      -webkit-box-orient vertical
+      -webkit-line-clamp 2
+      overflow hidden
+  .product-header
+    margin 24rpx 0 0 0
+    display flex
+    align-items center
+    & > image
+      width 220rpx
+      height 90rpx
+      background-repeat no-repeat
+      background-size 100% 100%
+    .title
+      flex 1
+      padding 0 0 0 24rpx
+      font-size 40rpx
+      font-weight bold
+      display -webkit-box
+      -webkit-box-orient vertical
+      -webkit-line-clamp 1
+      overflow hidden
+  .product-content
+    .product-data
+      padding 12rpx 0
+      display flex
+      align-items center
+      justify-content space-between
+      .c-column
+        line-height 48rpx
+        justify-content center
+        .value
+          font-size 28rpx
+          font-weight bold
+          display -webkit-box
+          -webkit-box-orient vertical
+          -webkit-line-clamp 1
+          overflow hidden
+        .label
+          color #909399
+          font-size 24rpx
+      .loan-limit-box
+        .value
+          color #DD3C32
+      .rate-range-box
+        .value
+          color #F3841F
+      .loan-period-box
+        .value
+          color #F3841F
+    .product-info
+      display flex
+      align-items center
+      justify-content space-between
+      .c-row
+        display flex
+        align-items center
+        line-height 48rpx
+        .label
+          color #909399
+          font-size 24rpx
+        .value
+          color #909399
+          font-size 24rpx
+      .guarantee-mode-box
+        width 40%
+        .value
+          width 72rpx
+          height 36rpx
+          font-size 24rpx
+          color #FFFFFF !important
+          border-radius 8rpx
+          background linear-gradient(90deg, #359aee, #71d2fc)
+          // display flex
+          // align-items center
+          // justify-content center
+          overflow hidden
+          display -webkit-box
+          -webkit-box-orient vertical
+          -webkit-line-clamp 1
+          text-align center
+          padding 0 10rpx 14rpx 4rpx
+      .product-source-box
+        width 60%
+        .label
+          display -webkit-box
+          -webkit-box-orient vertical
+          -webkit-line-clamp 1
+          overflow hidden
+  .product-footer
+    padding 12rpx 0
+    display flex
+    justify-content space-between
+    align-items center
+    .product-tag
+      display flex
+      .tag-box
+        height 60rpx
+        border-radius 8rpx
+        font-size 22rpx
+        padding 0 12rpx
+        margin 0 16rpx 0 0
+        display flex
+        align-items center
+        justify-content center
+      .tag1
+        background #e1ecfd
+        .tag-name
+          color #3880FF
+      .tag2
+        background #fde7e3
+        .tag-name
+          color #F67806
+      .tag3
+        background #dff2f3
+        .tag-name
+          color #2A8194
+    .product-operation
+      display flex
+      align-items center
+      justify-content center
+      .operation-box
+        width 72rpx
+        height 72rpx
+        background #e5f0ff
+        display flex
+        align-items center
+        justify-content center
+        border-radius 50%
+        margin-right 18rpx
+        .iconfont
+          font-size 32rpx !important
+          color #0580DA !important
+    .product-data
+      padding 12rpx 0
+      display flex
+      align-items center
+      justify-content space-between
+      .c-column
+        line-height 48rpx
+        justify-content center
+        .value
+          font-size 28rpx
+          font-weight bold
+        .label
+          color #909399
+          font-size 24rpx
+      .loan-period-box
+        .value
+          color #F3841F
+.product-box-bak
+  .product-content
+    .product-data
+      padding 28rpx 0 0 0
+// 图片
+image
+  image-rendering -moz-crisp-edges
+  image-rendering -o-crisp-edges
+  image-rendering -webkit-optimize-contrast
+  image-rendering crisp-edges
+  -ms-interpolation-mode nearest-neighbor
+// 隐藏滚动条
+/deep/ .hidden-scroll::-webkit-scrollbar
+  display none !important
+  width 0 !important
+/deep/ .u-tabs__wrapper__nav::-webkit-scrollbar
+  display none !important
+  width 0 !important
+// 全局滚动条显示
+/deep/ ::-webkit-scrollbar
+  display block !important
+  width 10rpx !important
+  height 10rpx !important
+  background-color rgba(0, 0, 0, 0) !important
+/* 定义滚动条轨道 内阴影+圆角 */
+/deep/ ::-webkit-scrollbar-track
+  border-radius 20rpx !important
+  background-color rgba(0, 0, 0, 0) !important
+/* 定义滑块 内阴影+圆角 */
+/deep/ ::-webkit-scrollbar-thumb
+  border-radius 20rpx !important
+  background-color #bbb !important
+// 显示一行多出来的省略
+.text-line1-overflow
+  white-space nowrap
+  overflow hidden
+  text-overflow ellipsis
+// 显示两行多出来的省略
+.text-line2-overflow
+  overflow hidden
+  text-overflow ellipsis
+  display -webkit-box
+  -webkit-line-clamp 2
+  line-clamp 2
+  -webkit-box-orient vertical
+.layoutMain
+  background-color #DAECFE
+  height 100%
+  padding-top 20rpx
+  box-sizing border-box
+  .mainContainer
+    background-color #ffffff
+    height 100%
+    border-radius 30rpx 30rpx 0px 0px
+    box-sizing border-box

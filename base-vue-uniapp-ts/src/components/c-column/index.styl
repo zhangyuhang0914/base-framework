@@ -1,0 +1,87 @@
+.row-box
+  display flex
+  padding 20rpx 0rpx
+  &.column
+    flex-direction column
+    .content
+      textarea
+        border 1rpx solid #cccccc
+        border-radius 8rpx
+        padding 10rpx
+        height 160rpx
+  .title
+    flex none
+    text-align left
+    font-size 28rpx
+    margin-right 30rpx
+    min-height 48rpx
+    line-height 48rpx
+    width 160rpx
+    color #565A68
+    position relative
+    display flex
+    align-items center
+    .red
+      color #ff0000
+      vertical-align middle
+      position absolute
+      left -14rpx
+      top 0
+      display inline-block
+      height 48rpx
+      padding-top 14rpx
+      line-height normal
+      font-size 28rpx
+      box-sizing border-box
+    .txt
+      padding-left 16rpx
+  .content
+    flex 1
+    display flex
+    align-items center
+    & > input
+      flex 1
+      padding 0rpx 10rpx
+      border none
+      font-size 28rpx
+      line-height 2
+      text-align left
+      overflow-x hidden
+    & > .iconfont
+      font-size 32rpx
+    & > textarea
+      flex 1
+      margin-top 8rpx
+      padding-left 10rpx
+      border none
+      font-size 28rpx
+      line-height 42rpx
+      max-height 92rpx
+    & > uni-data-select
+      width 100%
+  .c-disabled
+    padding 14rpx 0
+  .position
+    flex 1
+    width 0rpx
+    font-size 28rpx
+    line-height 60rpx
+    input
+      width 100%
+      padding 0rpx 10rpx
+      border none
+      font-size 28rpx
+      line-height 2
+      text-align right
+    & > i
+      font-size 34rpx
+      margin-right 8rpx
+      vertical-align top
+  .slot
+    color #C4C6CF
+    font-size 28rpx
+.incident-file
+  display block
+  border none
+.border-bottom
+  border-bottom 1rpx solid #E8EBEE

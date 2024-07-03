@@ -1,0 +1,208 @@
+.finance-institution
+  height 100%
+  background-color #DAECFE
+  display flex
+  flex-direction column
+  .institution-filter-wrap
+    padding 24rpx 48rpx 48rpx 48rpx
+    .filter-main
+      display flex
+      align-items center
+      justify-content space-between
+      .txt
+        color #909399
+        font-size 24rpx
+      .operation-btn
+        display flex
+        .expand-filter
+          padding 4rpx 28rpx 4rpx 32rpx
+          margin 0 12rpx 0 0
+          background-color #FFFFFF
+          border-radius 36rpx
+          display flex
+          align-items center
+          justify-content center
+          .txt
+            color #0182D9
+            font-weight bold
+            font-size 28rpx
+          /deep/ .u-icon
+            .u-icon__icon
+              padding 0 0 0 12rpx
+              color #0182D9 !important
+              font-size 28rpx !important
+              font-weight bold !important
+        .close-filter
+          padding 4rpx 32rpx
+          background-color #FFFFFF
+          border-radius 36rpx
+          display flex
+          align-items center
+          justify-content center
+          .txt
+            color #88929E
+            font-weight bold
+            font-size 30rpx
+  .institution-scroll-content
+    height calc(100% - 36rpx - 90rpx - 120rpx)
+    padding 36rpx 0 0 0
+    border-radius 24rpx 24rpx 0 0
+    background-color #FFFFFF
+    .scroll-view
+      height 100%
+      .scroll-box
+        height 100%
+        padding 0 24rpx
+        .scroll-item
+          padding 36rpx
+          margin 0 0 36rpx 0
+          border 2rpx solid #D5E6F6
+          border-radius 12rpx
+          background linear-gradient(180deg, #D5E6F6 0%, #FFFFFF 40%)
+          box-shadow 0 0 12rpx 0 #4285f61c
+          box-sizing border-box
+          line-height 40rpx
+          .institution-box
+            display flex
+            align-items center
+            justify-content space-between
+            .product-logo
+              width 160rpx
+              height 160rpx
+              border 2rpx solid #F0F0F0
+              border-radius 12rpx
+              background-color #FFFFFF
+              display flex
+              align-items center
+              justify-content center
+              & > image
+                width 100%
+                height 50%
+            .product-info
+              display flex
+              flex-direction column
+              .title
+                padding 0 0 24rpx 0
+                color #303133
+                font-size 36rp
+                font-weight bold
+              .institution-info
+                display flex
+                flex-direction column
+                align-items center
+                .info
+                  width 100%
+                  display flex
+                  justify-content flex-start
+                  .iconfont
+                    color #DADADA
+                    font-size 24rpx
+                  .txt
+                    color #909399
+                    font-size 24rpx
+                    padding 0 12rpx
+                  .value
+                    color #222222
+                    font-size 30rpx
+                    font-weight bold
+            .product-operation
+              /deep/ .u-button
+                height 50rpx
+                padding 28rpx
+                background linear-gradient(45deg, #359AEE, #71D2FC)
+                border 2rpx solid #DAECFE
+                border-radius 4rpx
+      .no-data-view
+        padding 50rpx
+    .filter-popup
+      /deep/ .u-popup
+        .u-transition
+          height 75%
+          .u-popup__content
+            height 100%
+            background linear-gradient(180deg, #BDDEFF 0%, #FFFFFF 20%)
+            .popup-header
+              position relative
+              padding 12rpx 0
+              display flex
+              align-items center
+              justify-content center
+              .title
+                font-size 36rpx
+                font-weight bold
+              .popup-close
+                position absolute
+                right 32rpx
+                background #EBF5FF
+                padding 6rpx
+                border-radius 50%
+                display flex
+                align-items center
+                justify-content center
+                /deep/ .u-icon
+                  .u-icon__icon
+                    color #CCCCCC !important
+                    font-size 24rpx !important
+            .popup-content
+              /* 减去按钮高度 + 底部安全距离 */
+              height calc(100% - 140rpx - 34rpx - 84rpx)
+              .scroll-view
+                padding 24rpx 36rpx
+                box-sizing border-box
+                .tips-title
+                  display flex
+                  justify-content space-between
+                  .txt
+                    color #909399
+                    font-size 30rpx
+                    font-weight bold
+                  .open
+                    display flex
+                    align-items center
+                    .show-txt
+                      color #66b1ff
+                    .u-icon
+                      .u-icon__icon
+                        padding 0 24rpx 0 8rpx
+                        color #66b1ff !important
+                .form-check
+                  padding 0 0 24rpx 0
+                  display flex
+                  flex-wrap wrap
+                  align-items center
+                  .value-item
+                    width 30%
+                    border 2rpx solid #D7DAE2
+                    background-color #FFFFFF
+                    border-radius 88rpx
+                    text-align center
+                    margin 28rpx 16rpx 0 0
+                  .is-active
+                    color #1975F1
+                    border 2rpx solid #1975F1
+                    background-color rgba(144, 205, 244, 0.25)
+                  .auto-width
+                    width 47%
+                .is-hide
+                  height 475rpx
+                  overflow hidden
+            .popup-footer
+              width 100%
+              height 140rpx
+              padding 0 24rpx
+              display flex
+              justify-content space-between
+              align-items center
+              box-sizing border-box
+              .reset-btn
+                width 48%
+                .u-button
+                  color #858585
+                  border 2rpx solid #D7DAE2
+                  background #f1f1f1
+              .confirm-btn
+                width 48%
+                .u-button
+                  color #FFFFFF
+                  border 2rpx solid #D7DAE2
+                  background #1975f1

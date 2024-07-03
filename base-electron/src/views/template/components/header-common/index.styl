@@ -1,0 +1,45 @@
+.header-box-wrap
+  height 100%
+  display flex
+  align-items center
+  justify-content space-between
+  padding 0 36px
+  overflow hidden
+  background-image url('/images/common/header-shadow.png')
+  .header-left
+    font-size 22px
+    font-weight bold
+    color #FFFFFF
+    & > img
+      width 340px
+  .header-right
+    display flex
+    color #FFFFFF
+    font-size 20px
+    cursor pointer
+    .current-time
+      display flex
+      align-items center
+      color #333333
+      padding 12px
+      font-size 16px
+    .operation-group
+      display flex
+      align-items center
+      padding 12px 0 12px 12px
+      .search
+        color #333
+        background rgba(54, 164, 255, 0.3)
+      .login
+        color #36A4FF
+        background rgba(54, 164, 255, 0.3)
+      :deep(.el-button)
+        height 32px
+        border-radius 22px
+        padding 0 16px
+        & > span
+          img
+            width 16px
+            padding-right 6px
+      .search
+        padding 0 16px

@@ -1,0 +1,86 @@
+.layout-main
+  height 100%
+  padding-top 120rpx
+  background-color #DAECFE
+  line-height 32rpx
+  .main-container
+    height calc(100% - 100rpx)
+    padding 0 25rpx
+    background-color #FFFFFF
+    border-radius 30rpx
+    .product-detail-main
+      height calc(100% + 100rpx)
+      box-shadow 0 0 22rpx 0 #4285f61c
+      border-radius 12rpx 12rpx 0 0
+      position relative
+      top -100rpx
+      .scroll-view
+        height 100%
+        .detail-main
+          border 2rpx solid #D5E6F6
+          box-shadow 0 0 24rpx 0 #4285f61c
+          .header-detail
+            height 180rpx
+            padding 24rpx
+            border-radius 16rpx
+            display flex
+            align-items center
+            box-sizing border-box
+            image-rendering -moz-crisp-edges
+            image-rendering -o-crisp-edges
+            image-rendering -webkit-optimize-contrast
+            image-rendering crisp-edges
+            -ms-interpolation-mode nearest-neighbor
+            .logo-img
+              width 160rpx
+              height 80rpx
+              background-repeat no-repeat
+              background-size 100%
+            .header-title-box
+              padding 0 0 0 24rpx
+              line-height 48rpx
+              .title
+                color #FFFFFF
+                font-weight bold
+                font-size 32rpx
+              .institutions-name
+                color #FFFFFF
+                font-size 24rpx
+          .content-main
+            background-color #FFFFFF
+            .loan-data
+              padding 36rpx 32rpx 0 32rpx
+              display flex
+              flex-wrap wrap
+              .c-column
+                width 50%
+                margin 0 0 24rpx 0
+                line-height 36rpx
+                .value
+                  color #f3841f
+                  font-size 30rpx
+                  font-weight bold
+                .label
+                  color #909399
+                  font-size 24rpx
+              .loan-limit-box
+                .value
+                  color #dd3c32 !important
+          .product-info
+            .customer-desc
+              padding 12rpx 32rpx 24rpx 32rpx
+              color #909399
+              font-size 28rpx
+              line-height 42rpx
+            .entry-criteria
+              padding 12rpx 32rpx 24rpx 32rpx
+              color #909399
+              font-size 28rpx
+              line-height 42rpx
+        .footer-operation
+          padding 0 0 36rpx 0
+          /deep/ .u-button
+            height 96rpx !important
+            margin 36rpx 0 0 0 !important
+            font-size 32rpx !important
+            font-weight bold

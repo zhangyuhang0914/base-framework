@@ -1,0 +1,249 @@
+{
+  "pages": [
+    // pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "首页",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/financeProduct/index",
+      "style": {
+        "navigationBarTitleText": "金融产品",
+        "onReachBottomDistance": 100,
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/policyNews/index",
+      "style": {
+        "navigationBarTitleText": "政策新闻",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/user/index",
+      "style": {
+        "navigationBarTitleText": "个人中心",
+        "navigationStyle": "custom"
+      }
+    }
+  ],
+  // 分包
+  "subPackages": [
+    {
+      "root": "pagesCommon",
+      "name": "pagesCommon",
+      "pages": [
+        {
+          "path": "login/index",
+          "style": {
+            "navigationBarTitleText": "登录",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "registerPage/index",
+          "style": {
+            "navigationBarTitleText": "注册",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "forgotPage/index",
+          "style": {
+            "navigationBarTitleText": "忘记密码",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pagesIndex",
+      "name": "pagesIndex",
+      "pages": [
+        {
+          "path": "creditReportService/index",
+          "style": {
+            "navigationBarTitleText": "征信服务",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "cooperativeInstitution/index",
+          "style": {
+            "navigationBarTitleText": "合作机构",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "cooperativeInstitutionDetail/index",
+          "style": {
+            "navigationBarTitleText": "机构详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "institutionPrudoctList/index",
+          "style": {
+            "navigationBarTitleText": "合作机构金融产品",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "indexProduct/index",
+          "style": {
+            "navigationBarTitleText": "首页热门/金融产品",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pagesFinanceProduct",
+      "name": "pagesFinanceProduct",
+      "pages": [
+        {
+          "path": "productDetail/index",
+          "style": {
+            "navigationBarTitleText": "产品详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "productApply/index",
+          "style": {
+            "navigationBarTitleText": "产品申请",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "productContrast/index",
+          "style": {
+            "navigationBarTitleText": "产品对比",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pagesPolicyNews",
+      "name": "pagesPolicyNews",
+      "pages": [
+        {
+          "path": "newsDetail/index",
+          "style": {
+            "navigationBarTitleText": "政策新闻详情",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pagesUser",
+      "name": "pagesUser",
+      "pages": [
+        {
+          "path": "finance/index",
+          "style": {
+            "navigationBarTitleText": "融资记录",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "enterpriseAuthentication/index",
+          "style": {
+            "navigationBarTitleText": "绑定企业信息",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "enterpriseManagement/index",
+          "style": {
+            "navigationBarTitleText": "企业管理",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "accountManagement/index",
+          "style": {
+            "navigationBarTitleText": "用户管理",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "changePhone/index",
+          "style": {
+            "navigationBarTitleText": "修改手机号",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "productCollection/index",
+          "style": {
+            "navigationBarTitleText": "产品收藏",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "about/index",
+          "style": {
+            "navigationBarTitleText": "关于鄂融通",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    }
+  ],
+  "tabBar": {
+    "color": "#7a7e83",
+    "selectedColor": "#0faeff",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/financeProduct/index",
+        "text": "金融产品"
+      },
+      {
+        "pagePath": "pages/policyNews/index",
+        "text": "政策新闻"
+      },
+      {
+        "pagePath": "pages/user/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "globalStyle": {
+    // 导航栏标题颜色及状态栏前景颜色，仅支持 black/white
+    "navigationBarTextStyle": "black",
+    // 顶部导航栏(状态栏)背景颜色
+    "navigationBarBackgroundColor": "#F8F8F8",
+    // 是否开启下拉刷新，触发下拉刷新时，配合页面生命周期onPullDownRefresh使用
+    "enablePullDownRefresh": false,
+    // 当enablePullDownRefresh为 true 时，下拉显示出来的窗口的背景色
+    "backgroundColor": "#F8F8F8",
+    // 下拉 loading 的样式，仅支持 dark/light
+    "backgroundTextStyle": "dark",
+    // 是否自定义顶部导航栏(状态栏) 自定义 custom、默认显示 default
+    "navigationStyle": "custom"
+  },
+  "easycom": {
+    // 是否自定义组件库
+    "autoscan": true,
+    // 自定义组件库
+    "custom": {
+      // 匹配uni ui组件库
+      "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue",
+      // 匹配uview-plus ui组件库
+      "^u-(.*)": "uview-plus/components/u-$1/u-$1.vue",
+      "^up-(.*)": "uview-plus/components/u-$1/u-$1.vue"
+    }
+  }
+}

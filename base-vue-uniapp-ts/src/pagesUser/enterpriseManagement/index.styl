@@ -1,0 +1,30 @@
+.mainContainer
+  .scrollView
+    height 100%
+    .tips
+      display flex
+      align-items center
+      justify-content space-between
+      .title
+        font-weight 600
+        font-size 16px
+        position relative
+        padding-left 20rpx
+        &:before
+          content ''
+          width 8rpx
+          height 34.44rpx
+          border-radius 4rpx 4rpx 4rpx 4rpx
+          background linear-gradient(55deg, #51acff, #397cfb)
+          position absolute
+          top 16rpx
+          left 0
+    .unbindBtn
+      justify-content flex-end
+/deep/.c-uniapp-picker
+  .c-column-select
+    .u-input
+      .u-input__content
+        .u-input__content__field-wrapper
+          input
+            padding 0 !important
