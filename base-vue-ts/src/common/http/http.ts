@@ -9,9 +9,6 @@ import router from '@/routers/index'
 // 获取接口根路径
 const isProd = import.meta.env.PROD
 const BASE_PATH: any = isProd ? configApi.production : configApi.development
-// 获取接口地址
-const BASE_URL: any = isProd ? process.env.VITE_APP_BASE_URL : ''
-const VITE_APP_NAME: any = process.env.VITE_APP_NAME
 
 // 导出Request类，可以用来自定义传递配置来创建实例
 export class Request {
@@ -31,7 +28,7 @@ export class Request {
     // 创建axios实例
     this.instance = axios.create(Object.assign(this.baseConfig, options))
     this.instance.interceptors.request.use(
-      (options: httpRequestConfig): InternalAxiosRequestConfig<any> => {
+      (options: httpRequestConfig): InternalAxiosRequestConfig<httpRequestConfig> => {
         // 简化类型设置
         const headers = (options.headers = options.headers || {})
 
@@ -48,13 +45,11 @@ export class Request {
         if (typeof options.data === 'object' && contentType && String(contentType).indexOf('application/x-www-form-urlencoded') > -1) {
           options.data = qs.stringify(options.data)
         }
-
-        let url: any = options.url
-        let ajaxPath = BASE_PATH[options.apiType || VITE_APP_NAME]
-        if (ajaxPath && !url.startsWith('http') && !url.startsWith('https')) {
-          options.url = BASE_URL + ajaxPath + url
+        const url = options.url ?? ''
+        if (!url.startsWith('http') && !url.startsWith('https')) {
+          options.url = BASE_PATH[options.apiType || 'BASE_URL'] + options.url
         }
-        return options as InternalAxiosRequestConfig<any>
+        return options as InternalAxiosRequestConfig<httpRequestConfig>
       },
       (error: AxiosError) => {
         // 请求错误，这里可以用全局提示框进行提示
@@ -64,7 +59,30 @@ export class Request {
 
     this.instance.interceptors.response.use(
       (response: AxiosResponse) => {
-        return response.data
+        const options: httpRequestConfig = response.config
+        const responseData = response.data
+        const responseCode = responseData.code
+        const responseMsg = responseData?.msg
+        const responseBz = responseData?.bz
+        if (responseCode === 0) {
+          return Promise.resolve(responseData)
+        } else if (responseCode === 500 || responseMsg === 'token不能为空') {
+          // token失效，处理退出登录逻辑
+          return Promise.reject(responseData)
+        } else {
+          if (!options.noShowMsg) {
+            setTimeout(() => {
+              if (responseMsg && typeof responseMsg === 'string') {
+                $message(responseMsg, 'error')
+              } else if (responseBz && typeof responseBz === 'string') {
+                $message(responseBz, 'error')
+              } else {
+                $message(responseMsg || responseBz || '', 'error')
+              }
+            }, 0)
+          }
+          return Promise.reject(responseData)
+        }
       },
       (error: any) => {
         if (error.response) {
@@ -126,23 +144,23 @@ export class Request {
   }
 
   // 定义请求方法
-  public request(config: AxiosRequestConfig): Promise<AxiosResponse> {
+  public request<T>(config: AxiosRequestConfig): Promise<ApiResponse<T>> {
     return this.instance.request(config)
   }
 
-  public get<T = any>(config?: AxiosRequestConfig): Promise<AxiosResponse<ApiResponse<T>>> {
+  public get<T>(config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
     return this.instance.get(config?.url as string, config)
   }
 
-  public post<T = any>(config?: AxiosRequestConfig): Promise<AxiosResponse<ApiResponse<T>>> {
+  public post<T>(config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
     return this.instance.post(config?.url as string, config?.data, config)
   }
 
-  public put<T = any>(config?: AxiosRequestConfig): Promise<AxiosResponse<ApiResponse<T>>> {
+  public put<T>(config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
     return this.instance.put(config?.url as string, config?.data, config)
   }
 
-  public delete<T = any>(config?: AxiosRequestConfig): Promise<AxiosResponse<ApiResponse<T>>> {
+  public delete<T>(config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
     return this.instance.delete(config?.url as string, config)
   }
 }

@@ -5,11 +5,12 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue'
+import * as THREE from 'three'
 export default defineComponent({
   name: 'Index',
   setup(props, context) {
     onMounted(() => {
-      console.log('onMounted')
+      console.log('onMounted', THREE)
     })
     return {}
   }

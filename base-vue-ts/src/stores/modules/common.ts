@@ -1,12 +1,16 @@
 import { defineStore } from 'pinia'
 import { store } from '../index'
 import type { CommonType } from './types'
+import type { DictListItem } from '@/apis/index/types'
+import { getDictParamData } from '@/apis/index'
+import type { ApiResponse } from '@/common/http/types'
 
 export const userCommonStore = defineStore({
   id: 'common',
   state: (): CommonType => ({
     onlineState: true,
-    cachedRoute: []
+    cachedRoute: [],
+    dictData: {} // 字典集合
   }),
   actions: {
     // 设置网络状态
@@ -22,6 +26,24 @@ export const userCommonStore = defineStore({
       if (!this.cachedRoute.some(item => item === str)) {
         this.cachedRoute.push(str)
       }
+    },
+    setDict(key: string, data: DictListItem[]) {
+      this.dictData[key] = data
+    },
+    getDict(key: string): Promise<DictListItem[]> {
+      return new Promise((resolve, reject) => {
+        if (!this.dictData[key]) {
+          getDictParamData(key).then((result: ApiResponse<DictListItem[]>) => {
+            this.setDict(key, result.data)
+            resolve(result.data)
+          })
+        } else {
+          resolve(this.dictData[key])
+        }
+      })
+    },
+    clearDict() {
+      this.dictData = {}
     }
   }
 })

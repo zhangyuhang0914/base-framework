@@ -1,20 +1,20 @@
 /*
  * @Desc         : 环境配置信息
  * @Autor        : ZYH
- * @Date         : 2023-02-08 09:58:31
+ * @Date         : 2024-07-09 13:53:34
  * @LastEditors  : ZhangYuHang
- * @LastEditTime : 2024-06-14 11:37:18
+ * @LastEditTime : 2024-07-09 13:53:34
  */
 export const API = {
   // 开发环境
   development: {
-    BASE_URL: import.meta.env.BASE_URL,
-    JR: '/webspider-web'
+    DEFAULT: import.meta.env.BASE_URL,
+    BASE_URL: '/szxqyxyxx'
   },
   // 生产环境
   production: {
-    BASE_URL: import.meta.env.BASE_URL,
-    JR: '/webspider-web'
+    DEFAULT: import.meta.env.BASE_URL,
+    BASE_URL: '/szxqyxyxx'
   }
 }
 const isProd = import.meta.env.MODE === 'production'

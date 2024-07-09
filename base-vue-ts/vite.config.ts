@@ -68,8 +68,8 @@ export default defineConfig({
     cors: true, // 跨域
     // 代理
     proxy: {
-      '/api': {
-        target: 'http://202.61.90.152:28888', // 四川机关事务局-生产环境-互联网
+      '/szxqyxyxx': {
+        target: 'https://jrb.hubei.gov.cn', // 测试环境
         changeOrigin: true,
         secure: false
       }

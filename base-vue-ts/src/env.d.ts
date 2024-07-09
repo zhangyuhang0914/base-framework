@@ -9,6 +9,9 @@ declare module '*.vue' {
 // element-plus eslint
 type ComponentSize = any
 
+// Three
+declare module 'three'
+
 // Import
 interface ImportMeta {
   readonly env: ImportMetaEnv
