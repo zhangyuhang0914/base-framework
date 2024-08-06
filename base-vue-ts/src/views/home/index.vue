@@ -6,7 +6,7 @@
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue'
 export default defineComponent({
-  name: 'Test',
+  name: 'Home',
   setup(props, context) {
     onMounted(() => {
       console.log('onMounted')

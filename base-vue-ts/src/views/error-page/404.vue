@@ -1,19 +1,20 @@
 <template lang="pug">
 .error-page
   .content.noFound 404
-  .content {{ $t('您访问的页面不存在') }}
-  .foot(@click="back") back
+  ElButton.back(type="primary" @click="back") {{ '返回首页' }}
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { ElButton } from 'element-plus'
 import { useRouter } from 'vue-router'
 export default defineComponent({
   name: '404',
+  components: { ElButton },
   setup() {
     const router = useRouter()
     return {
       back: () => {
-        router.replace('/login')
+        router.replace('/')
       }
     }
   }
@@ -21,22 +22,20 @@ export default defineComponent({
 </script>
 <style lang="stylus" scoped>
 .error-page
+  width 100%
+  height 100%
+  padding 30% 0
   text-align center
   display flex
   flex-direction column
-  justify-content center
   align-items center
   font-size 28px
   color #999
-  height 100%
-  width 100%
   .noFound
-    font-size 80px
+    color $primaryBtnBackground
+    font-size 160px
     padding-bottom 40px
-  .foot
-    margin-top 200px
-    cursor pointer
-    .btn
-      background #1989fa
-      padding 0 80px
+  .back
+    height auto
+    font-size 18px
 </style>

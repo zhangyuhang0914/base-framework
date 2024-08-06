@@ -4,13 +4,15 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no" />
-  <title>Vue3 + Vite</title>
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <title>技改贷</title>
   <style type="text/css">
     html,
     body,
     #app {
       height: 100%;
+      margin: 0 auto;
     }
 
     @keyframes sketch-animation {
@@ -41,6 +43,11 @@
       flex: none;
     }
 
+    .sk-dom-bottom {
+      height: 80px;
+      flex: none;
+    }
+
     .bottom-dom-box {
       flex: 1;
       overflow: hidden;
@@ -51,15 +58,6 @@
     .bottom-dom-box>div {
       flex: none;
     }
-
-    .sk-dom-left {
-      width: 60px;
-    }
-
-    .sk-dom-right {
-      flex: 1 !important;
-      margin-left: 20px
-    }
   </style>
 </head>
 
@@ -67,10 +65,8 @@
   <div id="app">
     <div class="sketch-home" style="height: 100%;">
       <div class="sketch-dom sk-dom-top"></div>
-      <div class="bottom-dom-box" style="display: flex;">
-        <div class="sketch-dom sk-dom-left"></div>
-        <div class="sketch-dom sk-dom-right"></div>
-      </div>
+      <div class="bottom-dom-box" style="display: flex;"></div>
+      <div class="sketch-dom sk-dom-bottom"></div>
     </div>
   </div>
   <script type="module" src="/src/main.ts"></script>

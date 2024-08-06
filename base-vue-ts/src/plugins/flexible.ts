@@ -6,9 +6,9 @@
  * @LastEditTime : 2023-02-08 10:40:22
  */
 
-(function flexible (window, document) {
-  var docEl = document.documentElement
-  var dpr = window.devicePixelRatio || 1
+;(function flexible(window, document) {
+  const docEl = document.documentElement
+  const dpr = window.devicePixelRatio || 1
 
   // adjust body font size
   // function setBodyFontSize () {
@@ -22,7 +22,7 @@
   // setBodyFontSize();
 
   // set 1rem = viewWidth / 10
-  function setRemUnit () {
+  function setRemUnit() {
     // var rem = docEl.clientWidth / 1920 < 1 ? 1 : docEl.clientWidth / 1920
     // docEl.style.fontSize = Math.min(rem * 16, 32) + 'px'
     docEl.style.fontSize = '16px'
@@ -40,8 +40,8 @@
 
   // detect 0.5px supports
   if (dpr >= 2) {
-    var fakeBody = document.createElement('body')
-    var testElement = document.createElement('div')
+    const fakeBody = document.createElement('body')
+    const testElement = document.createElement('div')
     testElement.style.border = '.5px solid transparent'
     fakeBody.appendChild(testElement)
     docEl.appendChild(fakeBody)
@@ -50,4 +50,4 @@
     }
     docEl.removeChild(fakeBody)
   }
-}(window, document))
+})(window, document)
