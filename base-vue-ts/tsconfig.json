@@ -10,7 +10,7 @@
 
     /* Bundler mode */
     "moduleResolution": "Node",
-    // "allowImportingTsExtensions": true,
+    "allowImportingTsExtensions": true,
     "allowSyntheticDefaultImports": true, // 允许在默认导入时使用 export = 声明的模块
     "resolveJsonModule": true,
     "isolatedModules": true,
