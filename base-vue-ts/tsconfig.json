@@ -20,8 +20,8 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false, // 是否检查未使用的局部变量
+    "noUnusedParameters": false, // 是否检查未使用的参数
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".", // 工作根目录
     "paths": {
