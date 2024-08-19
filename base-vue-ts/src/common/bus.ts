@@ -1,7 +1,7 @@
 // 测试 eventBus
 export const TEST_EVENT_BUS = 'TEST_EVENT_BUS'
 class Bus {
-  list: { [key: string]: Array<Function> }
+  list: { [key: string]: Array<() => void> }
   private static instance: Bus = new Bus()
   constructor() {
     // 收集订阅信息,调度中心
@@ -11,14 +11,14 @@ class Bus {
     return Bus.instance
   }
   // 订阅
-  public $on(name: string, fn: Function) {
+  public $on(name: string, fn?: () => void) {
     this.list[name] = this.list[name] || []
-    this.list[name].push(fn)
+    fn && this.list[name].push(fn)
   }
   // 发布
   public $emit(name: string, data: any) {
     if (this.list[name]) {
-      this.list[name].forEach(fn => {
+      this.list[name].forEach((fn: <T>(T: any) => void | T) => {
         fn(data)
       })
     }

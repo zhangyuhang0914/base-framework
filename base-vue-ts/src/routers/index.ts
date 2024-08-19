@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, type Router } from 'vue-router'
+import { createRouter, createWebHashHistory, type Router } from 'vue-router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { nextTick } from 'vue'
@@ -32,7 +32,7 @@ Object.keys(modules).forEach(key => {
 // 路由对象
 const router: Router = createRouter({
   strict: true,
-  history: createWebHistory(BASE_URL),
+  history: createWebHashHistory(BASE_URL),
   routes
 })
 // 路由守卫

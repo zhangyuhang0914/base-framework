@@ -3,8 +3,9 @@ import type { httpRequestConfig, ApiResponse } from './types'
 import { $message } from '@/plugins/element'
 import { API as configApi } from '@/conf/index'
 import { userCommonStoreHook } from '@/stores/modules/common'
-import * as qs from 'querystring'
+import qs from 'querystring'
 import router from '@/routers/index'
+import { getToken } from '@/utils/cookie'
 
 // 获取接口根路径
 const isProd = import.meta.env.PROD
@@ -44,6 +45,10 @@ export class Request {
         const contentType = headers['Content-Type']
         if (typeof options.data === 'object' && contentType && String(contentType).indexOf('application/x-www-form-urlencoded') > -1) {
           options.data = qs.stringify(options.data)
+        }
+        // 设置token
+        if (getToken()) {
+          headers['token'] = getToken() as string
         }
         const url = options.url ?? ''
         if (!url.startsWith('http') && !url.startsWith('https')) {
@@ -109,7 +114,7 @@ export class Request {
               errMessage = error.msg || '服务器错误(500)'
               // token 失效
               router.replace({
-                name: 'Login'
+                name: 'Home'
               })
               break
             case 501:

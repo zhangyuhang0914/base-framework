@@ -10,7 +10,7 @@ import VitePluginCompression from 'vite-plugin-compression'
 // https://vitejs.dev/config/
 
 // 设置文根
-const BASE_URL = process.env.NODE_ENV === 'production' ? './' : '/'
+const BASE_URL = process.env.NODE_ENV === 'production' ? '/jgd/' : '/'
 
 export default defineConfig({
   plugins: [
@@ -68,10 +68,12 @@ export default defineConfig({
     cors: true, // 跨域
     // 代理
     proxy: {
-      '/szxqyxyxx': {
-        target: 'https://jrb.hubei.gov.cn', // 测试环境
+      '/webspider-web': {
+        target: 'http://192.168.1.246:1139/webspider-web', // 测试环境
+        // target: 'http://172.16.82.221:8080/webspider-web', // 何鸿飞
         changeOrigin: true,
-        secure: false
+        secure: false,
+        rewrite: path => path.replace('/webspider-web/', '/')
       }
     }
   }

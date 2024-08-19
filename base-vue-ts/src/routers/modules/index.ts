@@ -5,13 +5,16 @@ const routers: AppRouteModule[] = [
     path: '/home',
     name: 'Home',
     component: () => import('@/views/template/layout.vue'),
+    redirect: {
+      name: 'Index'
+    },
     children: [
       {
-        path: '/',
-        name: 'index',
+        path: '',
+        name: 'Index',
         component: () => import('@/views/home/index.vue'),
         meta: {
-          title: 'Home',
+          title: 'Index',
           ignoreAuth: true,
           keepAlive: true
         }
