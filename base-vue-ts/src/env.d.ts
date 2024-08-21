@@ -13,3 +13,6 @@ type ComponentSize = any
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+// qs
+declare module 'qs'

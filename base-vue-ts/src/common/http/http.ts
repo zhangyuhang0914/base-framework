@@ -3,8 +3,7 @@ import type { httpRequestConfig, ApiResponse } from './types'
 import { $message } from '@/plugins/element'
 import { API as configApi } from '@/conf/index'
 import { userCommonStoreHook } from '@/stores/modules/common'
-import qs from 'querystring'
-import router from '@/routers/index'
+import qs from 'qs'
 import { getToken } from '@/utils/cookie'
 
 // 获取接口根路径
@@ -73,6 +72,7 @@ export class Request {
           return Promise.resolve(responseData)
         } else if (responseCode === 500 || responseMsg === 'token不能为空') {
           // token失效，处理退出登录逻辑
+          // userCommonStoreHook().logout()
           this.errorMessage(responseMsg, responseBz)
           return Promise.reject(responseData)
         } else {
@@ -104,9 +104,7 @@ export class Request {
             case 500:
               errMessage = error.msg || '服务器错误(500)'
               // token 失效
-              router.replace({
-                name: 'Home'
-              })
+              // userCommonStoreHook().logout()
               break
             case 501:
               errMessage = '服务未实现(501)'

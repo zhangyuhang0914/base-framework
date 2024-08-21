@@ -75,8 +75,13 @@ export default defineComponent({
   emits: ['update:fileList', 'onPreview', 'onRemove', 'onSuccess', 'onError', 'onProgress', 'onchange', 'onExceed', 'beforeUpload', 'beforeRemove'],
   setup(props, { emit, expose }) {
     const uploadRef = ref<UploadInstance | null>()
+    // 取消上传
     const abort = (file: UploadFile) => {
       uploadRef.value?.abort(file)
+    }
+    // 清空上传列表
+    const clearFiles = () => {
+      uploadRef.value?.clearFiles()
     }
     // 点击文件列表中已上传的文件时的钩子
     const onPreview = (uploadFile: UploadFiles) => {
@@ -171,7 +176,7 @@ export default defineComponent({
       }
       return uploadFile(params)
     }
-    expose({ abort })
+    expose({ abort, clearFiles })
     onMounted(() => {})
     return {
       uploadRef,

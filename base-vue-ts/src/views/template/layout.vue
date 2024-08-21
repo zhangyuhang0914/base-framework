@@ -1,29 +1,37 @@
 <template lang="pug">
-.page-wrap
-  LayoutHeader
-  .system-container
-    .c-content-box
-      router-view(v-slot="{ Component }")
-        transition(name="fade" mode="out-in")
-          keep-alive(:include="cachedRoute")
-            component(:is="Component" :key="route.name")
-  .system-footer
-    span {{ '我是底部' }}
+ElConfigProvider(:locale="configProvider.zhCn" :size="configProvider.size" :message="configProvider.message")
+  .page-wrap
+    LayoutHeader
+    .system-container
+      .c-content-box
+        router-view(v-slot="{ Component }")
+          transition(name="fade" mode="out-in")
+            keep-alive(:include="cachedRoute")
+              component(:is="Component" :key="route.name")
+    LayoutFooter
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, watch } from 'vue'
+import { defineComponent, computed, watch, shallowReactive } from 'vue'
 import LayoutHeader from '@/views/template/components/layout-header/index.vue'
+import LayoutFooter from '@/views/template/components/layout-footer/index.vue'
 import { userCommonStoreHook } from '@/stores/modules/common'
 import { useRoute } from 'vue-router'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+
 export default defineComponent({
   name: 'Layout',
-  components: { LayoutHeader },
+  components: { LayoutHeader, LayoutFooter },
   setup(props) {
-    const commonHook = userCommonStoreHook()
+    const commonStore = userCommonStoreHook()
     const route = useRoute()
+    const configProvider = shallowReactive({
+      zhCn: zhCn,
+      size: 'large',
+      message: 5
+    })
     const cachedRoute = computed(() => {
-      return commonHook?.cachedRoute ?? []
+      return commonStore?.cachedRoute ?? []
     })
     watch(
       () => route.fullPath,
@@ -31,7 +39,7 @@ export default defineComponent({
         const routeName: any = route.name ?? ''
         // 缓存的路由
         if (route.meta.keepAlive) {
-          commonHook.setCached(routeName)
+          commonStore.setCached(routeName)
         }
       },
       {
@@ -40,7 +48,8 @@ export default defineComponent({
     )
     return {
       route,
-      cachedRoute
+      cachedRoute,
+      configProvider
     }
   }
 })
