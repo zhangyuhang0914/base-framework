@@ -48,7 +48,7 @@ export class Request {
         }
         // 设置token
         if (getToken()) {
-          headers['token'] = getToken() as string
+          headers['token'] = getToken() ?? ''
         }
         const url = options.url ?? ''
         if (!url.startsWith('http') && !url.startsWith('https')) {
@@ -73,25 +73,16 @@ export class Request {
           return Promise.resolve(responseData)
         } else if (responseCode === 500 || responseMsg === 'token不能为空') {
           // token失效，处理退出登录逻辑
+          this.errorMessage(responseMsg, responseBz)
           return Promise.reject(responseData)
         } else {
-          if (!options.noShowMsg) {
-            setTimeout(() => {
-              if (responseMsg && typeof responseMsg === 'string') {
-                $message(responseMsg, 'error')
-              } else if (responseBz && typeof responseBz === 'string') {
-                $message(responseBz, 'error')
-              } else {
-                $message(responseMsg || responseBz || '', 'error')
-              }
-            }, 0)
-          }
+          this.errorMessage(responseMsg, responseBz)
           return Promise.reject(responseData)
         }
       },
       (error: any) => {
         if (error.response) {
-          const status = error.code
+          const status = error.response.status
           let errMessage = error.message || '服务忙，请稍后重试(error)'
           switch (status) {
             case 400:
@@ -167,6 +158,16 @@ export class Request {
 
   public delete<T>(config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
     return this.instance.delete(config?.url as string, config)
+  }
+
+  public errorMessage(responseMsg: string, responseBz: string) {
+    if (responseMsg && typeof responseMsg === 'string') {
+      $message(responseMsg, 'error')
+    } else if (responseBz && typeof responseBz === 'string') {
+      $message(responseBz, 'error')
+    } else {
+      $message(responseMsg || responseBz || '', 'error')
+    }
   }
 }
 

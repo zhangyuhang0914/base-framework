@@ -21,11 +21,11 @@ export interface httpRequestConfig extends AxiosRequestConfig {
   /**
    * 表单上传
    */
-  isForm?: [boolean, string]
+  isForm?: boolean
   /**
    * 附件上传
    */
-  formUpload?: [boolean, string]
+  formUpload?: boolean
   /**
    * 上传文件资源的路径
    */
