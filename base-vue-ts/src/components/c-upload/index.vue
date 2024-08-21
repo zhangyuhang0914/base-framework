@@ -23,12 +23,6 @@
     template(#default)
       ElLink(type="primary" :underline="false")
         slot(name="content")
-    template(#trigger)
-      slot(name="trigger")
-    template(#tip)
-      slot(name="tip")
-    template(#file)
-      slot(name="file")
 </template>
 
 <script lang="ts">
@@ -79,8 +73,11 @@ export default defineComponent({
     }
   },
   emits: ['update:fileList', 'onPreview', 'onRemove', 'onSuccess', 'onError', 'onProgress', 'onchange', 'onExceed', 'beforeUpload', 'beforeRemove'],
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     const uploadRef = ref<UploadInstance | null>()
+    const abort = (file: UploadFile) => {
+      uploadRef.value?.abort(file)
+    }
     // 点击文件列表中已上传的文件时的钩子
     const onPreview = (uploadFile: UploadFiles) => {
       emit('onPreview', uploadFile)
@@ -91,6 +88,7 @@ export default defineComponent({
     }
     // 文件上传成功时的钩子
     const onSuccess = (response: any, uploadFile: UploadFile, uploadFiles: UploadFiles) => {
+      emit('update:fileList', uploadFiles)
       emit('onSuccess', response, uploadFile, uploadFiles)
     }
     // 文件上传失败时的钩子
@@ -114,6 +112,7 @@ export default defineComponent({
         const file = files[0] as UploadRawFile
         file.uid = genFileId()
         uploadRef.value!.handleStart(file)
+        uploadRef.value?.submit()
       } else {
         $message(`最多只能上传 ${props.limit} 个文件！`, 'error')
       }
@@ -172,6 +171,7 @@ export default defineComponent({
       }
       return uploadFile(params)
     }
+    expose({ abort })
     onMounted(() => {})
     return {
       uploadRef,
@@ -190,6 +190,4 @@ export default defineComponent({
 })
 </script>
 
-<style lang="stylus" scoped>
-@import './index.styl'
-</style>
+<style lang="stylus" scoped></style>
