@@ -1,6 +1,6 @@
 'use strict'
 // 邮箱校验器
-export const validateEmail = (rule: AnyObject, value: string, callback: Function) => {
+export const validateEmail = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
   if (value === '') {
     callback()
   } else {
@@ -13,7 +13,7 @@ export const validateEmail = (rule: AnyObject, value: string, callback: Function
 }
 
 // 联系电话校验器（包含手机号、座机号、短号等）
-export const validateTelephone = (rule: AnyObject, value: string, callback: Function) => {
+export const validateTelephone = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
   if (value === '' || value === null || typeof value === 'undefined') {
     callback()
   } else {
@@ -39,7 +39,7 @@ export const validateTelephone = (rule: AnyObject, value: string, callback: Func
 }
 
 // 手机号码校验器
-export const validateMobile = (rule: AnyObject, value: string, callback: Function) => {
+export const validateMobile = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
   if (value === '') {
     callback()
   } else {
@@ -52,7 +52,7 @@ export const validateMobile = (rule: AnyObject, value: string, callback: Functio
 }
 
 // 非null校验
-export const validateNotNull = (rule: AnyObject, value: string, callback: Function) => {
+export const validateNotNull = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
   if (value === 'null' || value === null) {
     callback(new Error('不能填写null'))
   } else {
@@ -61,7 +61,7 @@ export const validateNotNull = (rule: AnyObject, value: string, callback: Functi
 }
 
 // 座机号码校验器
-export const validateTel = (rule: AnyObject, value: string, callback: Function) => {
+export const validateTel = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
   if (value) {
     if (/^(([0\+]\d{2,3}-?)?(0\d{2,3})-?)?(\d{7,8})(-(\d{3,}))?$/.test(value)) {
       callback()
@@ -78,7 +78,7 @@ export const validateTel = (rule: AnyObject, value: string, callback: Function) 
 }
 
 // 只能输入英文字母、数字、下划线
-export const validateEnNumUdl = (rule: AnyObject, value: string, callback: Function) => {
+export const validateEnNumUdl = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
   if (value === '') {
     callback()
   } else {
@@ -90,7 +90,7 @@ export const validateEnNumUdl = (rule: AnyObject, value: string, callback: Funct
   }
 }
 // 不能输入空格
-export const validateBlack = (rule: AnyObject, value: string, callback: Function) => {
+export const validateBlack = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
   if (value === '' || value.trim() === '') {
     callback(new Error('输入不能为空'))
   } else {
@@ -98,13 +98,13 @@ export const validateBlack = (rule: AnyObject, value: string, callback: Function
   }
 }
 // 只能输入数字，且可通过 max 和 min 限制大小, 通过 int:true 限制必须为整数
-export const validateNumber = (rule: AnyObject, value: string, callback: Function) => {
+export const validateNumber = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
   if (!value) {
     callback()
   } else {
     if (/^-?\d+(\.\d+)?$/.test(value)) {
-      let val = parseFloat(value)
-      let result = {
+      const val = parseFloat(value)
+      const result = {
         min: {
           result: false,
           msg: '最小输入 ' + rule.min
@@ -134,18 +134,37 @@ export const validateNumber = (rule: AnyObject, value: string, callback: Functio
   }
 }
 
+// 只能输入数字，且可通过 max 限制输入长度, 通过 decimalRegex:2 限制小数位数
+export const validateDoubleNumber = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
+  if (!value) {
+    callback()
+  } else {
+    const [integerPart, decimalPart] = value.split('.')
+    const integerRegex = new RegExp(`^\\d{1,${rule.max}}$`)
+    if (rule.max && !integerRegex.test(integerPart)) {
+      callback(new Error(`最大填写${rule.max}位数字`))
+      return
+    }
+    const decimalRegex = new RegExp(`^\\d{1,${rule.decimalPrecision}}$`)
+    if (rule.decimalPrecision && decimalPart && !decimalRegex.test(decimalPart)) {
+      callback(new Error('最多保留两位小数'))
+      return
+    }
+  }
+}
+
 // 只能输入数字，且可通过 max 和 min 限制大小, 通过 int:true 限制必须为正整数
-export const validatePositiveNumber = (rule: AnyObject, value: string, callback: Function) => {
+export const validatePositiveNumber = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
   if (!value) {
     callback()
   } else {
     console.log(value)
     if (/^\d+(\.\d+)?$/.test(value)) {
-      let val = parseFloat(value)
+      const val = parseFloat(value)
       if (val <= 0) {
         callback(new Error('请输入正整数'))
       }
-      let result = {
+      const result = {
         min: {
           result: false,
           msg: '最小输入 ' + rule.min
@@ -176,17 +195,17 @@ export const validatePositiveNumber = (rule: AnyObject, value: string, callback:
 }
 
 // 只能输入double数字，且可通过 max 和 min 限制大小
-export const validatePositiveDoubleNumber = (rule: AnyObject, value: string, callback: Function) => {
+export const validatePositiveDoubleNumber = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
   if (!value) {
     callback()
   } else {
     // if (/^[-\+]?\d+(\.\d+)?$/.test(value)) {
     if (/^(0|[0-9]\.[0-9]+|([1-9][0-9]*(\.?[0-9]+))|[1-9])$/.test(value)) {
-      let val = parseFloat(value)
+      const val = parseFloat(value)
       if (val < 0) {
         callback(new Error('请输入正整数'))
       }
-      let result = {
+      const result = {
         min: {
           result: false,
           msg: '最小输入 ' + rule.min
@@ -210,7 +229,7 @@ export const validatePositiveDoubleNumber = (rule: AnyObject, value: string, cal
 }
 
 // 只能输入0%-100%的百分比
-export const validatePercent = (rule: AnyObject, value: string, callback: Function) => {
+export const validatePercent = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
   if (value === '') {
     callback()
   } else {
@@ -223,7 +242,7 @@ export const validatePercent = (rule: AnyObject, value: string, callback: Functi
 }
 
 // 只能输入日期,格式为yyyy-MM-dd或yyyy-M-d
-export const validateDate = (rule: AnyObject, value: string, callback: Function) => {
+export const validateDate = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
   if (value === '') {
     callback()
   } else {
@@ -239,8 +258,8 @@ export const validateDate = (rule: AnyObject, value: string, callback: Function)
   }
 }
 
-export const checkPostal = (rule: AnyObject, value: string, callback: Function) => {
-  var reg = /^[0-9]{6}$/
+export const checkPostal = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
+  const reg = /^[0-9]{6}$/
   if (reg.test(value)) {
     callback()
   } else if (value === '' || value.length === 0) {
@@ -264,8 +283,8 @@ export const checkPostal = (rule: AnyObject, value: string, callback: Function) 
  * 十五，十六，十七都是数字0-9
  * 十八位可能是数字0-9，也可能是X
  * */
-export const checkIdCard = (rule: AnyObject, value: string, callback: Function) => {
-  var reg = /^[1-9][0-9]{5}([1][9][0-9]{2}|[2][0][0|1][0-9])([0][1-9]|[1][0|1|2])([0][1-9]|[1|2][0-9]|[3][0|1])[0-9]{3}([0-9]|[X])$/
+export const checkIdCard = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
+  const reg = /^[1-9][0-9]{5}([1][9][0-9]{2}|[2][0][0|1][0-9])([0][1-9]|[1][0|1|2])([0][1-9]|[1|2][0-9]|[3][0|1])[0-9]{3}([0-9]|[X])$/
   if (value === '') {
     callback()
   } else {
@@ -282,8 +301,8 @@ export const checkIdCard = (rule: AnyObject, value: string, callback: Function) 
  * @return {*}
  * @author: ZYH
  */
-export const validateUsername = (rule: AnyObject, value: string, callback: Function) => {
-  var reg = /^[A-Za-z0-9_]{6,20}$/
+export const validateUsername = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
+  const reg = /^[A-Za-z0-9_]{6,20}$/
   if (value === '') {
     callback()
   } else {
@@ -300,9 +319,9 @@ export const validateUsername = (rule: AnyObject, value: string, callback: Funct
  * @return {*}
  * @author: ZYH
  */
-export const validatePassword = (rule: AnyObject, value: string, callback: Function) => {
+export const validatePassword = (rule: AnyObject, value: string, callback: (error?: Error) => void) => {
   // var reg = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{8}[A-Za-z\d$@$!%*?&.:'",]*$/
-  var reg = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d$@$!%*?&.:'",]{8,18}$/
+  const reg = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d$@$!%*?&.:'",]{8,18}$/
   if (value === '') {
     callback()
   } else {
