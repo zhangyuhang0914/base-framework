@@ -1,0 +1,25 @@
+---
+# https://vitepress.dev/reference/default-theme-home-page
+layout: home
+
+hero:
+  name: "BasicVitePress"
+  text: "下一代的前端工具链"
+  tagline: 为开发提供极速响应
+  actions:
+    - theme: brand
+      text: 开始
+      link: /markdown-examples
+    - theme: alt
+      text: 为什么选择BasicVite？
+      link: /api-examples
+
+features:
+  - title: 选项 A
+    details: 这是最新一代的前端工具链
+  - title: 选项 B
+    details: 这是最新一代的前端工具链
+  - title: 选项 C
+    details: 这是最新一代的前端工具链
+---
+

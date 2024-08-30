@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + Vue + TS</title>
+  <style>
+    html,
+    body,
+    #app {
+      height: 100%;
+    }
+
+    @keyframes sketch-animation {
+      0% {
+        background-position: 100% 50%
+      }
+
+      to {
+        background-position: 0 50%
+      }
+    }
+
+    .sketch-dom {
+      background: linear-gradient(90deg, #f0f2f5 25%, #e6e8eb 37%, #f0f2f5 63%);
+      background-size: 400% 100%;
+      animation: sketch-animation 1.2s ease 0s infinite;
+    }
+
+    .sketch-home {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+    }
+
+    .sk-dom-top {
+      height: 80px;
+      flex: none;
+    }
+
+    .bottom-dom-box {
+      flex: 1;
+      overflow: hidden;
+      margin-top: 20px;
+      display: flex;
+    }
+
+    .bottom-dom-box>div {
+      flex: none;
+    }
+
+    .sk-dom-left {
+      width: 60px;
+    }
+
+    .sk-dom-right {
+      flex: 1 !important;
+      margin-left: 20px
+    }
+  </style>
+</head>
+
+<body style="-webkit-app-region: drag;height:100%;overflow: hidden;">
+  <div id="app">
+    <div class="sketch-home" style="height: 100%;">
+      <div class="sketch-dom sk-dom-top"></div>
+      <div class="bottom-dom-box" style="display: flex;">
+        <div class="sketch-dom sk-dom-left"></div>
+        <div class="sketch-dom sk-dom-right"></div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
