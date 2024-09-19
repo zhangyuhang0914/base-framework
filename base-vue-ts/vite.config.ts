@@ -10,7 +10,8 @@ import VitePluginCompression from 'vite-plugin-compression'
 // https://vitejs.dev/config/
 
 // 设置文根
-const BASE_URL = process.env.NODE_ENV === 'production' ? '/jgd/' : '/'
+// const BASE_URL = process.env.NODE_ENV === 'production' ? '/jgd/' : '/'
+const BASE_URL = '/jgd/'
 
 export default defineConfig({
   plugins: [
@@ -58,6 +59,18 @@ export default defineConfig({
     // 设置快捷指向
     alias: {
       '@': resolve(__dirname, 'src')
+    }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // 打包分割，拆分只打包代码模块
+          if (id.includes('node_modules')) {
+            return 'vendor'
+          }
+        }
+      }
     }
   },
   base: BASE_URL,
