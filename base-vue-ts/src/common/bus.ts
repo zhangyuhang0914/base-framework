@@ -1,7 +1,9 @@
 // 测试 eventBus
 export const TEST_EVENT_BUS = 'TEST_EVENT_BUS'
+// 登录
+export const OPEN_LOGIN = 'OPEN_LOGIN'
 class Bus {
-  list: { [key: string]: Array<() => void> }
+  private list: { [key: string]: Function[] } = {}
   private static instance: Bus = new Bus()
   constructor() {
     // 收集订阅信息,调度中心
@@ -11,16 +13,15 @@ class Bus {
     return Bus.instance
   }
   // 订阅
-  public $on(name: string, fn?: () => void) {
+  public $on<T>(name: string, fn: (data: T) => void) {
     this.list[name] = this.list[name] || []
     fn && this.list[name].push(fn)
   }
+
   // 发布
-  public $emit(name: string, data: any) {
+  public $emit<T>(name: string, data: T) {
     if (this.list[name]) {
-      this.list[name].forEach((fn: <T>(T: any) => void | T) => {
-        fn(data)
-      })
+      this.list[name].forEach(fn => fn(data))
     }
   }
   // 取消订阅
