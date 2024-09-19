@@ -150,6 +150,7 @@ export const validateDoubleNumber = (rule: AnyObject, value: string, callback: (
       callback(new Error('最多保留两位小数'))
       return
     }
+    rule.max && rule.decimalPrecision && callback()
   }
 }
 

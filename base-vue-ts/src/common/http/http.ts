@@ -45,6 +45,11 @@ export class Request {
         if (typeof options.data === 'object' && contentType && String(contentType).indexOf('application/x-www-form-urlencoded') > -1) {
           options.data = qs.stringify(options.data)
         }
+        // post数据格式为form-data
+        if (options.isPostAndFormData) {
+          options.url += `?${qs.stringify(options.data)}`
+          delete options.data
+        }
         // 设置token
         if (getToken()) {
           headers['token'] = getToken() ?? ''
@@ -72,6 +77,7 @@ export class Request {
           return Promise.resolve(responseData)
         } else if (responseCode === 500 || responseMsg === 'token不能为空') {
           // token失效，处理退出登录逻辑
+          // $message('登录已失效，请重新登录！', 'error')
           // userCommonStoreHook().logout()
           this.errorMessage(responseMsg, responseBz)
           return Promise.reject(responseData)
@@ -103,8 +109,6 @@ export class Request {
               break
             case 500:
               errMessage = error.msg || '服务器错误(500)'
-              // token 失效
-              // userCommonStoreHook().logout()
               break
             case 501:
               errMessage = '服务未实现(501)'

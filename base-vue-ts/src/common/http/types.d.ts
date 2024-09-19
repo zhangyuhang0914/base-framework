@@ -42,6 +42,10 @@ export interface httpRequestConfig extends AxiosRequestConfig {
    * 不展示异常提示语
    */
   noShowMsg?: boolean
+  /**
+   * 是否post请求，并且是formData格式
+   */
+  isPostAndFormData?: boolean
 }
 
 // 定义通用响应结构
