@@ -1,0 +1,121 @@
+.swiper-slide
+  padding 0 36px /* swiper */
+.swiper-button-prev
+  left -42px !important
+  width 42px !important
+  height 42px !important
+  background #FFFFFF
+  border-radius 50%
+  border 2px solid #D8E1F3
+  transform translate(0, -50%) /* swiper */
+.swiper-button-prev:after
+  position relative
+  right 2px
+  color #2689DF !important
+  font-size 18px !important
+.swiper-button-next
+  right -42px !important
+  width 42px !important
+  height 42px !important
+  background #FFFFFF
+  border-radius 50%
+  border 2px solid #D8E1F3
+  transform translate(0, -50%)
+.swiper-button-next:after
+  position relative
+  left 2px
+  color #2689DF !important
+  font-size 18px !important
+/* el-dialog */
+.custom-dialog
+  .el-dialog__header
+    .el-dialog__title
+      font-family 'PingFang' !important
+.custom-center-dialog
+  position absolute !important
+  top 50%
+  left 50%
+  transform translate(-50%, -50%)
+  margin-top 0 !important
+/* el-form */
+.custom-form-login
+  .el-form-item
+    margin-bottom 24px !important
+    .el-input
+      .el-input__inner
+        text-indent 12px
+.custom-form
+  position relative
+  padding 12px 24px
+  .el-form-item
+    height 100%
+    display flex
+    align-items center
+/* el-input */
+.custom-input
+  height 42px
+.custom-input-number
+  height 42px
+  input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
+    -webkit-appearance none !important
+  input[type='number']
+    -moz-appearance textfield !important
+.captcha-input
+  .el-input-group__append
+    width 35%
+    padding 0 !important
+    .el-image
+      height 100%
+      .el-image__inner
+        height 100%
+/* el-select */
+.custom-select
+  height 42px
+  .el-select__wrapper
+    height 100%
+.custom-multiple-select
+  .el-select__wrapper
+    min-height 42px
+/* el-table */
+.el-table
+  .el-table__header
+    .el-table__cell
+      background #F5F8FF !important
+      color #333333
+      font-family 'PingFang'
+/* el-pagination */
+.custom-pagination
+  padding 24px 0
+  display flex
+  align-items center
+  justify-content center
+/* el-link */
+.custom-back-link
+  .el-link__inner
+    .el-icon
+      padding 0 6px 0 0
+      font-size 18px
+    & > span
+      font-size 15px
+      font-family 'PingFang'
+/* el-cascader */
+.custom-cascader
+  width 100%
+/* el-date-picker */
+@media (max-width 768px)
+  .custom-date-picker-popper
+    width 100%
+    .el-date-range-picker
+      width 100%
+      .el-picker-panel__body-wrapper
+        width 100%
+        .el-picker-panel__body
+          min-width 100%
+          width 100%
+          display flex
+          flex-direction column
+          .el-picker-panel__content
+            width 100%
+            border none !important
+            caption, th
+              text-align center !important
