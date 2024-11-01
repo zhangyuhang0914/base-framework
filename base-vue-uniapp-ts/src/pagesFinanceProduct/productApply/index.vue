@@ -1,13 +1,13 @@
 <template lang="pug">
 .page-view
-  Layout(showTabBar showHeaderBar showBack headerBackground="#DAECFE" statusBackground="#DAECFE" headerTitle="金融产品")
+  Layout(showTabBar showHeaderBar showBack headerBackground="#132B5B" statusBackground="#132B5B" headerColor="#FFFFFF" headerTitle="金融产品")
     template(#main)
       .layout-main
         .main-container
           .product-apply-main
             scroll-view.scroll-view(scroll-y)
               .apply-main
-                .header-apply(:style="{ backgroundImage: `url(${preview(imgConstant['wx_financeProduct_header-bg'])})`, backgroundSize: '100%', backgroundRpeat: 'no-repeat' }")
+                .header-apply
                   img.logo-img(:src="detailInfo.logoUrl" alt="")
                   .header-title-box
                     .title {{ detailInfo.name }}
@@ -55,12 +55,13 @@
                         u-form-item.require(prop="code" label="验证码" labelWidth="75")
                           u-input(v-model.trim="productForm.code" type="number" border="none" placeholder="请输入验证码")
                             template(#suffix)
-                              u-button(type="primary" :disabled="sendBtnDisabled" @click="sendPhoneCode") {{ sendBtnText }}
+                              u-button.send-code-btn(type="primary" :disabled="sendBtnDisabled" @click="sendPhoneCode") {{ sendBtnText }}
                         u-form-item.require(prop='licenseId' label="授权协议" labelWidth='75')
-                          LicenseConfirm(:confirmData='confirmData' :licensedData="licensedData" @onLicenseConfirm='onLicenseConfirm')
-                        u-form-item.require(prop='fileId' label="授权协议文件上传" labelWidth='140')
-                          .formItemH50
-                        UploadImage(@onChooseImage='onChooseImage')
+                          LicenseConfirm(:confirmData='confirmData' :licensedData="licensedData" :contract="contract" @onLicenseConfirm='onLicenseConfirm' @onSignLicense="onSignLicense")
+                        .downBtn(v-if="contract.contractFileId" @click='onDownload')
+                          .contract-file {{ contract.contractFileName }}
+                          .iconfont.icon-xiazai
+                          .contract-file {{ '下载' }}
                 .footer-operation
                   u-button.larger-btn(type="primary" @click="submitHandle") {{ '提交' }}
             up-popup.contact-popup(:show="showContactDialog" mode="center"  @close="showContactDialog = false")
@@ -88,7 +89,7 @@ import CustomTitle from '@/components/custom-title/index.vue'
 import CUniappPicker from '@/components/c-uniapp-picker/index.vue'
 import LicenseConfirm from '@/components/licenseConfirm/index.vue'
 import UploadImage from '@/components/uploadImage/index.vue'
-import { formatMode } from '@/util/utils'
+import { formatMode, handleDownloadFile } from '@/util/utils'
 import { onLoad } from '@dcloudio/uni-app'
 import { productInfo, productSaveCredit } from '@/api/financeProduct'
 import type { ApiResponse } from '@/common/http/types'
@@ -96,10 +97,10 @@ import type { ProductListItem } from '@/api/financeProduct/types'
 import { fileDownload } from '@/api/index'
 import type { DictListItem } from '@/api/index/types'
 import { userCommonStoreHook } from '@/store/modules/common'
-import { useCaptchaCode } from '@/hooks/common'
+import { useCaptchaCode, useContract } from '@/hooks/common'
 import type { EntInfoType } from '@/api/common/types'
 import { validateMobile } from '@/util/validator'
-import { enterpriseUpdateContact } from '@/api/common'
+import { downloadFile, enterpriseUpdateContact, smsProductTemplate } from '@/api/common'
 import { goBack, linkJump } from '@/common/common'
 import { preview } from '@/api/common/index'
 import imgConstant from '@/common/imgConstant'
@@ -213,9 +214,10 @@ export default defineComponent({
           trigger: 'blur'
         }
       ],
-      licenseId: [{ required: true, message: '授权协议暂未确认', trigger: 'blur' }],
-      fileId: [{ required: true, message: '授权协议文件不能为空', trigger: 'blur' }]
+      licenseId: [{ required: true, message: '授权协议暂未确认', trigger: 'blur' }]
     })
+    // 签署授权协议
+    const { contract, startContractProcess } = useContract()
     // 修改联系人
     const showContactDialog = ref(false)
     const contactFormRef = ref()
@@ -336,66 +338,110 @@ export default defineComponent({
         if (valid.length) return
       })
     }
-    // 上传盖章协议，仅支持上传图片
-    const onChooseImage = (fileId: string) => {
-      productForm.fileId = fileId
-      productFormRef.value.validateField(['fileId'], async (valid: AnyObject) => {
-        if (valid.length) return
+    // 签署授权协议
+    const onSignLicense = () => {
+      if (!productForm.licenseId) {
+        uni.$u.toast('请确认授权对象！')
+        return
+      }
+      // 开始签署协议
+      startContractProcess(productForm.licenseId, () => {
+        contract.value.contractFileId ? uni.$u.toast('签署成功') : uni.$u.toast('签署失败')
+        console.log('签署成功', contract.value)
       })
+    }
+    // 下载协议
+    const onDownload = () => {
+      let url = downloadFile(contract.value.contractFileId)
+      let isImg = ''
+      let fileType = 'pdf'
+      handleDownloadFile(url, isImg, fileType)
     }
     // 提交
     const submitHandle = () => {
       productFormRef.value
         .validate()
         .then((res: AnyObject) => {
+          if (!contract.value.contractFileId) {
+            uni.$u.toast('请签署授权协议！')
+            return
+          }
           const maxLoanLimit = detailInfo.value.loanLimitEnd
           const requestedAmount = +productForm.creditEvalAmount
-          requestedAmount > maxLoanLimit ? confirmSubmission() : submitSave()
+          requestedAmount > maxLoanLimit ? confirmSubmission() : messageToast()
         })
         .catch((error: Error) => {
           console.log('submit error!!!', error)
         })
-      const confirmSubmission = () => {
-        uni.showModal({
-          content: `该产品最高可申请${detailInfo.value.loanLimitEnd}万元，您的需求是${productForm.creditEvalAmount}万元，确定提交申请吗？`,
-          success: (result: UniApp.ShowModalRes) => {
-            if (result.confirm) {
-              submitSave()
-            }
+    }
+    const confirmSubmission = () => {
+      uni.showModal({
+        content: `该产品最高可申请${detailInfo.value.loanLimitEnd}万元，您的需求是${productForm.creditEvalAmount}万元，确定提交申请吗？`,
+        success: (result: UniApp.ShowModalRes) => {
+          if (result.confirm) {
+            messageToast()
           }
-        })
-      }
-      const submitSave = () => {
-        let params = {
-          accredit: productForm.accredit,
-          cityCode: '',
-          code: productForm.code,
-          contactMan: productForm.contactMan || uiasUserInfo.value.name,
-          creditEvalAmount: productForm.creditEvalAmount,
-          entName: productForm.entName,
-          fileId: productForm.fileId,
-          fileUploadObj: [],
-          finInstitutionsList: [],
-          finInstitutionsName: detailInfo.value.institutionsName,
-          finInstitutionsUniscID: detailInfo.value.institutionsUniscId,
-          finLoanInquiryDataId: '', // 暂存数据id
-          finLoanInstitutionsInfoId: '',
-          finLoanInstitutionsInfoIds: type.value === '3' ? detailInfo.value.finInstitutionsInfoId : '', // 意向金融机构
-          finLoanInstitutionsInfoIdsArr: type.value === '3' ? [detailInfo.value.finInstitutionsInfoId] : [],
-          finLoanInstitutionsList: [],
-          finProductInfoId: detailInfo.value.id,
-          guaranteeMode: productForm.guaranteeMode,
-          licenseId: productForm.licenseId,
-          loanPeriodEnd: productForm.loanPeriodEnd,
-          loanRate: productForm.loanRate,
-          phone: productForm.phone,
-          remark: productForm.remark,
-          repaymentWays: productForm.repaymentWays,
-          type: type.value || '1',
-          uniscid: entInfo.value.entUnitCode,
-          sourceType: 'wx' // 产品来源
         }
-        productSaveCredit(params).then((result: ApiResponse<AnyObject>) => {
+      })
+    }
+    // 短信提示
+    const messageToast = () => {
+      uni.showModal({
+        content: `您的融资申请信息将通过短信发送给【${entInfo.value.entName}】的联系人【${entInfo.value.agentName}】，确认提交申请吗？`,
+        success: (result: UniApp.ShowModalRes) => {
+          if (result.confirm) {
+            submitSave()
+          }
+        }
+      })
+    }
+    // 发送短信模板
+    const sendSmsTemplate = () => {
+      let params = {
+        entName: entInfo.value?.entName,
+        productName: detailInfo.value.name,
+        name: uiasUserInfo.value.name as string,
+        phone: entInfo.value?.agentMobile
+      }
+      smsProductTemplate(params).then(result => {
+        console.log('result', result)
+      })
+    }
+    // 提交
+    const submitSave = () => {
+      let params = {
+        accredit: productForm.accredit,
+        cityCode: '',
+        code: productForm.code,
+        contactMan: productForm.contactMan || uiasUserInfo.value.name,
+        creditEvalAmount: productForm.creditEvalAmount,
+        entName: productForm.entName,
+        fileId: contract.value.contractFileId,
+        fileUploadObj: [],
+        finInstitutionsList: [],
+        finInstitutionsName: detailInfo.value.institutionsName,
+        finInstitutionsUniscID: detailInfo.value.institutionsUniscId,
+        finLoanInquiryDataId: '', // 暂存数据id
+        finLoanInstitutionsInfoId: '',
+        finLoanInstitutionsInfoIds: type.value === '3' ? detailInfo.value.finInstitutionsInfoId : '', // 意向金融机构
+        finLoanInstitutionsInfoIdsArr: type.value === '3' ? [detailInfo.value.finInstitutionsInfoId] : [],
+        finLoanInstitutionsList: [],
+        finProductInfoId: detailInfo.value.id,
+        guaranteeMode: productForm.guaranteeMode,
+        licenseId: productForm.licenseId,
+        loanPeriodEnd: productForm.loanPeriodEnd,
+        loanRate: productForm.loanRate,
+        phone: productForm.phone,
+        remark: productForm.remark,
+        repaymentWays: productForm.repaymentWays,
+        type: type.value || '1',
+        uniscid: entInfo.value.entUnitCode,
+        sourceType: 'wx' // 产品来源
+      }
+      productSaveCredit(params).then((result: ApiResponse<AnyObject>) => {
+        try {
+          // 发送短信模板
+          sendSmsTemplate()
           uni.showModal({
             title: '提示',
             content: '融资申请已提交，您可前往个人中心的融资记录查看该申请的状态',
@@ -406,18 +452,20 @@ export default defineComponent({
               if (result.confirm) {
                 goBack()
               } else {
-                linkJump('/pagesUser/finance/index', () => {}, 'redirectTo')
+                linkJump('/pagesUser/financeRecord/index', () => {}, 'redirectTo')
               }
             }
           })
-        })
-      }
+        } catch (error) {
+          console.log('error', error)
+        }
+      })
     }
     const uiasUserInfo = computed(() => {
       return commonStoreHook.uiasUserInfo
     })
     const entInfo = computed((): EntInfoType => {
-      return commonStoreHook.entInfo
+      return commonStoreHook.entInfo as EntInfoType
     })
     // 授权方
     const confirmData = computed(() => {
@@ -435,8 +483,8 @@ export default defineComponent({
     })
     onMounted(() => {
       productForm.entName = entInfo.value.entName
-      productForm.contactMan = uiasUserInfo.value.name
-      productForm.phone = uiasUserInfo.value.mobilePhone
+      productForm.contactMan = uiasUserInfo.value.name as string
+      productForm.phone = uiasUserInfo.value.mobilePhone as string
       productFormRef.value?.setRules(productFormRules)
       // 担保方式
       getGuaranteeMode()
@@ -446,7 +494,7 @@ export default defineComponent({
       getProductDetail()
     })
     onLoad((options: any) => {
-      id.value = options.id || '79e463629999473d91c95a1c6e7948b9' || '2b88763c7107492ea2f4eb8e70ad30e1'
+      id.value = options.id
       type.value = options.value || '3'
     })
     return {
@@ -475,7 +523,9 @@ export default defineComponent({
       sendContactPhoneCode,
       handleConfirmUpdate,
       onLicenseConfirm,
-      onChooseImage,
+      contract,
+      onSignLicense,
+      onDownload,
       submitHandle
     }
   }

@@ -19,6 +19,13 @@ export default defineConfig({
     //   }
     // }
   },
+  css: {
+    preprocessorOptions: {
+      stylus: {
+        imports: [resolve(__dirname, './src/assets/css/imports.styl')]
+      }
+    }
+  },
   resolve: {
     // 设置快捷指向
     alias: {

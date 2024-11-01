@@ -1,0 +1,51 @@
+.scroll-view
+  height 100%
+  background #ECECEC
+  .services-zone-wrap
+    height 100%
+    padding 36rpx 24rpx
+    box-sizing border-box
+    .banner-img
+      position relative
+      z-index 9
+      width 100%
+    .zone-list
+      position relative
+      bottom 32rpx
+      padding 32rpx 0 0 0
+      background #FFFFFF
+      border-radius 0 0 20rpx 20rpx
+      display flex
+      flex-wrap wrap
+      .zone-item
+        position relative
+        width calc(100% / 3 - 2rpx)
+        padding 24rpx
+        box-sizing border-box
+        border-bottom 2rpx solid #EFEFEF
+        border-right 2rpx solid #EFEFEF
+        display flex
+        flex-direction column
+        align-items center
+        justify-content center
+        .zone-logo
+          width 60%
+          padding 0 0 48rpx 0
+        .zone-item-title
+          position absolute
+          bottom 6rpx
+          padding 0 16rpx
+          font-size 26rpx
+          font-weight bold
+          display -webkit-box
+          -webkit-box-orient vertical
+          -webkit-line-clamp 1
+          overflow hidden
+      .zone-item:nth-child(3n)
+        border-right none
+      .talentZone
+        .zone-logo
+          width 45% !important
+      .villageDevelopZone
+        .zone-logo
+          width 100% !important

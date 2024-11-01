@@ -1,14 +1,14 @@
 .roduct-contrast-wrap
   height 100%
-  background-color #DAECFE
+  background-color $background-main
   display flex
   justify-content center
   .scroll-view
     position relative
-    top 60rpx
-    width 94%
-    height calc(100% - 60rpx)
-    background-color #FFFFFF
+    top 12rpx
+    width 100%
+    height calc(100% - 12rpx)
+    background #FFFFFF
     box-shadow 0 0 13rpx 0 #4285f61c
     border-radius 12rpx 12rpx 0 0
     .scroll-box
@@ -60,6 +60,9 @@
             align-items center
             /deep/ .u-switch
               margin 24rpx 0
+              background $primary !important
+              .u-switch__bg
+                border none !important
           .td:nth-child(1)
             width 30%
             border 2rpx solid #E4EAF1
@@ -101,12 +104,12 @@
                 align-items center
                 justify-content center
                 .iconfont
-                  color #0182D9
+                  color $text-main
                   font-size 22rpx
                   font-weight bold
                 .text
                   padding 0 0 0 12rpx
-                  color #0182D9
+                  color $text-main
                   font-size 24rpx
           .select-product-main
             display flex
@@ -188,3 +191,6 @@
                 color #FFFFFF
                 border 2rpx solid #D7DAE2
                 background #1975f1
+.guarantee-mode-left
+  .mode-value
+    padding 0 16rpx !important

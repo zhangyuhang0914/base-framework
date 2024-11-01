@@ -1,0 +1,167 @@
+.institution-info-wrap
+  height 100%
+  .scroll-view
+    height 100%
+    display flex
+    flex-direction column
+    .banner-wrap
+      position relative
+      height 20%
+      .tips-box
+        position absolute
+        top 50%
+        left 50%
+        transform translate(-50%, -60%)
+        line-height 74rpx
+        .name
+          color #FFFFFF
+          font-size 32rpx
+          font-weight bold
+          text-align center
+          white-space nowrap
+        .title
+          font-size 52rpx
+          font-weight bold
+          background linear-gradient(180deg, #FFFDFA, #FFDFB6)
+          background-clip text
+          -webkit-background-clip text
+          -webkit-text-fill-color transparent
+          text-align center
+          white-space nowrap
+          text-shadow 2rpx #173fab
+        .tips
+          color rgba(255, 255, 255, 0.8)
+          font-size 28rpx
+          font-weight 500
+          text-align center
+          white-space nowrap
+          text-shadow 2rpx 2rpx #173fab
+    .c-content-box
+      height 76%
+      .c-content
+        position relative
+        bottom 48rpx
+        height auto
+        padding 0 24rpx 48rpx 24rpx
+        margin 0 36rpx 36rpx 36rpx
+        background #FFFFFF
+        border-radius 12rpx
+        border 2rpx solid #D0DFF3
+        box-shadow 0 5rpx 20rpx 0 #00000014
+        .c-title
+          width 100%
+          padding 48rpx 0 24rpx 0
+          display flex
+          align-items center
+          justify-content center
+          .c-title-logo
+            width 70%
+          .c-company-img
+            width 55%
+          .c-info-img
+            width 35%
+        .company-text
+          ::v-deep .richContent
+            padding 0 24rpx 24rpx 24rpx
+            box-sizing border-box
+            rich-text
+              text-indent 2em
+              line-height 54rpx
+        .product-services-wrap
+          .service-item
+            padding 28rpx
+            .service-item-content
+              color #908F8F
+              font-size 25rpx
+              line-height 45rpx
+          .service-item:not(:last-child)
+            margin 0 0 20rpx 0 !important
+            border-bottom 2rpx solid #E5EBF1
+        .rows-1
+          grid-template-rows repeat(1, 1fr) !important
+        .rows-2
+          grid-template-rows repeat(2, 1fr) !important
+        .rows-3
+          grid-template-rows repeat(3, 1fr) !important
+        .function-antages-wrap
+          display grid
+          grid-template-rows repeat(3, 1fr)
+          grid-template-columns repeat(2, 1fr)
+          .function-antages-item
+            flex 1
+            position relative
+            width 100%
+            height 480rpx
+            .function-antages-name
+              position absolute
+              left 21rpx
+              bottom 42rpx
+              color #FFFFFF
+              line-height 45rpx
+            .function-antages-box
+              position absolute
+              bottom 0
+              width 100%
+              padding 12rpx 28rpx
+              box-sizing border-box
+              display none
+              background linear-gradient(90deg, #3cadff, #586efa)
+              color #FFFFFF
+              .function-antages-title
+                color #FFFFFF
+                font-weight bold
+                line-height 45rpx
+              .function-antages-content
+                width 100%
+                box-sizing border-box
+                font-size 21rpx
+                background rgba(255, 255, 255, 0.8)
+                background-clip text
+                -webkit-background-clip text
+                -webkit-text-fill-color transparent
+                white-space pre-wrap
+                line-height 45rpx
+                overflow hidden
+          .function-antages-item:nth-child(1)
+            border-radius 20rpx 0 0 0
+          .function-antages-item:nth-child(2)
+            border-radius 0 20rpx 0 0
+          .function-antages-item:nth-child(4)
+            border-radius 0 0 20rpx 0
+          .function-antages-item:nth-child(5)
+            border-radius 0 0 20rpx 20rpx
+          .function-antages-item-active
+            .function-antages-box
+              display block
+        .cooperative-us
+          display flex
+          flex-direction column
+          justify-content center
+          .cooperative-us-item
+            padding 24rpx 0
+            display flex
+            align-items center
+            justify-content center
+            .cooperative-us-img
+              flex none
+              width 40%
+            .cooperative-us-text-box
+              flex 1
+            .cooperative-us-text
+              flex 1
+          .cooperative-us-item:not(:last-child)
+            border-bottom 2rpx dashed #CCCCCC
+        .institution-logo
+          width 100%
+          display flex
+          align-items center
+          justify-content center
+          .institution-qr-code
+            width 40%
+::v-deep .richContent
+  rich-text, text
+    line-height 54rpx
+    font-size 26rpx
+    font-weight 500
+    color #3C406C
+    text-align justify

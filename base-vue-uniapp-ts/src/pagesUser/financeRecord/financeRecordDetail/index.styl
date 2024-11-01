@@ -1,0 +1,59 @@
+.layout-main
+  height 100%
+  padding 24rpx 0 0 0
+  box-sizing border-box
+  line-height 32rpx
+  background $background-main
+  .event-content
+    height 100%
+    background #fff
+    border-radius 24rpx 24rpx 0 0
+    box-shadow 0 20rpx 20rpx 0 rgba(0, 0, 0, 0.05)
+    display flex
+    flex-direction column
+    .scroll-view
+      height 100%
+      padding 0 0 24rpx 0
+      line-height 54rpx
+      box-sizing border-box
+      .scroll-box
+        height 100%
+        .event-item
+          padding 24rpx 0
+          margin 24rpx
+          border 2rpx solid $info-btn
+          box-sizing border-box
+          border-radius 12rpx
+          box-shadow 0 0 13rpx 0 #1932641a
+          .event-title
+            padding 0 0 12rpx 0
+            display flex
+            align-items center
+          .event-detail
+            padding 0 24rpx
+            box-sizing border-box
+            .detail-value
+              padding 6rpx 0
+              display flex
+              font-size 30rpx
+              .label
+                // width 180rpx
+                width 240rpx
+                color #909399
+                flex none
+                font-size 28rpx
+              .label-long
+                width 240rpx
+                color #909399
+                flex none
+                font-size 28rpx
+              .value
+                color #333
+                font-size 28rpx
+                font-weight 500
+              .phone-value
+                width 32%
+          .operation-box
+            padding 24rpx 36rpx
+      .no-data-view
+        padding 50rpx

@@ -1,0 +1,317 @@
+.page-view
+  image-rendering -moz-crisp-edges
+  image-rendering -o-crisp-edges
+  image-rendering -webkit-optimize-contrast
+  image-rendering crisp-edges
+  -ms-interpolation-mode nearest-neighbor
+  .supply-chain-wrap
+    position relative
+    height 100%
+    display flex
+    align-items flex-end
+    .scroll-view
+      height 100%
+      background #E2E8F0
+      box-sizing border-box
+      .scroll-box
+        padding 0 0 24rpx 0
+        .banner-wrap
+          position relative
+          .banner
+            width 100%
+          .finance-type
+            position absolute
+            bottom 0
+            width 100%
+            height 72rpx
+            // background rgba(255, 255, 255, 0.3)
+            background #567AC7
+            display flex
+            justify-content space-between
+            align-items center
+            overflow-x auto
+            overflow-y hidden
+            .finance-type-item
+              flex 0 0 auto !important
+              width calc((100% / 4)) !important
+              height 100%
+              display flex
+              align-items center
+              justify-content center
+              .finance-type-title
+                height 100%
+                color #FFFFFF
+        .stats-data
+          padding 0 24rpx
+          background transparent
+          display grid
+          grid-template-rows repeat(2, 1fr)
+          grid-template-columns repeat(3, 1fr)
+          gap 28rpx
+          .stats-item
+            padding 16rpx 0
+            border 2rpx solid #D5E6F6
+            box-shadow 0 0 13rpx 0 #4285f61c
+            background #FFFFFF
+            display flex
+            flex-direction column
+            align-items center
+            justify-content center
+            line-height 40rpx
+            .stat-head
+              display flex
+              align-items center
+              justify-content center
+              :deep(.u-count-num)
+                color #ed8936 !important
+                font-weight bold !important
+              .stat-unit
+                padding 0 0 0 6rpx
+                color #a0aec0
+            .stat-title
+              font-size 26rpx
+              text-align center
+          .stats-item:nth-child(4)
+            .stat-head
+              :deep(.u-count-num)
+                color #2C5181 !important
+          .stats-item:nth-child(5)
+            .stat-head
+              :deep(.u-count-num)
+                color #2C5181 !important
+          .stats-item:nth-child(6)
+            .stat-head
+              :deep(.u-count-num)
+                color #2C5181 !important
+        .cooperation-platform
+          position relative
+          padding 36rpx 0 60rpx 0
+          margin 24rpx
+          border-radius 4rpx
+          background $white
+          .custom-common-header
+            padding 0
+          .cooperation-platform-content
+            padding 0 36rpx
+            .platform-swiper
+              height 500rpx
+              .swiper-item
+                display flex
+                flex-direction column
+                .platform-wrap
+                  width 100%
+                  height 22%
+                  margin 36rpx 0
+                  padding 0 36rpx
+                  box-sizing border-box
+                  display flex
+                  align-items center
+                  image-rendering -moz-crisp-edges
+                  image-rendering -o-crisp-edges
+                  image-rendering -webkit-optimize-contrast
+                  image-rendering crisp-edges
+                  -ms-interpolation-mode nearest-neighbor
+                  .platform-logo-box
+                    width 125rpx
+                    height 125rpx
+                    background #FFFFFF
+                    border-radius 50%
+                    border 2rpx solid #DAE1EE
+                    display flex
+                    align-items center
+                    justify-content center
+                    .platform-logo
+                      width 50%
+                  .type-name
+                    padding 0 36rpx
+                    font-size 36rpx
+                    font-weight bold
+                .cooperation-platform-wrap
+                  height calc(100% - 144rpx)
+                  .platform-detail-content
+                    padding 24rpx
+                    border-radius 8rpx
+                    background #eaeefa
+                    text-indent 2em
+                    color #5A5A5A
+                    line-height 45rpx
+                    text-align justify
+            .indicator
+              bottom 34rpx !important
+        .supply-chain-finance-product
+          position relative
+          padding 36rpx 0 60rpx 0
+          margin 24rpx
+          border-radius 4rpx
+          background $white
+          .finance-product-content
+            padding 0 24rpx
+            .supply-chain-button-group
+              display flex
+              .supply-chain-type-item:not(:last-child)
+                margin 0 24rpx 0 0
+            .finance-product-box
+              padding 36rpx 0
+              .product-business
+                height 392rpx
+              .product-storage
+                height 480rpx
+              .supply-chain-product-swiper
+                .swiper-item
+                  .main-product-box
+                    height 100%
+                    display flex
+                    justify-content space-between
+                    .main-product-card
+                      width 48%
+                      height 100%
+                      padding 36rpx 0
+                      box-sizing border-box
+                      background #F3F7FF
+                      border-radius 4rpx
+                      .supply-product-wrap
+                        height 100%
+                        line-height 54rpx
+                        display flex
+                        flex-direction column
+                        align-items center
+                        justify-content space-between
+                        .product-logo
+                          width 50%
+                          .logo-img
+                            width 100%
+                        .product-name
+                          font-size 31rpx
+                          font-weight bold
+                        .product-loan-box
+                          display flex
+                          flex-direction column
+                          align-items center
+                          line-height 45rpx
+                          .title
+                            color #B1B1B1
+                            font-size 24rpx
+                          .amount
+                            color #FF9435
+                            font-size 30rpx
+                            font-weight bold
+                        .product-range-box
+                          display flex
+                          flex-direction column
+                          align-items center
+                          line-height 45rpx
+                          .title
+                            color #797979
+                            font-size 24rpx
+                          .amount
+                            color #797979
+                            font-size 24rpx
+                        .u-active-filter-btn
+                          .u-button
+                            padding 0 36rpx !important
+                            border-radius 45rpx !important
+              .indicator
+                bottom 34rpx !important
+        .finance-institution-wrap
+          padding 36rpx 0 60rpx 0
+          margin 24rpx
+          border-radius 4rpx
+          background $white
+          .finance-institution-content
+            padding 0 24rpx
+            display flex
+            flex-direction column
+            .finance-institution-item:not(:last-child)
+              margin 0 0 36rpx 0
+            .finance-institution-item
+              position relative
+              background #FFFFFF
+              border 2rpx solid #E9E9E9
+              display flex
+              flex-direction column
+              .institution-bg
+                width 100%
+                position relative
+                .finance-institution-name
+                  position absolute
+                  left 16%
+                  bottom 10px
+                  transform translate(0, 10%)
+                  font-size 27rpx
+                  font-weight bold
+        .core-enterprise-wrap
+          padding 36rpx 0
+          margin 24rpx 24rpx 0 24rpx
+          border-radius 4rpx
+          background $white
+          .core-enterprise-content
+            padding 0 24rpx
+            display flex
+            flex-direction column
+            justify-content space-between
+            .core-enterprise-img
+              display flex
+              align-items center
+              justify-content center
+              border-radius 17rpx
+              .enterprise-logo
+                width 100%
+            .core-enterprise-img:not(:last-child)
+              margin 0 0 21rpx 0
+.custom-common-header
+  padding 0 0 36rpx 0
+  display flex
+  flex-direction column
+  align-items center
+  justify-content center
+  .custom-common-title
+    text-align center
+    font-size 36rpx
+    font-weight bold
+    z-index 9
+  .custom-common-tips
+    position relative
+    bottom 16rpx
+    width 90rpx
+    padding 16rpx 0 0 0
+    image-rendering -moz-crisp-edges
+    image-rendering -o-crisp-edges
+    image-rendering -webkit-optimize-contrast
+    image-rendering crisp-edges
+    -ms-interpolation-mode nearest-neighbor
+.common-type-wrap
+  padding 28rpx
+  display grid
+  grid-template-columns 28% 72%
+  image-rendering -moz-crisp-edges
+  image-rendering -o-crisp-edges
+  image-rendering -webkit-optimize-contrast
+  image-rendering crisp-edges
+  -ms-interpolation-mode nearest-neighbor
+  .type-name
+    padding 0 18rpx 0 0
+    font-size 28rpx
+    font-weight bold
+    color #FFFFFF
+    display flex
+    align-items center
+    justify-content center
+  .type-tips
+    padding 0 0 0 32rpx
+    font-size 26rpx
+    border-left 2rpx solid rgba(255, 255, 255, 0.5)
+    background rgba(255, 255, 255, 0.9)
+    background-clip text
+    -webkit-background-clip text
+    -webkit-text-fill-color transparent
+    letter-spacing 0rpx
+    line-height 36rpx
+    text-align justify
+/* #ifdef H5 || MP-WEIXIN */
+scroll-view ::v-deep ::-webkit-scrollbar
+  display none
+  width 0 !important
+  height 0 !important
+  -webkit-appearance none
+  background transparent
+/* #endif */

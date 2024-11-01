@@ -2,7 +2,21 @@
 import Request from '@/common/http/http'
 import { API as configApi } from '@/conf'
 import type { httpRequestConfig, ApiResponse } from '@/common/http/types'
-import type { UiasAccountLoginParam, UiasUserInfoType, UiasRegisterParam, UiasPhoneLoginParam, EntInfoType } from './types'
+import type {
+  UiasAccountLoginParam,
+  UiasUserInfoType,
+  UiasRegisterParam,
+  UiasPhoneLoginParam,
+  EntInfoType,
+  IindividualFace,
+  IfaceCheck,
+  ContractDraftParamType,
+  ContractDraftResultType,
+  ContractTicketParamType,
+  ContractDownloadType,
+  contractDownloadResultType,
+  SmsProductTemplateParamsType
+} from './types'
 
 // 获取接口根路径
 const isProd = import.meta.env.MODE === 'production'
@@ -105,6 +119,21 @@ export const UiasSendSMSForPwd = (params: AnyObject): Promise<ApiResponse<AnyObj
 }
 
 /**
+ * 系统内部通用-短信校验验证码
+ * @return {*}
+ */
+export const CommonInquiryVerifySMSCode = (params: { id: string; verifyCode: string }) => {
+  const param: httpRequestConfig = {
+    apiType: 'BASE_URL',
+    method: 'POST',
+    loading: true,
+    url: '/api/web/inquiry/verify',
+    params: params
+  }
+  return Request.request(param)
+}
+
+/**
  * @desc: 自然人账号密码登录
  * @return {*}
  */
@@ -177,4 +206,88 @@ export const enterpriseUpdateContact = (params: AnyObject): Promise<ApiResponse<
     params: params
   }
   return Request.request(param) as Promise<ApiResponse<AnyObject>>
+}
+
+/**
+ * 人脸识别
+ */
+export const individualFace = (params: AnyObject) => {
+  const param: httpRequestConfig = {
+    apiType: 'BASE_URL',
+    method: 'POST',
+    loading: true,
+    url: '/api/weixin/uias/individualFace',
+    params: params
+  }
+  return Request.request<IindividualFace>(param)
+}
+
+/**
+ * 查验人脸识别结果
+ */
+export const faceCheck = (params: AnyObject) => {
+  const param: httpRequestConfig = {
+    apiType: 'BASE_URL',
+    method: 'POST',
+    loading: true,
+    url: '/api/weixin/uias/faceCheck',
+    params: params
+  }
+  return Request.request<IfaceCheck>(param)
+}
+
+/**
+ * 发起电子签章
+ */
+export const contractDraft = (params: ContractDraftParamType): Promise<ApiResponse<ContractDraftResultType>> => {
+  const param: httpRequestConfig = {
+    apiType: 'BASE_URL',
+    method: 'POST',
+    loading: true,
+    url: '/api/weixin/qys/contractDraft',
+    params: params
+  }
+  return Request.request(param) as Promise<ApiResponse<ContractDraftResultType>>
+}
+
+/**
+ * 获取合同签署令牌
+ */
+export const contractTicket = (params: ContractTicketParamType) => {
+  const param: httpRequestConfig = {
+    apiType: 'BASE_URL',
+    method: 'POST',
+    loading: true,
+    url: '/api/weixin/qys/contractTicket',
+    params: params
+  }
+  return Request.request<string>(param)
+}
+
+/**
+ * 下载合同文件
+ */
+export const contractDownload = (params: ContractDownloadType) => {
+  const param: httpRequestConfig = {
+    apiType: 'BASE_URL',
+    method: 'POST',
+    loading: true,
+    url: '/api/weixin/qys/download',
+    params: params
+  }
+  return Request.request<contractDownloadResultType>(param)
+}
+
+/**
+ * 产品申请短信模板发送
+ */
+export const smsProductTemplate = (params: SmsProductTemplateParamsType) => {
+  const param: httpRequestConfig = {
+    apiType: 'BASE_URL',
+    method: 'POST',
+    loading: true,
+    url: '/api/weixin/uias/smsTemplate',
+    params: params
+  }
+  return Request.request(param)
 }

@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-view
-  Layout(showTabBar showHeaderBar showBack headerBackground="#DAECFE" statusBackground="#DAECFE" headerTitle="产品对比")
+  Layout(showTabBar showHeaderBar showBack headerBackground="#132B5B" statusBackground="#132B5B" headerColor="#FFFFFF" headerTitle="产品对比")
     template(#main)
       .roduct-contrast-wrap
         scroll-view.scroll-view(scroll-y)
@@ -32,7 +32,7 @@
                       .text {{ '我要申请' }}
                   .operation-box(v-if="item.key === 'name' && !item.value3")
                     .operation(@click="addProduct")
-                      u-icon(name="plus" color="#0182d9" size="15" bold)
+                      u-icon(name="plus" color="#4C5F99" size="15" bold)
                       .text {{ '选择产品' }}
         LoginValidateModal(ref='loginValidateRef' :type='loginValidateType')
         up-popup.filter-popup(:show="filterShow" @close="filterShow = false" mode="bottom" :round="10")
@@ -76,33 +76,26 @@
                 .active-checkbox(v-if="activeId === item.id")
                   u-icon.active-icon(name="checkbox-mark")
                 .product-box(@click="handleChangeProduct(item)")
-                  .product-tips
-                    i.iconfont.icon-shigong
-                    .title {{ item.companySource }}
                   .product-header
-                    img(:src="item.logoUrl" alt="")
-                    .title {{ item.name }}
+                    .img-logo
+                      image(:src="item.logoUrl" mode="widthFix" :lazy-load="true" alt="")
+                    .product-title
+                      .name.text-line2-overflow {{ item.name }}
+                      .source {{ item.companySource }}
                   .product-content
                     .product-data
+                      .rate-range-box.c-column
+                        .value {{ item.rateRange }}
+                        .label {{ '参考利率' }}
                       .loan-limit-box.c-column
                         .value {{ item.loanLimit }}
                         .label {{ '贷款额度' }}
-                      .rate-range-box.c-column
-                        .value {{ item.rateRange }}
-                        .label {{ '参考利率(年化)' }}
                       .loan-period-box.c-column
                         .value {{ item.loanPeriod }}
                         .label {{ '贷款期限' }}
-                    .product-info
-                      .guarantee-mode-box.c-row
-                        .label {{ '担保方式：' }}
-                        .value(v-if="item.guaranteeMode + ''") {{ formatMode(item.guaranteeMode, guaranteeModeList, item.guaranteeModeExtra) }}
-                      //- .product-source-box.c-row
-                      //-   .label {{ item.productSource }}
                   .product-footer
-                    .product-tag
-                      .tag-box(v-for="(tagItem, index) in getTabName(item)" :key="index" :class="tagItem.class")
-                        .tag-name {{ tagItem.tag }}
+                    .guarantee-mode-left
+                      .mode-value(v-if="item.guaranteeMode + ''") {{ '担保方式：' + formatMode(item.guaranteeMode, guaranteeModeList, item.guaranteeModeExtra) }}
               u-loadmore(:status="loadMoreStatus" @loadmore="getMore")
             .no-data-view(v-else)
               CNoData
@@ -122,7 +115,7 @@ import { formatMode, joinArr } from '@/util/utils'
 import type { DictListItem } from '@/api/index/types'
 import type { ProductListItem } from '@/api/financeProduct/types'
 import { setProductContrast, productApplyHandle } from '@/hooks/common'
-import type { PageItem } from '@/api/policyNews/type'
+import type { PageItem } from '@/api/index/types'
 import { productInfoList } from '@/api/financeProduct'
 import type { ApiResponse } from '@/common/http/types'
 import { fileDownload } from '@/api/index'
@@ -282,6 +275,7 @@ export default defineComponent({
         listData.value = []
       }
       let params = {
+        dockingFlag: '0', // 过滤市州产品
         isApplets: '1',
         page: page.currentPage,
         limit: page.pageSize,
@@ -302,7 +296,7 @@ export default defineComponent({
           let data = result.page
           data.list.map((item: ProductListItem) => {
             item['logoUrl'] = item.logoFileId && fileDownload(item.logoFileId)
-            item['companySource'] = '本产品由' + item.institutionsName + '提供'
+            item['companySource'] = item.institutionsName + '提供'
             item['loanPeriod'] = item.loanPeriodBegin === 0 ? item.loanPeriodEnd + '个月及以下' : item.loanPeriodBegin + '-' + item.loanPeriodEnd + '个月'
             item['rateRange'] = item.rateRangeBegin + '%-' + item.rateRangeEnd + '%'
             item['loanLimit'] = item.loanLimitBegin + '~' + item.loanLimitEnd + '万元'

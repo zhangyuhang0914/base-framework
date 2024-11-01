@@ -1,0 +1,56 @@
+/**
+ * 产品详情
+ */
+export interface IProductInfo {
+  applyDesc: null
+  applyUrl: string
+  approvalMode: string
+  cases: null
+  characteristics: null
+  cityCode: null
+  code: string
+  createdTime: string
+  createdUserId: string
+  customerDesc: string
+  dataStatus: number
+  dockingFlag: number
+  entryCriteria: string
+  finInstitutionsInfoId: string
+  finPlatformId: null
+  guaranteeMode: number
+  guaranteeModeExtra: string
+  id: string
+  institutionsName: string
+  institutionsUniscId: string
+  isApplets: string
+  isConfig: null
+  isMobile: null
+  loanLimitBegin: number
+  loanLimitEnd: number
+  loanPeriodBegin: number
+  loanPeriodEnd: number
+  logoFileId: string
+  name: string
+  pageView: string
+  platformId: null
+  policyProd: string
+  productDesc: string
+  productExtendId: null
+  productMainType: string
+  productType: number
+  rateRangeBegin: number
+  rateRangeEnd: number
+  releasedTime: string
+  remark: string
+  repayments: string
+  serviceCities: string
+  shortName: null
+  skipUrl: null
+  smartDocking: null
+  targetEnt: null
+  updatedTime: string
+  updatedUserId: string
+  useDesc: null
+  useStatus: null
+  whetherCollection: null
+}

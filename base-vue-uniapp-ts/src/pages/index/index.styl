@@ -1,130 +1,219 @@
+.page-view
+  position relative
 .main-box
   height 100%
-  .srcoll-box
+  .scroll-view
     width 100%
     height 100%
     display flex
     flex-direction column
-    .carousel-container
-      width 100%
-    .common-services
-      padding 24rpx
-      .services-main
-        display flex
-        justify-content space-around
-        align-items center
-        padding 12rpx 0 0 0
-        .services-item-box
+    .scroll-box
+      height calc(100% - 42rpx)
+      .carousel-container
+        width 100%
+      .page-content
+        position relative
+        // bottom 42rpx
+        bottom 52rpx
+        border-radius 30rpx 30rpx 0 0
+        background linear-gradient(180deg, #FFFFFF, #ECECEC)
+        .common-services
+          padding 24rpx 48rpx 12rpx 48rpx
           display flex
-          flex-direction column
-          align-items center
-          justify-content center
-          .icon-box
-            width 104rpx
-            height 104rpx
-            border-radius 32rpx
-            display flex
-            align-items center
-            justify-content center
-            .iconfont
-              font-size 48rpx !important
-              color #FFFFFF !important
-          .title
-            padding-top 16rpx
-            font-weight bold
-          .finance-product
-            background linear-gradient(135deg, #4FA0FA, #82CEFF)
-          .credit-report-services
-            background linear-gradient(135deg, #ED716F, #F79797)
-          .cooper-institution
-            background linear-gradient(135deg, #8E8AE5, #91B1FF)
-          .policy-file
-            background linear-gradient(135deg, #5CC6C0, #69DCBC)
-    .hot-recommendation
-      padding 0 24rpx
-      .product-box
-        .product-operation
-          .operation-box
-            margin-right 24rpx
-    .finance-products
-      padding 24rpx
-    .statistics-container
-      padding 0 24rpx
-      .statistics-main
-        height 400rpx
-        margin 15rpx 0 36rpx 0
-        display flex
-        justify-content space-between
-        .statistics-enterprises
-          width calc((100% / 3))
-          line-height 60rpx
-          background-repeat no-repeat
-          background-size 100% 100%
-          background-position 100% 100%
-          display flex
-          flex-direction column
-          align-items center
-          justify-content center
-          .value
-            font-size 34rpx
-            font-weight bold
-            word-break break-all
-          .label
-            font-size 24rpx
-        .statistics-data
-          width calc((100% - 100% / 3) - 24rpx)
-          display grid
-          grid-template-columns 50% 50%
-          grid-template-rows 47% 47.5%
-          row-gap 24rpx
-          .stats-box
-            padding 0 0 0 24rpx
-            line-height 48rpx
-            background-repeat no-repeat
-            background-size 100% 100%
-            background-position 100% 100%
+          justify-content space-around
+          .services-item-box
             display flex
             flex-direction column
+            align-items center
             justify-content center
-            .value
-              font-size 34rpx
+            .icon
+              width 56rpx
+              height 52rpx
+            .title
               font-weight bold
-              word-break break-all
-            .label
-              font-size 24rpx
-          .stats-box:nth-child(1)
-            width calc(100% - 48rpx)
-          .stats-box:nth-child(2)
-            width calc(100% - 24rpx)
-          .stats-box:nth-child(3)
-            width calc(100% - 48rpx)
-          .stats-box:nth-child(4)
-            width calc(100% - 24rpx)
-    .explain-container
-      position relative
-      width 100%
-      padding 0 24rpx
-      box-sizing border-box
-      & > image
-        width 100%
-        height 144rpx
-        background-repeat no-repeat
-        background-size 100% 100%
-        background-position 100% 100%
-      /deep/ u-button
-        position absolute
-        right 72rpx
-        top 44rpx
-        .u-button
-          height 68rpx !important
-          background #FFFFFF
-          border none
-          .txt
-            font-size 24rpx
-            color #207AF9
-          .u-icon
-            .u-icon__icon
+        .hot-recommendation
+          position relative
+          padding 0 24rpx
+          .custom-product-header
+            image-rendering -moz-crisp-edges
+            image-rendering -o-crisp-edges
+            image-rendering -webkit-optimize-contrast
+            image-rendering crisp-edges
+            -ms-interpolation-mode nearest-neighbor
+            .c-handle-box
+              .c-title
+                color #FFFFFF
+          .product-box
+            padding 36rpx 0 !important
+            .product-header
+              padding 0 48rpx 0 36rpx
+              justify-content space-between
+              .product-title
+                padding 0 !important
+              .img-logo
+                width auto !important
+                height 32rpx !important
+                border none !important
+                image
+                  height 100% !important
+            .product-content
+              padding 0 48rpx 0 36rpx !important
+            .product-footer
+              padding 12rpx 18rpx
+              .operation-box
+                width 48%
+                height 78rpx
+                display flex
+                align-items center
+                justify-content center
+                border-radius 45rpx
+          /deep/ .indicator
+            bottom 32rpx !important
+        .main-type-product
+          padding 0 24rpx
+          margin 28rpx 0 42rpx 0
+          .main-product-module
+            background #FFFFFF
+            box-shadow 0 6rpx 18rpx 0 rgba(25, 50, 100, 0.102)
+            border-radius 20rpx
+            .custom-tab-wrap
+              padding 0 24rpx
+              border-bottom 4rpx solid #EDEDED
+              :deep(.u-tabs__wrapper__nav__line)
+                bottom 0 !important
+            .main-product-wrap
               position relative
-              left 4rpx !important
-              color #207AF9 !important
-              font-size 28rpx !important
+              .main-product-box
+                height 100%
+                padding 36rpx 36rpx 62rpx 36rpx !important
+                box-sizing border-box
+                display flex
+                justify-content space-between
+                .main-product-card
+                  width 48%
+                  height 100%
+                  padding 24rpx 28rpx
+                  box-shadow 0 0 18rpx 0 #0000001a
+                  box-sizing border-box
+                  border-radius 16rpx
+                  display flex
+                  flex-direction column
+                  align-items center
+                  justify-content space-around
+                  .main-product-header
+                    flex none
+                    width 210rpx
+                    height 90rpx
+                    padding 6rpx 12rpx
+                    border-bottom 2rpx solid #EDEDED
+                    display flex
+                    align-items center
+                    justify-content center
+                    .img-logo
+                      width 80%
+                  .main-product-content
+                    width 100%
+                    padding 24rpx 0
+                    display flex
+                    align-items center
+                    justify-content center
+                    flex-direction column
+                    line-height 54rpx
+                    .product-title
+                      width 100%
+                      font-weight bold
+                      text-align center
+                    .rate-range-box
+                      color #EF3737
+                      font-weight bold
+              .indicator
+                bottom 25rpx !important
+            .no-data-view
+              padding 50rpx
+        .service-zone-container
+          padding 0 24rpx
+          margin 28rpx 0 42rpx 0
+          display flex
+          align-items center
+          justify-content center
+          .zone-img
+            width 100%
+        .statistics-container
+          padding 0 24rpx
+          .statistics-main
+            height 420rpx
+            margin 15rpx 0 36rpx 0
+            display flex
+            flex-direction column
+            justify-content space-between
+            image-rendering -moz-crisp-edges
+            image-rendering -o-crisp-edges
+            image-rendering -webkit-optimize-contrast
+            image-rendering crisp-edges
+            -ms-interpolation-mode nearest-neighbor
+            .explain-container
+              width 100%
+              height 35%
+              padding 0 24rpx 0 48rpx
+              box-sizing border-box
+              display flex
+              align-items center
+              justify-content space-between
+              .explain-logo
+                width 50%
+                height 50%
+                image-rendering -moz-crisp-edges
+                image-rendering -o-crisp-edges
+                image-rendering -webkit-optimize-contrast
+                image-rendering crisp-edges
+                -ms-interpolation-mode nearest-neighbor
+              /deep/ u-button
+                .u-button
+                  height 55rpx !important
+                  padding 0 21rpx 0 31rpx !important
+                  background rgba(255, 255, 255, 0.2) !important
+                  border none
+                  .txt
+                    font-size 24rpx
+                    color #FFFFFF
+                    opacity 0.8
+                  .u-icon
+                    .u-icon__icon
+                      position relative
+                      left 4rpx !important
+                      color #FFFFFF !important
+                      opacity 0.8
+                      font-size 28rpx !important
+            .c-line
+              width 100%
+              height 2rpx
+              background rgba(255, 255, 255, 0.1)
+            .statistics-data
+              height 65%
+              padding 24rpx 48rpx 36rpx 48rpx
+              display flex
+              flex-wrap wrap
+              overflow hidden
+              .stats-box
+                width calc((100% / 3))
+                line-height 38rpx
+                display flex
+                flex-direction column
+                justify-content center
+                .value
+                  color #F5DE92
+                  font-size 34rpx
+                  font-weight bold
+                .label
+                  color $text-tips
+                  font-size 24rpx
+              .stats-box:nth-child(2)
+                width calc((100% / 3) * 2) !important
+/* #ifdef H5 || MP-WEIXIN */
+scroll-view ::v-deep ::-webkit-scrollbar
+  display none
+  width 0 !important
+  height 0 !important
+  -webkit-appearance none
+  background transparent
+/* #endif */

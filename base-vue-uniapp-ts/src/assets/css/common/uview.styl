@@ -1,3 +1,56 @@
+// 通用按钮
+.u-pinia-btn
+  .u-button
+    border 1px solid $primary !important
+    background $info-btn !important
+    color $primary !important
+.u-info-btn
+  .u-button
+    border none !important
+    background #F1F1F1 !important
+    color #858585 !important
+.u-primary-btn
+  .u-button
+    border none !important
+    background $primary-btn !important
+    color $white !important
+.u-primary
+  .u-button
+    border none !important
+    background $primary !important
+    color $white !important
+.u-default
+  .u-button
+    border none !important
+    background $default-btn !important
+    color $white !important
+.u-big-btn
+  .u-button
+    height 100rpx !important
+    font-size 36rpx !important
+.u-default-filter-btn
+  .u-button
+    background $white !important
+    border none !important
+    color $text-main !important
+.u-active-filter-btn
+  .u-button
+    border none !important
+    background $active-tab-icon
+    color $info-tips !important
+.default-tab-btn
+  .u-button
+    background $info-btn !important
+    border none !important
+    border 2rpx solid $primary !important
+    color $primary !important
+.active-tab-btn
+  .u-button
+    background $primary-btn !important
+    border none !important
+    color $white !important
+.u-textarea__field
+  color #333333 !important
 // 搜索框
 .search-input
   position relative
@@ -9,14 +62,17 @@
       .u-search__content__input--placeholder, .u-search__content__input
         height 72rpx !important
         background-color #FFFFFF !important
-        padding 0 102rpx 0 0
+        padding 0 124rpx 0 0
+      .u-search__content__close
+        position relative
+        right 124rpx
   .search-btn
     position absolute
     top 54rpx
     right 60rpx
     font-size 27rpx
     font-weight bold
-    color #0182D9
+    color $text-main
     z-index 9
   .search-btn:before
     content ''
@@ -26,15 +82,12 @@
     border-right 4rpx solid #E7E7E7
 // 输入框
 .input-placeholder
-  color #CCCCCC !important
-// tab 页签
-.custom-tab-bar
-  .u-tabbar-item
-    line-height 38rpx
-    .iconfont
-      font-size 36rpx
-    .active-icon
-      color #479AFD
+  color #909399 !important
+// 验证码
+.send-code-btn
+  .u-button
+    border none !important
+    background $primary !important
 // 表单
 .row-form
   :deep(.u-form)
@@ -51,7 +104,7 @@
                       border none !important
                   .u-input__content__subfix-icon
                     .event-info
-                      color #0182D9
+                      color $text-main
               .u-textarea
                 padding 16px 16px 16px 0 !important
                 .u-textarea__count
@@ -67,7 +120,7 @@
                   position absolute
                   right 0
                   top 36rpx
-                  color #0182d9
+                  color $text-main
                   font-size 28rpx
     .require
       .u-form-item
@@ -127,18 +180,21 @@
       bottom constant(safe-area-inset-bottom)
       bottom env(safe-area-inset-bottom)
       .u-tabbar-item
+        line-height 38rpx
         .u-tabbar-item__icon
-          .active-icon
-            .u-icon
-              .u-icon__icon
-                font-size 42rpx !important
-                // color #333333
-                color #479AFD !important
+          .iconfont
+            font-size 38rpx
           .default-icon
-            .u-icon
-              .u-icon__icon
-                font-size 42rpx !important
-                color #ABA9AA !important
+            background-image $default-tab-icon
+            -webkit-background-clip text
+            color transparent
+          .active-icon
+            background-image $active-tab-icon
+            -webkit-background-clip text
+            color transparent
+        .u-tabbar-item__text
+          padding 4rpx 0 0 0
+          font-size 24rpx !important
 .tabs-list
   :deep(.u-tabs)
     margin 30rpx 0
@@ -184,7 +240,6 @@ up-row
             left -18rpx
             color #FF0000
   .bottomBtn
-    flex 1
     margin-top 50rpx
 // up-modal
 .custromModel
@@ -203,6 +258,36 @@ up-row
       padding-top 50rpx
       up-button
         flex 1
+// step步骤条
+.u-steps
+  .u-steps-item
+    .u-steps-item__wrapper
+      .slot-icon
+        width 48rpx
+        height 48rpx
+        border-radius 50%
+        display flex
+        align-items center
+        justify-content center
+      .finish-icon
+        background $primary
+      .error-icon
+        background $white
+        border 2rpx solid $danger
+        color $danger
+      .inactive-icon
+        background $info-btn
+        border 2rpx solid $primary
+        color $text-main
+    .u-steps-item__content
+      margin-left 12px !important
+      .u-text
+        .u-text__value
+          font-size 16px !important
+          line-height initial
+        .u-text__value--tips
+          font-size 12px !important
+          line-height initial
 .text-right
   text-align right
 .text-center

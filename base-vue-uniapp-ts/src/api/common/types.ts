@@ -88,9 +88,13 @@ export interface UiasUserInfoType {
   token: string
   updatedTime: string
   /**
-   * 用户注册ID
+   * 统一认证用户ID
    */
   userId: string
+  /**
+   * 内部认证用户ID
+   */
+  tbUserId: string
   /**
    * 用户头像id
    */
@@ -174,6 +178,7 @@ export interface EntInfoType {
    * 信用授权截止日期
    */
   authorizedEndTime: null
+  finEnterprisesInfoId: string
 }
 
 /**
@@ -192,4 +197,129 @@ export interface AttachmentItem {
    * 附件后缀
    */
   fileExtSuffix: string
+}
+
+/**
+ * 人脸识别认证-个人实名
+ */
+export interface IindividualFace {
+  /**
+   * 获取个人刷脸实名认证短链接
+   */
+  authUrl: string
+  /**
+   * 链接失效时间,毫秒值
+   */
+  expire: string
+  /**
+   * 微信小程序刷脸使用
+   */
+  faceToken: string
+  /**
+   * 实名认证流程Id
+   */
+  flowId: string
+  /**
+   * 获取个人刷脸实名认证长链接
+   */
+  originalUrl: string
+}
+
+/**
+ * 人脸识别认证-识别结果
+ */
+export interface IfaceCheck {
+  /**
+   * 刷脸结果，具体状态：
+   * ING：刷脸进行中
+   * SUCCESS：认证成功
+   * SCAN：已扫描
+   * FAIL：认证失败
+   */
+  status: string
+  /**
+   * 刷脸结果信息
+   */
+  message: string
+}
+
+/**
+ * 授权协议
+ */
+export interface ContractDataType {
+  // 合同ID
+  contractId: string
+  // 合同文件ID
+  documentId: string
+  // 签署令牌
+  token: string
+  // 下载合同文件ID
+  contractFileId: string
+  // 合同文件名称
+  contractFileName: string
+}
+
+/**
+ * 发起电子签章
+ */
+export interface ContractDraftParamType {
+  // 公司名称
+  entName: string
+  // 用户手机号
+  mobile: string
+  // 模板文件文件ID
+  fileId: string
+}
+
+/**
+ * 发起电子签章
+ */
+export interface ContractDraftResultType {
+  // 合同ID
+  contractId: string
+  // 文件ID
+  documentId: string
+}
+
+/**
+ * 获取合同签署令牌
+ */
+export interface ContractTicketParamType {
+  // 合同ID
+  contractId: string
+  // 用户手机号
+  mobile: string
+}
+
+/**
+ * 下载合同
+ */
+export interface ContractDownloadType {
+  // 文件ID
+  documentId: string
+}
+
+/**
+ * 下载合同
+ */
+export interface contractDownloadResultType {
+  // 文件ID
+  fileId: string
+  // 文件名称
+  fileName: string
+}
+
+/**
+ * 产品申请短信模板发送
+ */
+
+export interface SmsProductTemplateParamsType {
+  // 企业名称
+  entName: string
+  // 产品名称
+  productName: string
+  // 操作人
+  name: string
+  // 手机号
+  phone: string
 }

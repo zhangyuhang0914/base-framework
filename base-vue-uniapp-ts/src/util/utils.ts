@@ -1,5 +1,7 @@
 import type { DictListItem } from '@/api/index/types'
 import { loading, toast } from '@/common/uni-utils'
+import { preview } from '@/api/common'
+import imgConstant from '@/common/imgConstant'
 
 /**
  * 本地图片转换base64
@@ -8,9 +10,19 @@ import { loading, toast } from '@/common/uni-utils'
  * @param {*} format 文件后缀
  */
 export const getLocalImgToBase64 = (folder: string, fileName: string, format = 'png') => {
-  let imgUrl = `/static/${folder}/${fileName}.${format}`
-  let base64 = uni.getFileSystemManager().readFileSync(imgUrl, 'base64')
+  const imgUrl = `/static/${folder}/${fileName}.${format}`
+  const base64 = uni.getFileSystemManager().readFileSync(imgUrl, 'base64')
   return `data:image/png;base64,${base64}`
+}
+
+/**
+ * 根据 key 获取字典数据
+ * @param {*} key key
+ * @param {*} list 字典列表
+ */
+export const getDicValue = (key: string, list: DictListItem[]) => {
+  const foundItem = list.find(item => item.value + '' === key + '')
+  return foundItem ? foundItem.name : ''
 }
 
 /**
@@ -37,7 +49,7 @@ export const formatMode = (value: string, arr: DictListItem[], guaranteeModeExtr
     } else {
       value = guaranteeModeExtra
       let modeArr = ''
-      let valueArr = value.split(',')
+      const valueArr = value.split(',')
       for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < valueArr.length; j++) {
           if (valueArr[j] == arr[i].value) {
@@ -162,4 +174,64 @@ export const handleDownloadFile = (url: string, isImg: string, fileType: string)
       loading.hide()
     }
   })
+}
+
+/**
+ * 预览图片
+ * type: 预览图片类型(local:本地;online: 线上)
+ */
+export const previewImg = (key: string, type: string = 'online') => {
+  if (!key) return
+  const keyArr = key.split('_')
+  // 预览本地图片
+  if (type === 'local') {
+    return getLocalImgToBase64(keyArr[1], keyArr[2])
+  }
+  // 预览线上图片
+  if (type === 'online') {
+    return preview(imgConstant[key])
+  }
+}
+
+/**
+ * 节流函数
+ * @param {*} fn 执行函数
+ * @param {*} delay 延迟时间
+ */
+export const throttle = (fn: Function, delay: number = 300, first: boolean = true) => {
+  let timer: any = null
+  return function (this: any, ...params: any) {
+    let self = this // 取debounce执行作用域的this
+    if (first) {
+      fn.apply(self, params)
+      first = false
+      return
+    }
+    if (timer) {
+      return
+    }
+    timer = setTimeout(function () {
+      fn.apply(self, params)
+      timer = null
+    }, delay)
+  }
+}
+
+/**
+ * 防抖函数
+ * @param {*} fn 要执行的方法
+ * @param {*} delay 延迟
+ */
+export const debounce = (fn: Function, delay: number = 300) => {
+  let timer: any // 维护一个 timer
+  return function (this: any) {
+    let self = this // 取debounce执行作用域的this
+    let args = arguments
+    if (timer) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(function () {
+      fn.apply(self, args) // 用apply指向调用debounce的对象，相当于_this.fn(args);
+    }, delay)
+  }
 }

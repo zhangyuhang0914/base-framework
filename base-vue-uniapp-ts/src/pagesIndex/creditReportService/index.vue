@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-view
-  Layout(showTabBar showHeaderBar showBack headerBackground="#DAECFE" statusBackground="#DAECFE" headerTitle="征信服务")
+  Layout(showTabBar showHeaderBar showBack headerBackground="#132B5B" statusBackground="#132B5B" headerColor="#FFFFFF" headerTitle="征信服务")
     template(#main)
       view.layoutMain
         .mainContainer
@@ -21,8 +21,9 @@
 <script setup lang="ts">
 import Layout from '@/components/layout/index.vue'
 import { onMounted, ref } from 'vue'
-import { queryPublishListByType, cmsInfo } from '@/api/policyNews/index'
+import { queryPublishListByType, cmsInfo } from '@/api/index/index'
 import CRich from '@/components/c-rich/index.vue'
+import CAttachment from '@/components/c-attachment/index.vue'
 import { decode } from '@/util/base64'
 import CNoData from '@/components/c-no-data/index.vue'
 let detailInfo = ref({})
@@ -36,8 +37,7 @@ const handleTabType = (item: AnyObject) => {
 let iconList = ['icon-templatemagt', 'icon-task', 'icon-information', 'icon-wenjian1']
 // 获取详情信息
 const getDetailInfo = (id: string) => {
-  let params: AnyObject = {}
-  cmsInfo(params, id)
+  cmsInfo(id)
     .then(value => {
       let data = value.data || {}
       data.content = decode(data.content)

@@ -15,12 +15,16 @@
           width 8rpx
           height 34.44rpx
           border-radius 4rpx 4rpx 4rpx 4rpx
-          background linear-gradient(55deg, #51acff, #397cfb)
+          background linear-gradient(55deg, #F9EBB0, #F2D279)
           position absolute
           top 16rpx
           left 0
     .unbindBtn
       justify-content flex-end
+      :deep(.u-button)
+        border none !important
+        background rgba(76, 95, 153, 0.4) !important
+        color $white !important
 /deep/.c-uniapp-picker
   .c-column-select
     .u-input
@@ -28,3 +32,9 @@
         .u-input__content__field-wrapper
           input
             padding 0 !important
+.account-operation
+  /deep/ .u-form-item
+    .u-form-item__body__left
+      flex 1
+    .u-form-item__body__right
+      flex 0 !important

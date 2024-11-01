@@ -1,6 +1,6 @@
 .finance-institution
   height 100%
-  background-color #DAECFE
+  background-color $background-main
   display flex
   flex-direction column
   .institution-filter-wrap
@@ -17,20 +17,21 @@
         .expand-filter
           padding 4rpx 28rpx 4rpx 32rpx
           margin 0 12rpx 0 0
+          border 2rpx solid #DAE1ED
           background-color #FFFFFF
           border-radius 36rpx
           display flex
           align-items center
           justify-content center
           .txt
-            color #0182D9
+            color $text-main
             font-weight bold
-            font-size 28rpx
+            font-size 30rpx
           /deep/ .u-icon
             .u-icon__icon
               padding 0 0 0 12rpx
-              color #0182D9 !important
-              font-size 28rpx !important
+              color $text-main !important
+              font-size 30rpx !important
               font-weight bold !important
         .close-filter
           padding 4rpx 32rpx
@@ -56,61 +57,62 @@
         .scroll-item
           padding 36rpx
           margin 0 0 36rpx 0
-          border 2rpx solid #D5E6F6
+          border 2rpx solid $info-btn
           border-radius 12rpx
-          background linear-gradient(180deg, #D5E6F6 0%, #FFFFFF 40%)
-          box-shadow 0 0 12rpx 0 #4285f61c
+          box-shadow 0 6rpx 18rpx 0 $box-shadow-main
           box-sizing border-box
           line-height 40rpx
           .institution-box
             display flex
-            align-items center
-            justify-content space-between
-            .product-logo
-              width 160rpx
-              height 160rpx
-              border 2rpx solid #F0F0F0
-              border-radius 12rpx
-              background-color #FFFFFF
+            flex-direction column
+            .product-header
               display flex
               align-items center
-              justify-content center
-              & > image
-                width 100%
-                height 50%
-            .product-info
-              display flex
-              flex-direction column
-              .title
-                padding 0 0 24rpx 0
-                color #303133
-                font-size 36rp
-                font-weight bold
-              .institution-info
+              .product-logo
+                width 220rpx
+                height 90rpx
+                padding 6rpx 12rpx
+                border 2rpx solid #F0F0F0
+                border-radius 12rpx
+                background-color #FFFFFF
                 display flex
-                flex-direction column
                 align-items center
+                justify-content center
+                & > image
+                  width 100%
+              .product-name
+                padding 0 36rpx
+                font-size 36rpx
+                font-weight 500
+            .product-info
+              padding 12rpx 0 0 0
+              display flex
+              justify-content space-between
+              .institution-info
+                flex 1
+                display flex
+                align-items center
+                justify-content space-between
                 .info
                   width 100%
                   display flex
+                  align-items center
                   justify-content flex-start
                   .iconfont
-                    color #DADADA
+                    color $text-main
                     font-size 24rpx
                   .txt
                     color #909399
                     font-size 24rpx
                     padding 0 12rpx
                   .value
-                    color #222222
+                    color $header-title-text
                     font-size 30rpx
                     font-weight bold
             .product-operation
               /deep/ .u-button
                 height 50rpx
                 padding 28rpx
-                background linear-gradient(45deg, #359AEE, #71D2FC)
-                border 2rpx solid #DAECFE
                 border-radius 4rpx
       .no-data-view
         padding 50rpx
@@ -120,7 +122,7 @@
           height 75%
           .u-popup__content
             height 100%
-            background linear-gradient(180deg, #BDDEFF 0%, #FFFFFF 20%)
+            background linear-gradient(180deg, #EAEEFA 0%, #FFFFFF 60%)
             .popup-header
               position relative
               padding 12rpx 0
@@ -160,11 +162,11 @@
                     display flex
                     align-items center
                     .show-txt
-                      color #66b1ff
+                      color $text-main
                     .u-icon
                       .u-icon__icon
                         padding 0 24rpx 0 8rpx
-                        color #66b1ff !important
+                        color $text-main !important
                 .form-check
                   padding 0 0 24rpx 0
                   display flex
@@ -178,9 +180,9 @@
                     text-align center
                     margin 28rpx 16rpx 0 0
                   .is-active
-                    color #1975F1
-                    border 2rpx solid #1975F1
-                    background-color rgba(144, 205, 244, 0.25)
+                    color $text-main
+                    border 2rpx solid $primary
+                    background $info-btn
                   .auto-width
                     width 47%
                 .is-hide

@@ -6,9 +6,9 @@
     .userMain
       height calc(100% + 100rpx)
       background-color #FFFFFF
-      border-left 2rpx solid #D5E6F6
-      border-right 2rpx solid #D5E6F6
-      box-shadow 0 0 13px 0 #4285f61c
+      border-left 2rpx solid #EAEEFA
+      border-right 2rpx solid #EAEEFA
+      box-shadow 0 0 13px 0 rgba(66, 133, 246, 0.11)
       border-radius 12rpx 12rpx 0 0
       position relative
       top -100rpx
@@ -17,15 +17,13 @@
       .topUserInfo
         border-radius 12rpx 12rpx 0 0
         padding 40rpx
-        background-size 100% 100%
+        background linear-gradient(180deg, #FFFFFF, #EAEEFA)
         up-row.rowBox
           :deep(.u-row)
             width auto
         .userInfo
           display flex
           align-items center
-          view
-            color #FFFFFF
           .userImg
             width 100rpx
             height 100rpx
@@ -40,11 +38,13 @@
               height 100%
               border-radius 12rpx
             &.weidelutouxiang
-              background-color #DAECFE
+              background-color #F1F1F1
               text-align center
               line-height 100rpx
               .iconfont
-                color #1975F1
+                background-image $default-tab-icon
+                -webkit-background-clip text
+                color transparent
                 font-size 70rpx
             &.noAvatarUrl
               background-color rgba(0, 0, 0, 0.2)
@@ -57,14 +57,16 @@
                 color #f3f2f2
           .userName
             font-size 32rpx
+            color $header-title-text
           .enterpriseName
-            font-size 24rpx
             margin-top 10rpx
+            font-size 24rpx
+            color $header-title-text
           .loginBtn
             font-size 35rpx
         .totalCount
           border-radius 20rpx 20rpx 20rpx 20rpx
-          background #ffffff
+          background linear-gradient(135deg, #132B5B 0%, #5B6B8A 100%)
           box-shadow 0 0 13rpx 0 #4285f61c
           line-height 42rpx
           padding 20rpx
@@ -74,35 +76,39 @@
           justify-content space-between
           margin-top 40rpx
           .totalName
-            color #909399
+            color #ffffff
           .totalInfo
             display flex
             .applyCotunt
-              color #F3841F
+              color #FCE18C
             .applyUnit
               position relative
               top 2rpx
               padding 0 8rpx
-              color #f3841f
+              color #ffffff
               font-size 24rpx
             .financeCount
-              color #0085FF
+              color #FCE18C
             .financeUnit
               position relative
               top 2rpx
               padding 0 8rpx
-              color #0085FF
+              color #ffffff
               font-size 24rpx
       .cellGroup
-        padding 0 50rpx 50rpx 50rpx
-        :deep(.u-cell__body)
-          padding-left 0
-          padding-right 0
-          .u-cell__value
-            font-size 12px
-            color #909399
-          .iconfont
-            background-image linear-gradient(0deg, #51acff, #397cfb)
-            -webkit-background-clip text
-            color transparent
-            margin-right 21rpx
+        padding 0 0 50rpx 0
+        :deep(.u-cell-group__wrapper)
+          line-height 60rpx
+          .u-cell
+            padding 0 50rpx
+            .u-cell__body
+              padding-left 0
+              padding-right 0
+              .u-cell__value
+                font-size 12px
+                color #909399
+              .iconfont
+                background-image linear-gradient(0deg, #132B5B, #233E73)
+                -webkit-background-clip text
+                color transparent
+                margin-right 21rpx

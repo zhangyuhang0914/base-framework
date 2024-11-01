@@ -1,3 +1,9 @@
+.page-view
+  image-rendering -moz-crisp-edges
+  image-rendering -o-crisp-edges
+  image-rendering -webkit-optimize-contrast
+  image-rendering crisp-edges
+  -ms-interpolation-mode nearest-neighbor
 .main-wrap
   position relative
   height calc(100% - 155rpx)
@@ -11,7 +17,7 @@
     transform translate(-50%, 0)
     padding 28rpx 42rpx
     background #FFFFFF
-    border 8rpx solid #AFDBFF
+    border 8rpx solid #FCE18C
     border-radius 36rpx
     display flex
     align-items center
@@ -72,7 +78,7 @@
               display flex
               justify-content space-between
               .text-btn
-                color #0182D9
+                color $text-main
       .c-footer
         width 100%
         padding 32rpx 48rpx 48rpx 48rpx

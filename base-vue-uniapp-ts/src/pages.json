@@ -17,9 +17,9 @@
       }
     },
     {
-      "path": "pages/policyNews/index",
+      "path": "pages/servicesZone/index",
       "style": {
-        "navigationBarTitleText": "政策新闻",
+        "navigationBarTitleText": "服务专区",
         "navigationStyle": "custom"
       }
     },
@@ -55,6 +55,13 @@
           "path": "forgotPage/index",
           "style": {
             "navigationBarTitleText": "忘记密码",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "webView/index",
+          "style": {
+            "navigationBarTitleText": "外部页面",
             "navigationStyle": "custom"
           }
         }
@@ -98,6 +105,20 @@
             "navigationBarTitleText": "首页热门/金融产品",
             "navigationStyle": "custom"
           }
+        },
+        {
+          "path": "policyNews/index",
+          "style": {
+            "navigationBarTitleText": "政策新闻",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "policyNews/newsDetail/index",
+          "style": {
+            "navigationBarTitleText": "政策新闻详情",
+            "navigationStyle": "custom"
+          }
         }
       ]
     },
@@ -129,13 +150,34 @@
       ]
     },
     {
-      "root": "pagesPolicyNews",
-      "name": "pagesPolicyNews",
+      "root": "pagesServicesZone",
+      "name": "pagesServicesZone",
       "pages": [
         {
-          "path": "newsDetail/index",
+          "path": "commonZone/index",
           "style": {
-            "navigationBarTitleText": "政策新闻详情",
+            "navigationBarTitleText": "通用专区",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "regionMarket/index",
+          "style": {
+            "navigationBarTitleText": "区域性股权市场",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "regionMarket/regionMarketDetail/index",
+          "style": {
+            "navigationBarTitleText": "区域性股权市场",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "regionMarket/policyFileDetail/index",
+          "style": {
+            "navigationBarTitleText": "区域性股权市场",
             "navigationStyle": "custom"
           }
         }
@@ -146,9 +188,30 @@
       "name": "pagesUser",
       "pages": [
         {
-          "path": "finance/index",
+          "path": "financeRecord/index",
           "style": {
             "navigationBarTitleText": "融资记录",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "financeRecord/financeRecordDetail/index",
+          "style": {
+            "navigationBarTitleText": "融资记录详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "supplyChainFinanceRecord/index",
+          "style": {
+            "navigationBarTitleText": "供应链金融需求",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "supplyChainFinanceRecord/supplyChainFinanceRecordDetail/index",
+          "style": {
+            "navigationBarTitleText": "供应链金融需求详情",
             "navigationStyle": "custom"
           }
         },
@@ -188,9 +251,64 @@
           }
         },
         {
+          "path": "questionDirectory/index",
+          "style": {
+            "navigationBarTitleText": "常见问题",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "questionDirectory/questionContent/index",
+          "style": {
+            "navigationBarTitleText": "常见问题详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "about/index",
           "style": {
             "navigationBarTitleText": "关于鄂融通",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pagesSupplyChain",
+      "name": "pagesSupplyChain",
+      "pages": [
+        {
+          "path": "index/index",
+          "style": {
+            "navigationBarTitleText": "供应链金融服务中心",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "productDetail/index",
+          "style": {
+            "navigationBarTitleText": "产品详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "productApply/index",
+          "style": {
+            "navigationBarTitleText": "产品申请",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "institutionDetail/index",
+          "style": {
+            "navigationBarTitleText": "机构详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "coreEnterpriseDetail/index",
+          "style": {
+            "navigationBarTitleText": "核心企业详情",
             "navigationStyle": "custom"
           }
         }
@@ -211,8 +329,8 @@
         "text": "金融产品"
       },
       {
-        "pagePath": "pages/policyNews/index",
-        "text": "政策新闻"
+        "pagePath": "pages/servicesZone/index",
+        "text": "服务专区"
       },
       {
         "pagePath": "pages/user/index",
@@ -233,6 +351,13 @@
     "backgroundTextStyle": "dark",
     // 是否自定义顶部导航栏(状态栏) 自定义 custom、默认显示 default
     "navigationStyle": "custom"
+  },
+  "plugins": {
+    // 契约锁插件
+    "qyssdk-plugin": {
+      "version": "1.2.20",
+      "provider": "wxaf8f505686ddf66a"
+    }
   },
   "easycom": {
     // 是否自定义组件库

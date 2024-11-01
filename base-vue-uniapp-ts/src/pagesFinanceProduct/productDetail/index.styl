@@ -1,12 +1,12 @@
 .layout-main
   height 100%
   padding-top 120rpx
-  background-color #DAECFE
+  background $background-main
   line-height 32rpx
   .main-container
     height calc(100% - 100rpx)
     padding 0 25rpx
-    background-color #FFFFFF
+    background $white
     border-radius 30rpx
     .product-detail-main
       height calc(100% + 100rpx)
@@ -17,7 +17,6 @@
       .scroll-view
         height 100%
         .detail-main
-          border 2rpx solid #D5E6F6
           box-shadow 0 0 24rpx 0 #4285f61c
           .header-detail
             height 180rpx
@@ -26,6 +25,7 @@
             display flex
             align-items center
             box-sizing border-box
+            background $active-tab-icon
             image-rendering -moz-crisp-edges
             image-rendering -o-crisp-edges
             image-rendering -webkit-optimize-contrast
@@ -33,20 +33,20 @@
             -ms-interpolation-mode nearest-neighbor
             .logo-img
               width 160rpx
-              height 80rpx
+              height 100rpx
               background-repeat no-repeat
               background-size 100%
             .header-title-box
               padding 0 0 0 24rpx
               line-height 48rpx
               .title
-                color #FFFFFF
                 font-weight bold
                 font-size 32rpx
               .institutions-name
-                color #FFFFFF
                 font-size 24rpx
           .content-main
+            border 2rpx solid #D5E6F6
+            border-top none
             background-color #FFFFFF
             .loan-data
               padding 36rpx 32rpx 0 32rpx
@@ -57,7 +57,7 @@
                 margin 0 0 24rpx 0
                 line-height 36rpx
                 .value
-                  color #f3841f
+                  color $text-main
                   font-size 30rpx
                   font-weight bold
                 .label
@@ -65,7 +65,7 @@
                   font-size 24rpx
               .loan-limit-box
                 .value
-                  color #dd3c32 !important
+                  color $danger !important
           .product-info
             .customer-desc
               padding 12rpx 32rpx 24rpx 32rpx
@@ -78,9 +78,14 @@
               font-size 28rpx
               line-height 42rpx
         .footer-operation
-          padding 0 0 36rpx 0
-          /deep/ .u-button
-            height 96rpx !important
-            margin 36rpx 0 0 0 !important
-            font-size 32rpx !important
-            font-weight bold
+          padding 48rpx 12rpx
+          display flex
+          justify-content space-between
+          align-items center
+          .operation-box
+            width 48%
+            height 78rpx
+            display flex
+            align-items center
+            justify-content center
+            border-radius 45rpx

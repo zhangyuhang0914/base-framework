@@ -1,10 +1,10 @@
 <template lang="pug">
 .page-view
-  Layout(showTabBar showHeaderBar showBack headerBackground="#DAECFE" statusBackground="#DAECFE" headerTitle="合作机构")
+  Layout(showTabBar showHeaderBar showBack headerBackground="#132B5B" statusBackground="#132B5B" headerColor="#FFFFFF" headerTitle="合作机构")
     template(#main)
       .finance-institution
         .institution-filter-wrap
-          CustomTitle(title="金融机构筛选")
+          CustomTitle(title="金融机构筛选" headerColor="#FFFFFF")
           .filter-main
             span.txt {{ '请选择 地区/机构' }}
             .operation-btn
@@ -25,10 +25,11 @@
               //- # 后期优化-数据太多使用虚拟列表
               .scroll-item(v-for="(item, index) in listData" :key="index")
                 .institution-box
-                  .product-logo
-                    img(:src="item.logoUrl" alt="")
+                  .product-header
+                    .product-logo
+                      image(:src="item.logoUrl" mode="widthFix" :lazy-load="true" alt="")
+                    .product-name {{ item.bankName }}
                   .product-info
-                    .title {{ item.bankName }}
                     .institution-info
                       .info
                         i.iconfont.icon-fuwuwangdian
@@ -38,8 +39,8 @@
                         i.iconfont.icon-chanpin
                         .txt {{ '发布产品' }}
                         .value {{ item.productNum }}
-                  .product-operation
-                    u-button(type="primary" @click="institutionLook(item)") {{ '查看机构' }}
+                    .product-operation
+                      u-button.u-primary-btn(type="primary" @click="institutionLook(item)") {{ '查看机构' }}
               u-loadmore(:status="loadMoreStatus" @loadmore="getMore")
             .no-data-view(v-else)
               CNoData
@@ -73,8 +74,8 @@
                     :class="{ 'is-active': activeClass(item.bankName, item.code, 'productBank'), 'auto-width': item.bankName.length > 5 }"
                   ) {{ item.bankName }}
             .popup-footer
-              u-button.reset-btn(type="info" shape="circle" @click="resetHandle") {{ '重 置' }}
-              u-button.confirm-btn(type="primary" shape="circle" @click="confirmHandle") {{ getInstitutionCount }}
+              u-button.reset-btn.u-info-btn(type="info" shape="circle" @click="resetHandle") {{ '重 置' }}
+              u-button.confirm-btn.u-primary-btn(type="primary" shape="circle" @click="confirmHandle") {{ getInstitutionCount }}
 </template>
 
 <script lang="ts">

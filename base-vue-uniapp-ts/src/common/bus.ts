@@ -4,6 +4,14 @@ export const TEST_EVENT_BUS = 'TEST_EVENT_BUS'
 export const REFRESH = 'REFRESH'
 // 政策新闻类型
 export const POLICYTYPE = 'POLICYTYPE'
+// 刷新收藏状态
+export const REFRESH_COLLECTION = 'REFRESH_COLLECTION'
+// 全局检索
+export const GLOBAL_SEARCH = 'GLOBAL_SEARCH'
+// 融资记录状态刷新
+export const FINANCE_RECORD_STATUS_REFRESH = 'FINANCE_RECORD_STATUS_REFRESH'
+// 供应链金融需求状态刷新
+export const SUPPLY_CHAIN_FINANCE_RECORD_STATUS_REFRESH = 'SUPPLY_CHAIN_FINANCE_RECORD_STATUS_REFRESH'
 class Bus {
   list: { [key: string]: Array<Function> }
   private static instance: Bus = new Bus()

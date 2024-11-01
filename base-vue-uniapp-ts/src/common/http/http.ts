@@ -4,7 +4,6 @@ import type { ApiResponse, httpRequestConfig, UniApiResponse } from './types'
 import { getStorage } from '@/util/storage'
 import { userCommonStoreHook } from '@/store/modules/common'
 import { loading } from '@/common/uni-utils'
-import { nextTick } from 'vue'
 
 // 获取接口根路径
 const isProd = import.meta.env.MODE === 'production'
@@ -30,30 +29,32 @@ class Request {
 
   // 请求拦截器
   interceptorRequest(options: httpRequestConfig): httpRequestConfig {
+    let header = JSON.parse(JSON.stringify(options.header))
     // 提交表单类型
     if (options.isForm) {
-      options.header['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+      header['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
       delete options.isForm
     }
     // 提交上传类型
     if (options.formUpload) {
-      options.header['Content-Type'] = 'multipart/form-data; charset=UTF-8'
+      header['Content-Type'] = 'multipart/form-data; charset=UTF-8'
       delete options.formUpload
     }
     // 添加 Cookie
     if (getStorage('JSESSIONID')) {
-      options.header['Cookie'] = `JSESSIONID=${getStorage('JSESSIONID') || ''}`
+      header['Cookie'] = `JSESSIONID=${getStorage('JSESSIONID') || ''}`
     }
     // 添加 token
     if (userCommonStoreHook().token) {
-      options.header['token'] = userCommonStoreHook().token
+      header['token'] = userCommonStoreHook().token
     } else {
-      options.header['token'] && delete options.header['token']
+      header['token'] && delete header['token']
     }
     // 设置请求路径
     if (!options.url.startsWith('http') && !options.url.startsWith('https')) {
       options.url = BASE_PATH[options.apiType || 'BASE_URL'] + options.url
     }
+    options.header = header
     return options
   }
 
@@ -87,14 +88,12 @@ class Request {
             } else {
               if (!options.noShowMsg) {
                 setTimeout(() => {
-                  if (data.msg && typeof data.msg === 'string' && data.msg.length > 25) {
-                    uni.showModal({
-                      title: '提示',
-                      content: data.msg || '',
-                      showCancel: false
-                    })
+                  if (data.msg && typeof data.msg === 'string') {
+                    Request.getInstance().showMessage(data.msg)
+                  } else if (data.bz && typeof data.bz === 'string') {
+                    Request.getInstance().showMessage(data.bz)
                   } else {
-                    uni.$u.toast(data.msg || '')
+                    Request.getInstance().showMessage(data.msg || data.bz || '')
                   }
                 }, 0)
               }
@@ -162,6 +161,19 @@ class Request {
         }
       })
     })
+  }
+
+  // 提示弹窗
+  public showMessage(content: string, title: string = '提示') {
+    if (content.length > 25) {
+      uni.showModal({
+        title: title,
+        content: content,
+        showCancel: false
+      })
+    } else {
+      uni.$u.toast(content)
+    }
   }
 }
 

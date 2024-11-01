@@ -2,7 +2,7 @@
 .page-view
   .finance-product-wrap
     .search-input
-      up-search(v-model="searchValue" placeholder="请输入产品名称" @search="searchHandle" :show-action="false" shape="square" :animation="true" :clearabled="false")
+      up-search(v-model="searchValue" placeholder="请输入产品名称" @search="searchHandle" @clear="searchHandle" :show-action="false" shape="square" :animation="true" clearabled)
       .search-btn(@click="searchHandle") {{ '搜索' }}
     .product-scroll-content
       .product-filter(@click="openFilter")
@@ -19,39 +19,32 @@
           //- # 后期优化-数据太多使用虚拟列表
           .scroll-item(v-for="(item, index) in listData" :key="index")
             .product-box(@click="productDetailClick(item)")
-              .product-tips
-                i.iconfont.icon-shigong
-                .title {{ item.companySource }}
               .product-header
-                img(:src="item.logoUrl" alt="")
-                .title {{ item.name }}
+                .img-logo
+                  image(:src="item.logoUrl" mode="widthFix" :lazy-load="true" alt="")
+                .product-title
+                  .name.text-line2-overflow {{ item.name }}
+                  .source {{ item.companySource }}
               .product-content
                 .product-data
+                  .rate-range-box.c-column
+                    .value {{ item.rateRange }}
+                    .label {{ '参考利率' }}
                   .loan-limit-box.c-column
                     .value {{ item.loanLimit }}
                     .label {{ '贷款额度' }}
-                  .rate-range-box.c-column
-                    .value {{ item.rateRange }}
-                    .label {{ '参考利率(年化)' }}
                   .loan-period-box.c-column
                     .value {{ item.loanPeriod }}
                     .label {{ '贷款期限' }}
-                .product-info
-                  .guarantee-mode-box.c-row
-                    .label {{ '担保方式：' }}
-                    .value(v-if="item.guaranteeMode + ''") {{ formatMode(item.guaranteeMode, guaranteeModeList, item.guaranteeModeExtra) }}
-                  //- .product-source-box.c-row
-                  //-   .label {{ item.productSource }}
               .product-footer
-                .product-tag
-                  .tag-box(v-for="(tagItem, index) in getTabName(item)" :key="index" :class="tagItem.class")
-                    .tag-name {{ tagItem.tag }}
-                .product-operation
-                  .operation-box(@click.stop="collectionClick(item)")
+                .guarantee-mode-left
+                  .mode-value(v-if="item.guaranteeMode + ''") {{ '担保方式：' + formatMode(item.guaranteeMode, guaranteeModeList, item.guaranteeModeExtra) }}
+                .operation-box-right
+                  .operation-box.collection-btn(@click.stop="collectionClick(item)")
                     i.iconfont(:class="item.isCollect ? 'icon-shouzanghou' : 'icon-shouzang'")
-                  .operation-box(@click.stop="applyClick(item)")
+                  .operation-box.apply-btn(@click.stop="applyClick(item)")
                     i.iconfont.icon-shenqing
-                  .operation-box(@click.stop='handleCompare(item)')
+                  .operation-box.compare-btn(@click.stop='handleCompare(item)')
                     i.iconfont.icon-duibi
           u-loadmore(:status="loadMoreStatus" @loadmore="getMore")
         .no-data-view(v-else)
@@ -112,14 +105,16 @@
               :class="{ 'is-active': activeClass(item.name, item.value, 'productMainType'), 'auto-width': item.name.length > 5 }"
             ) {{ item.name }}
         .footer-opeation
-          u-button.close-btn(type="info" shape="circle" @click="resetHandle") {{ '重 置' }}
-          u-button.confirm-btn(type="primary" shape="circle" @click="confirmHandle") {{ '确 定' }}
+          .operation-btn.info-btn(type="info" shape="circle" @click="resetHandle")
+            span.value {{ '重 置' }}
+          .operation-btn.primary-btn(type="primary" shape="circle" @click="confirmHandle")
+            span.value {{ '确 定' }}
       LoginValidateModal(ref='loginValidateRef' :type='loginValidateType')
       CProductContrast(ref="CProductContrastRef")
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, type Ref, onMounted, computed, watch } from 'vue'
+import { defineComponent, ref, reactive, type Ref, computed, watch, onMounted } from 'vue'
 import Layout from '@/components/layout/index.vue'
 import CustomTitle from '@/components/custom-title/index.vue'
 import CNoData from '@/components/c-no-data/index.vue'
@@ -127,15 +122,16 @@ import LoginValidateModal from '@/pages/user/loginValidateModal/index.vue'
 import CProductContrast from '@/components/c-product-contrast/index.vue'
 import type { PageItem, ProductQueryParams } from './type'
 import { fileDownload } from '@/api/index'
-import { areaInList, bankFindAll, collectionSave, productInfoList } from '@/api/financeProduct/index'
+import { areaInList, bankFindAll, productInfoList } from '@/api/financeProduct/index'
 import { userCommonStoreHook } from '@/store/modules/common'
 import { formatMode, joinArr } from '@/util/utils'
 import type { DictListItem } from '@/api/index/types'
-import type { AreaInListItem, BankListItem, CollectionParamsType, ProductListItem } from '@/api/financeProduct/types'
+import type { AreaInListItem, BankListItem, ProductListItem } from '@/api/financeProduct/types'
 import type { ApiResponse } from '@/common/http/types'
 import { linkJump } from '@/common/common'
 import { setProductContrast, productApplyHandle, handleJudgeCollection } from '@/hooks/common'
 import Bus, { REFRESH } from '@/common/bus'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 
 export default defineComponent({
   name: 'FinanceProduct',
@@ -228,7 +224,7 @@ export default defineComponent({
     // 获取产品类型
     const getProductType = async () => {
       const result: DictListItem[] = await commonStoreHook.getDict('product_main_type')
-      productTypeList.value = result
+      productTypeList.value = result.filter(item => item.value.indexOf('H') === -1)
     }
     // 滚动到底部刷新
     const scrolltolower = () => {
@@ -260,6 +256,7 @@ export default defineComponent({
         listData.value = []
       }
       let params = {
+        dockingFlag: '0', // 过滤市州产品
         isApplets: '1',
         page: page.currentPage,
         limit: page.pageSize,
@@ -269,7 +266,7 @@ export default defineComponent({
         bank_id: joinArr(queryForm.value.bankId), // 金融机构
         city_code: joinArr(queryForm.value.cityCode), // 所在区域
         name: searchValue.value, // 产品名称
-        productMainType: joinArr(queryForm.value.productMainType), // 产品类型
+        productMainType: joinArr(queryForm.value.productMainType, '|'), // 产品类型
         fin_institutions_info_id: props.institutionsId, // 产品机构id
         sidx: 'pubdate',
         order: 'desc'
@@ -280,7 +277,7 @@ export default defineComponent({
           let data = result.page
           data.list.map((item: ProductListItem) => {
             item['logoUrl'] = item.logoFileId && fileDownload(item.logoFileId)
-            item['companySource'] = '本产品由' + item.institutionsName + '提供'
+            item['companySource'] = item.institutionsName + '提供'
             item['loanPeriod'] = item.loanPeriodBegin === 0 ? item.loanPeriodEnd + '个月及以下' : item.loanPeriodBegin + '-' + item.loanPeriodEnd + '个月'
             item['rateRange'] = item.rateRangeBegin + '%-' + item.rateRangeEnd + '%'
             item['loanLimit'] = item.loanLimitBegin + '~' + item.loanLimitEnd + '万元'
@@ -318,6 +315,7 @@ export default defineComponent({
       if (!jumpLoginFn()) return
       handleJudgeCollection('1', item, (isCollect: boolean) => {
         item.isCollect = isCollect
+        Bus.$emit(REFRESH, true)
       })
     }
     // 产品申请
@@ -431,7 +429,12 @@ export default defineComponent({
       filterShow.value = false
     }
     const productDetailClick = (item: ProductListItem) => {
-      linkJump(`/pagesFinanceProduct/productDetail/index?id=${item.id}`)
+      linkJump(`/pagesFinanceProduct/productDetail/index?id=${item.id}&isCollect=${item.isCollect}`)
+    }
+    // 接收父组件传过来的搜索值
+    const propsSearchHandle = (keyword: string) => {
+      searchValue.value = keyword
+      searchHandle()
     }
     watch(
       () => filterShow.value,
@@ -441,9 +444,20 @@ export default defineComponent({
         }
       }
     )
+    context.expose({ propsSearchHandle })
+    // 隐藏小程序后会自动销毁
+    onShow(() => {
+      // 刷新
+      Bus.$on(REFRESH, (flag: boolean) => {
+        // 获取产品列表
+        getListData(true)
+      })
+    })
     onMounted(() => {
       // 获取产品列表
-      getListData()
+      getListData(true)
+    })
+    onLoad(() => {
       // 获取担保方式
       getGuaranteeMode()
       // 获取全部金融机构
@@ -452,11 +466,6 @@ export default defineComponent({
       getAreaInData()
       // 获取产品类型
       getProductType()
-      // 刷新
-      Bus.$on(REFRESH, (flag: boolean) => {
-        // 获取产品列表
-        getListData(true)
-      })
     })
     return {
       listData,

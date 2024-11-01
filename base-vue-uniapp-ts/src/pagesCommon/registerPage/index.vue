@@ -1,10 +1,10 @@
 <template lang="pug">
-.page-view(:style="{ background: `url(${preview(imgConstant['wx_login_header'])})`, backgroundSize: '100%', backgroundRepeat: 'no-repeat' }")
-  Layout(showHeaderBar showBack)
+.page-view(:style="{ background: `url(${previewImg('wx_login_header')})`, backgroundSize: '100% 20%', backgroundRepeat: 'no-repeat' }")
+  Layout(showHeaderBar showBack headerColor="#FFFFFF")
     template(#main)
       .main-wrap
         .logo-box
-          img(:src="preview(imgConstant['wx_login_logo'])")
+          img(:src="previewImg('wx_login_logo')")
         .scroll-main
           scroll-view.scroll-view(scroll-y)
             .container
@@ -22,15 +22,6 @@
                       template(#suffix)
                         span.suffix-right(@click="selectDateClick") {{ '选择' }}
                     .mask-click(@click="selectDateClick")
-                    u-datetime-picker(
-                      :show="datePickerShow"
-                      v-model="datePicker"
-                      mode="date"
-                      :maxDate="Date.now()"
-                      :minDate="Number(new Date('1900-01-01'))"
-                      closeOnClickOverlay
-                      @cancel="datePickerShow = false"
-                      @confirm="onDatePickerConfirm")
                   u-form-item(prop="idValidityPeriod")
                     span.item-label {{ '证件有效期' }}
                     CUniappPicker(ref="idValidityPeriodRef" :defaultName="basicForm.idValidityPeriodName" :columns="selectData" keyName="text" placeholder="请选择" @confirm="onChangeSelect")
@@ -41,7 +32,7 @@
                     span.item-label {{ '验证码' }}
                     u-input.captcha-input(v-model="basicForm.vericode" type="number" border="none" placeholder="请输入短信验证码")
                       template(#suffix)
-                        u-button(type="primary" :disabled="sendBtnDisabled" @click="sendPhoneCode") {{ sendBtnText }}
+                        u-button.send-code-btn(type="primary" :disabled="sendBtnDisabled" @click="sendPhoneCode") {{ sendBtnText }}
                 u--form(ref="passwordFormRef" v-else :model="passwordForm")
                   u-form-item(prop="password")
                     span.item-label {{ '密码设置' }}
@@ -50,23 +41,31 @@
                     span.item-label {{ '确认密码' }}
                     u--input(v-model="passwordForm.confirmPassword" password border="none" placeholder="请再次输入密码")
                 .footer-opeartion
-                  u-button.larger-btn(type="primary" v-if="step === 0" @click="nextStepHandle") {{ '下一步' }}
-                  u-button.larger-btn(type="primary" v-if="step === 1" @click="prevStepHandle") {{ '上一步' }}
-                  u-button.larger-btn(type="primary" v-if="step === 1" @click="registerFn") {{ '注 册' }}
+                  u-button.larger-btn.u-primary(type="primary" v-if="step === 0" @click="nextStepHandle") {{ '下一步' }}
+                  u-button.larger-btn.u-info-btn(type="primary" v-if="step === 1" @click="prevStepHandle") {{ '上一步' }}
+                  u-button.larger-btn.u-primary(type="primary" v-if="step === 1" @click="registerFn") {{ '注 册' }}
               .c-footer
                 .header-tips
                   p.txt {{ '温馨提示：' }}
                   p.txt {{ '注册成功后将与湖北省统一身份认证平台实现账号数据互通。' }}
                 .footer-tips
                   p.txt {{ '本服务由湖北省统一身份认证平台提供' }}
+          u-datetime-picker(
+            :show="datePickerShow"
+            v-model="datePicker"
+            mode="date"
+            :maxDate="Date.now()"
+            :minDate="Number(new Date('1900-01-01'))"
+            closeOnClickOverlay
+            @cancel="datePickerShow = false"
+            @confirm="onDatePickerConfirm")
 </template>
 
 <script lang="ts">
 import { defineComponent, getCurrentInstance, nextTick, onMounted, reactive, ref, type Ref } from 'vue'
 import Layout from '@/components/layout/index.vue'
 import CUniappPicker from '@/components/c-uniapp-picker/index.vue'
-import { preview } from '@/api/common/index'
-import imgConstant from '@/common/imgConstant'
+import { previewImg } from '@/util/utils'
 import { useCaptchaCode } from '@/hooks/common'
 import { checkIdCard, validateMobile, validatePassword } from '@/util/validator'
 import { uiasRegisterUserInfoStep } from '@/api/common/index'
@@ -238,8 +237,7 @@ export default defineComponent({
       basicFormRef.value?.setRules(basicFormRules)
     })
     return {
-      preview,
-      imgConstant,
+      previewImg,
       step,
       sendBtnText,
       sendBtnDisabled,

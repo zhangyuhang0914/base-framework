@@ -1,11 +1,11 @@
 <template lang="pug">
-.custom-bar(v-if="showHeaderBar" :style="{ height: customBarHeight + 'px' }" :class="showTop ? 'active-stick' : 'default-stick'")
+.custom-bar(v-if="showHeaderBar" :style="{ height: customBarHeight + 'px' }" :class="showTop ? 'active-absolute' : 'default-stick'")
   .custom-bar-status(:style="{ height: statusBarHeight + 'px', background: statusBackground }")
   .custom-bar-header(:style="{ height: headerBarHeight + 'px', background: headerBackground }")
     .c-header-box
-      u-icon.icon-jiantou-zuo(name="arrow-left" v-if="showBack" @click="handleGoBack")
+      u-icon.icon-jiantou-zuo(name="arrow-left" v-if="showBack" :color="headerColor" @click="handleGoBack")
       //- i.iconfont.icon-jiantou-zuo(v-if="showBack" @click="$emit('goBack')")
-      .c-title {{ headerTitle }}
+      .c-title(:style="{ color: headerColor }") {{ headerTitle }}
 </template>
 
 <script>
@@ -49,6 +49,10 @@ export default defineComponent({
     headerBackground: {
       type: String,
       default: 'transparent'
+    },
+    headerColor: {
+      type: String,
+      default: '#333'
     },
     goBack: {
       type: Function

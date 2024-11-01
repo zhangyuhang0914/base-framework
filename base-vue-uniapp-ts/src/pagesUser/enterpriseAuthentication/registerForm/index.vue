@@ -3,7 +3,7 @@
   up-form(labelPosition="left" labelWidth='100' :model="step1Form" ref='step1FormRef')
     .tips
       view.title {{'法人信息'}}
-      up-tag(text="使用当前登录用户信息" bgColor='#E5F0FF' color='#3798D6' borderColor='transparent' @click='step1UseUserInfo')
+      up-tag(text="使用当前登录用户信息" bgColor='#EAEEFA' color='#4C5F99' borderColor='#DEEEFE' @click='step1UseUserInfo')
     up-form-item.require(label="法人姓名" prop="legalName")
       up-input(v-model.trim="step1Form.legalName" border='none' placeholder="请输入法人姓名")
     up-form-item.require(label="证件类型" prop="cardType")
@@ -32,7 +32,7 @@
   up-form(labelPosition="left" labelWidth='100' :model="step3Form" ref='step3FormRef')
     .tips
       view.title {{'联系人信息'}}
-      up-tag(text="使用当前登录用户作为联系人" bgColor='#E5F0FF' color='#3798D6' borderColor='transparent' @click='step3UseUserInfo')
+      up-tag(text="使用当前登录用户作为联系人" bgColor='#EAEEFA' color='#4C5F99' borderColor='#DEEEFE' @click='step3UseUserInfo')
     up-form-item.require(label="联系人姓名" prop="agentName")
       up-input(v-model.trim="step3Form.agentName" border='none' placeholder="请输入联系人姓名")
     up-form-item.require(label="联系人身份证号" prop="agentCard" labelWidth='140')
@@ -42,20 +42,15 @@
     up-form-item.require(label="输入验证码" prop="vericode")
       up-input(v-model.trim="step3Form.vericode" border='none' placeholder="请输入验证码" :customStyle="{marginRight: '20rpx'}")
       template(#right)
-        u-button(type="primary" :disabled="sendBtnDisabled" @click="sendPhoneCode") {{ sendBtnText }}
-    //- up-form-item.require(label="授权协议" prop='licenseId')
-    //-   LicenseConfirm(:confirmData='confirmData' @onLicenseConfirm='onLicenseConfirm')
-    //- up-form-item.require(label="授权协议文件上传" labelWidth='400' prop='fileId')
-    //-   .formItemH50
-    //- UploadImage(@onChooseImage='onChooseImage')
-view.bottomBtn
-  up-button(
+        u-button.u-primary(type="primary" :disabled="sendBtnDisabled" @click="sendPhoneCode" :customStyle="{background: 'rgba(76, 95, 153, 0.4)', color: '#ffffff', border: 'none'}") {{ sendBtnText }}
+view.bottomBtn.u-big-btn
+  up-button.u-primary(
     v-show='currentStep > 1'
     type="primary"
     :customStyle="{width: '98%', marginRight: '2%'}"
     text="上一步"
     @click="handlePrev")
-  up-button(
+  up-button.u-primary(
     type="primary"
     :customStyle="{width: currentStep === 1 ? '100%' : '98%', marginLeft: currentStep === 1 ? 0 : '2%'}"
     :text="currentStep === 3 ? '注册并绑定' : '下一步'"
@@ -65,8 +60,6 @@ view.bottomBtn
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
 import { userCommonStoreHook } from '@/store/modules/common'
-// 授权协议
-import LicenseConfirm from '@/components/licenseConfirm/index.vue'
 // 授权协议文件上传
 import UploadImage from '@/components/uploadImage/index.vue'
 import { useCaptchaCode } from '@/hooks/common'
@@ -76,7 +69,7 @@ import myEncrypt from '@/util/encrypt'
 import { queryByEntName, regEntInfoStep, regEntInfoStepOne, regEntInfoStepTwo } from '@/api/user'
 import { goBack } from '@/common/common'
 import { toast } from '@/common/uni-utils'
-import type { UiasUserInfoType } from '@/api/common/types'
+import type { EntInfoType, UiasUserInfoType } from '@/api/common/types'
 import { checkIdCard, validateMobile, validatePassword } from '@/util/validator'
 import type { ApiResponse } from '@/common/http/types'
 const { sendBtnText, sendBtnDisabled, sendCode } = useCaptchaCode(90)
@@ -137,9 +130,7 @@ let step3Form = ref({
   agentName: '',
   agentCard: '',
   agentMobile: '',
-  vericode: '',
-  licenseId: '',
-  fileId: ''
+  vericode: ''
 })
 const step3FormRules = reactive({
   agentName: [{ required: true, message: '联系人姓名不能为空', trigger: 'blur' }],
@@ -151,9 +142,7 @@ const step3FormRules = reactive({
     { required: true, message: '联系人手机号码不能为空', trigger: 'blur' },
     { validator: validateMobile, trigger: 'blur' }
   ],
-  vericode: [{ required: true, message: '验证码不能为空', trigger: 'blur' }],
-  licenseId: [{ required: true, message: '必须确认授权协议', trigger: 'blur' }],
-  fileId: [{ required: true, message: '授权协议文件不能为空', trigger: 'blur' }]
+  vericode: [{ required: true, message: '验证码不能为空', trigger: 'blur' }]
 })
 let cardTypeDic = ref([])
 let cardType_text = ref()
@@ -266,11 +255,9 @@ const handleNext = async () => {
         password: myEncrypt(step1Form.value.password),
         userid: uiasUserInfo.userId,
         type: 1,
-        authorizedOrgsCode: '91420000MAC45WE57R', // 被授权方统一社会信用代码
-        authorizedOrgsName: '湖北省征信有限公司' // 被授权方企业名称
+        authorizedOrgsCode: '', // 被授权方统一社会信用代码
+        authorizedOrgsName: '' // 被授权方企业名称
       })
-      delete params.licenseId
-      delete params.fileId
       regEntInfoStep(params).then(value => {
         uni.showModal({
           title: '提示',
@@ -280,17 +267,10 @@ const handleNext = async () => {
             goBack()
           }
         })
-        userCommonStoreHook().setEntInfo(value.data)
+        userCommonStoreHook().setEntInfo(value.data as EntInfoType)
       })
     }
   }
-}
-// 确认授权对象
-const onLicenseConfirm = (licenseId: string) => {
-  step3Form.value.licenseId = licenseId
-  step3FormRef.value.validateField(['licenseId'], async (valid: AnyObject) => {
-    if (valid.length) return
-  })
 }
 // 上传盖章协议，仅支持上传图片
 const onChooseImage = (fileId: string) => {

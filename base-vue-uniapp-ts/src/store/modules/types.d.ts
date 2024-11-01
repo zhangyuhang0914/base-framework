@@ -2,6 +2,11 @@ import type { DictListItem } from '@/api/index/types'
 import type { UiasUserInfoType, EntInfoType } from '@/api/common/types'
 import type { ProductListItem } from '@/api/financeProduct/types'
 
+interface IfaceIntervalTime {
+  userId: string
+  time: number
+}
+
 export interface CommonType {
   token: string
   tabBar: TabBarType
@@ -10,6 +15,8 @@ export interface CommonType {
   uiasUserInfo: UiasUserInfoType
   entInfo: EntInfoType
   productContrastList: ProductListItem[]
+  flowId: string
+  faceIntervalTime: IfaceIntervalTime
 }
 
 interface TabBarType {

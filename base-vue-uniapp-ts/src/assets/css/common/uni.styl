@@ -1,14 +1,23 @@
+// 首页轮播
+.carousel-container
+  .u-swiper
+    height 400rpx !important
+    .u-swiper__wrapper
+      height 400rpx !important
+      .u-swiper__wrapper__item
+        .u-swiper__wrapper__item__wrapper
+          .u-swiper__wrapper__item__wrapper__image
+            height 400rpx !important
 // swiper 轮播
 .hot-recommendation
   .swiper
-    height 466rpx
-    margin 12rpx 0 0 0
-    box-shadow 0 0 28rpx 0 rgba(66, 133, 246, 0.11)
-.finance-products
+    position relative
+    bottom 14rpx
+    height 265rpx
+    box-shadow 0 6rpx 18rpx 0 $box-shadow-main
+.main-type-product
   .swiper
-    height 436rpx
-    margin 12rpx 0 0 0
-    box-shadow 0 0 28rpx 0 rgba(66, 133, 246, 0.11)
+    height 360rpx
 // 下拉框
 .uni-stat__select
   .uni-select
@@ -19,6 +28,6 @@
       .uni-select__input-text
         font-size 15px
       .uni-select__input-placeholder
-        color #CCCCCC
+        color #909399
       .uni-icons
         display none

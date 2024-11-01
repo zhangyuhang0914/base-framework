@@ -6,8 +6,8 @@
       .label {{ '指导单位' }}
       .right
     .content
-      .label {{ '中共湖北省金融委员会办公室' }}
-      .label {{ '中共湖北省金融工作委员会' }}
+      .label {{ '中共湖北省委金融委员会办公室  ' }}
+      .label {{ '中共湖北省委金融工作委员会' }}
       .label {{ '湖北省地方金融管理局' }}
   .modules-container
     .header-box

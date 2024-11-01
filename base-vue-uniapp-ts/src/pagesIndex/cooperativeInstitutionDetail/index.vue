@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-view
-  Layout(showTabBar showHeaderBar showBack headerBackground="#DAECFE" statusBackground="#DAECFE" headerTitle="机构详情")
+  Layout(showTabBar showHeaderBar showBack headerBackground="#132B5B" statusBackground="#132B5B" headerColor="#FFFFFF" headerTitle="机构详情")
     template(#main)
       .layout-main
         .main-container
@@ -13,7 +13,7 @@
               @refresherrefresh='refresherrefresh'
             )
               .detail-main
-                .header-detail(:style="{ backgroundImage: `url(${preview(imgConstant['wx_financeProduct_header-bg'])})`, backgroundSize: '100%', backgroundRpeat: 'no-repeat' }")
+                .header-detail
                   img.logo-img(:src="detailInfo.logoUrl" alt="")
                   .header-title-box
                     .title {{ detailInfo.bankName }}
@@ -22,7 +22,7 @@
                   CustomTitle(title="机构介绍")
                   .customer-intro(v-if="detailInfo.intro" :class="{ 'active-txt': textMoreStatus }") {{ detailInfo.intro }}
                   CNoData(v-else :showImg="false")
-                  u-button.custom-btn(v-if="detailInfo.intro" type="primary" @click="txtMoreHandle") {{ textMoreStatus ? '查看更多' : '收起' }}
+                  u-button.custom-btn.u-pinia-btn(v-if="detailInfo.intro" type="primary" @click="txtMoreHandle") {{ textMoreStatus ? '查看更多' : '收起' }}
                   CustomTitle(:title="getInstitutionName()")
                   .institution-list(v-if="institutionList.length")
                     .institution-item(v-for="(item, index) in institutionList" :key="index")
@@ -32,7 +32,7 @@
                       .values-box
                         .label {{ '营业时间：' }}
                         .value {{ item.workTimeDesc }}
-                      u-button.custom-btn(type="primary" @click="productLook(item)") {{ '查看' }}
+                      u-button.custom-btn.u-pinia-btn(type="primary" @click="productLook(item)") {{ '查看' }}
                   CNoData(v-else :showImg="false")
                   u-loadmore(:status="loadMoreStatus" @loadmore="getMore")
 </template>
@@ -48,7 +48,7 @@ import { fileDownload, institutionsBankInfo, institutionsByIdList } from '@/api/
 import type { ApiResponse } from '@/common/http/types'
 import type { BankListItem } from '@/api/financeProduct/types'
 import type { InstitutionsByIdListParam, InstitutionsListItem } from '@/api/index/types'
-import type { PageItem } from '@/api/policyNews/type'
+import type { PageItem } from '@/api/index/types'
 import { linkJump } from '@/common/common'
 
 export default defineComponent({

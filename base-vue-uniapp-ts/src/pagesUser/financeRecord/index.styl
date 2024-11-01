@@ -1,0 +1,161 @@
+.finance-record-wrap
+  position relative
+  height 100%
+  background $background-main
+  .finance-header
+    display flex
+    align-items center
+    justify-content space-between
+    .search-input
+      flex 1
+      padding 36rpx 24rpx
+      .search-btn
+        top 42rpx !important
+      .search-btn:before
+        top 0 !important
+    .filter-btn
+      padding 0 24rpx 0 0
+      .u-button
+        font-weight bold
+.layoutMain
+  position relative
+  // padding 0
+  .filter-container
+    // height 63rpx
+    padding 24rpx 8rpx
+    background $white
+    border-radius 30rpx 30rpx 0px 0px
+    display flex
+    align-items center
+    justify-content space-around
+    .filter-box:not(:last-child)
+      margin 0 12rpx 0 0
+      /deep/ .uni-date
+        width auto !important
+        flex none !important
+        .uni-date-editor
+          color $text-main
+          .active-select
+            padding 0 50rpx 0 12rpx !important
+    .filter-box
+      position relative
+      .filter-select
+        background $info-btn
+        border-radius 12rpx
+        padding 0 12rpx
+        display flex
+        justify-content center
+        align-items center
+        .text
+          font-size 22rpx
+          color $default-btn
+        /deep/ .icon
+          width auto
+          padding 0 0 0 12rpx
+          display flex
+          align-items center
+          justify-content center
+      .active-select
+        .text
+          color $text-main
+      .icon-close
+        position absolute
+        right -4rpx
+        top 22rpx
+  .mainContainer
+    // padding-top 25rpx
+    border-radius 0 !important
+    .scrollView
+      height calc(100% - 87rpx - 170rpx)
+      .scroll-box
+        height 100%
+        .scrollItem
+          position relative
+          border-radius 12rpx 12rpx 12rpx 12rpx
+          box-shadow 0 0 13rpx 0 #1932641a
+          border 1rpx solid $info-btn
+          margin 0 24rpx 24rpx 24rpx
+          padding 36rpx 24rpx 12rpx 24rpx
+          line-height 40rpx
+          .top-tips
+            position absolute
+            top 0
+            right 0
+            padding 8rpx 16rpx
+            background #7AC4EF
+            border-radius 0 12rpx 0 18rpx
+            .status
+              color #FFFFFF
+              font-size 24rpx
+          .topTitle
+            border-bottom 1rpx solid #DADDE7
+            margin-bottom 25rpx
+            .colItem
+              .title-box
+                width 102rpx
+                height 80rpx
+                padding 4rpx
+                border-radius 12rpx
+                background linear-gradient(270deg, #F9EBB0, #F2D279)
+                line-height 30rpx
+                display flex
+                justify-content center
+                flex-direction column
+                align-items center
+                .label
+                  min-width auto
+                  color #847855
+                  font-size 24rpx
+                  font-weight bold
+              .bank-name
+                padding 0 96rpx 0 24rpx
+                color $primary
+                font-size 30rpx
+                display -webkit-box
+                -webkit-box-orient vertical
+                -webkit-line-clamp 2
+                overflow hidden
+          .bottomText
+            position relative
+            .icon-fangkuanzonge
+              color #E5F0FF
+              font-size 100rpx
+              position absolute
+              bottom 50rpx
+              right 0
+          .colItem
+            width 100%
+            display flex
+            align-items center
+            padding-bottom 25rpx
+            .label
+              color #909399
+              min-width 150rpx
+              text-align right
+            .danger
+              color $danger
+            .green
+              color #FFA352
+            .success
+              color #6BCD90
+            .u-pinia-btn
+              margin 0 24rpx
+              /deep/ .u-button
+                height 50rpx
+                padding 28rpx
+            .u-primary-btn
+              margin 0 24rpx
+              /deep/ .u-button
+                height 50rpx
+                padding 30rpx
+      .no-data-view
+        padding 50rpx
+/deep/ .u-calendar-month__days__day__select__buttom-info
+  bottom -5px
+/deep/ .u-modal__content
+  padding 21rpx 28rpx 44rpx 28rpx !important
+  .slot-content
+    .u-form
+      .u-form-item
+        .u-form-item__body
+          padding 18rpx 0 !important

@@ -69,7 +69,7 @@ export const encode = (input: string) => {
 }
 
 // 解密
-export const decode = (input: string) => {
+export const decode = (input: string): string => {
   let output = ''
   let chr1, chr2, chr3
   let enc1, enc2, enc3, enc4

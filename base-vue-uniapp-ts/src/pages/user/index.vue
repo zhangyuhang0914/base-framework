@@ -1,12 +1,12 @@
 <template lang="pug">
 .page-view
-  Layout(showTabBar showHeaderBar headerBackground="#DAECFE" statusBackground="#DAECFE" headerTitle="我的")
+  Layout(showTabBar showHeaderBar statusBackground="#132B5B" headerBackground="#132B5B" headerColor="#FFFFFF" headerTitle="我的")
     template(#main)
       view.layoutMain
         .mainContainer
           view.userMain
             scroll-view.scrollView(scroll-y)
-              view.topUserInfo(:style="{ backgroundImage: `url(${preview(imgConstant.wx_user_topBg)})`, backgroundRepeat: 'no-repeat', backgroundSize: '100%' }")
+              view.topUserInfo
                 view.userInfo
                   template(v-if='token')
                     button.userImg(open-type="chooseAvatar" @chooseavatar='chooseavatar' :class='{noAvatarUrl: !userInfo.userTxId}')
@@ -50,15 +50,16 @@
 <script setup lang="ts">
 import Layout from '@/components/layout/index.vue'
 import { computed, reactive, ref } from 'vue'
-import { linkJump } from '@/common/common'
-import { getLocalImgToBase64, maskPhoneNumber } from '@/util/utils'
-import type { CellItem } from '@/api/user/type'
+import { linkJump, setEnableDebug } from '@/common/common'
+import { maskPhoneNumber } from '@/util/utils'
+import type { CellItem, IuserInfo } from '@/api/user/type'
 import { upload, preview } from '@/api/common'
 import { userCommonStoreHook } from '@/store/modules/common'
 import { saveUserTx, wxUserInfo } from '@/api/user'
 import { onShow } from '@dcloudio/uni-app'
 import LoginValidateModal from './loginValidateModal/index.vue'
 import imgConstant from '@/common/imgConstant'
+import { EntInfoType } from '@/api/common/types'
 // 登录token
 let token = computed(() => {
   return userCommonStoreHook().token
@@ -68,15 +69,24 @@ let uiasUserInfo = computed(() => {
   return userCommonStoreHook().uiasUserInfo
 })
 // 用户信息
-let userInfo = ref({})
+let userInfo = ref<IuserInfo>({})
 let loginValidateType = ref('login')
 let loginValidateRef = ref()
 let cellList = reactive<CellItem[]>([
   {
     title: '融资记录',
-    name: 'finance',
+    name: 'financeRecord',
     icon: 'icon-rongzijilu',
-    pageUrl: '/pagesUser/finance/index',
+    pageUrl: '/pagesUser/financeRecord/index',
+    needLogin: true,
+    needAuthentication: true,
+    isLink: true
+  },
+  {
+    title: '供应链金融需求',
+    name: 'supplyChainFinanceRecord',
+    icon: 'icon-gongyinglianjinrongruqiu',
+    pageUrl: '/pagesUser/supplyChainFinanceRecord/index',
     needLogin: true,
     needAuthentication: true,
     isLink: true
@@ -85,7 +95,7 @@ let cellList = reactive<CellItem[]>([
     title: '企业身份认证',
     name: 'enterpriseAuthentication',
     icon: 'icon-qiyeshenfenrenzheng',
-    value: '未完成认证，请先完成认证',
+    value: '未认证',
     pageUrl: '/pagesUser/enterpriseAuthentication/index',
     needLogin: true,
     needAuthentication: false,
@@ -119,6 +129,15 @@ let cellList = reactive<CellItem[]>([
     isLink: true
   },
   {
+    title: '常见问题',
+    name: 'questionDirectory',
+    icon: 'icon-wentifankui',
+    pageUrl: '/pagesUser/questionDirectory/index',
+    needLogin: false,
+    needAuthentication: false,
+    isLink: true
+  },
+  {
     title: '关于鄂融通',
     name: 'about',
     icon: 'icon-guanxuerongtong',
@@ -128,6 +147,8 @@ let cellList = reactive<CellItem[]>([
     isLink: true
   }
 ])
+// 计数器
+let count = ref(0)
 // 获取企业信息
 const getUserInfo = () => {
   let params = {
@@ -139,20 +160,22 @@ const getUserInfo = () => {
     let entList = data.entList || []
     // 如果绑定了企业则不需要“企业身份认证操作”
     if (entList && entList.length) {
-      cellList[1].isLink = false
-      cellList[1].value = '已完成认证'
+      cellList[2].isLink = false
+      cellList[2].value = '已完成认证'
     } else {
-      cellList[1].isLink = true
-      cellList[1].value = '未完成认证，请先完成认证'
+      cellList[2].isLink = true
+      cellList[2].value = '未认证'
     }
     // 更新当前绑定企业信息
-    let currentEnt = userInfo.value.entList.find(item => item.userId === userInfo.value.entUserId)
-    userCommonStoreHook().setEntInfo(currentEnt || {})
+    let currentEnt = userInfo.value.entList ? userInfo.value.entList.find(item => item.userId === userInfo.value.entUserId) : {}
+    userCommonStoreHook().setEntInfo((currentEnt as EntInfoType) ?? {})
   })
 }
 const handleCell = (item: CellItem) => {
   // 如果绑定了企业则不需要“企业身份认证操作”
   if (item.name === 'enterpriseAuthentication' && userInfo.value.entList && userInfo.value.entList.length) {
+    count.value++
+    count.value === 20 ? setEnableDebug(true) : setEnableDebug(false)
     return
   }
   // 登录提示
@@ -171,7 +194,7 @@ const handleCell = (item: CellItem) => {
 }
 // 头像昵称填写能力
 const chooseavatar = (e: AnyObject) => {
-  upload(e.detail.avatarUrl).then(value => {
+  upload(e.detail.avatarUrl).then((value: any) => {
     let data = value.data[0]
     saveAvatarUrl(data.id)
   })
@@ -194,10 +217,11 @@ const handleLogin = () => {
 // 重置数据
 const resetInitData = () => {
   userInfo.value = {}
-  cellList[1].isLink = true
-  cellList[1].value = '未完成认证，请先完成认证'
+  cellList[2].isLink = true
+  cellList[2].value = '未认证'
 }
 onShow(() => {
+  count.value = 0
   resetInitData()
   token.value && getUserInfo()
 })

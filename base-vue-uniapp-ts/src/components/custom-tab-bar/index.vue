@@ -6,8 +6,8 @@
     :fixed="true"
     :placeholder="true"
     :safeAreaInsetBottom="true"
-    activeColor="#479AFD"
-    inactiveColor="#ABA9AA"
+    activeColor="#F2D279"
+    inactiveColor="#545454"
   )
     u-tabbar-item(
       v-for="(item, index) in tabBar.list"
@@ -38,12 +38,19 @@ export default defineComponent({
     const tabBar = computed(() => commonHook.tabBar)
     // methods
     const onChange = (name: string) => {
-      let nameArr = ['首页', '金融产品', '政策新闻', '我的']
+      let nameArr = ['首页', '金融产品', '服务专区', '我的']
       commonHook.setTabBar(nameArr.indexOf(name), name, props.showTabBar)
     }
     onLoad(() => {
       // 隐藏原生tab栏
-      uni.hideTabBar()
+      uni.hideTabBar({
+        success: result => {
+          console.log('hideTabBar:success', result)
+        },
+        fail: err => {
+          console.log('hideTabBar:fail', err)
+        }
+      })
     })
     onReady(() => {
       const query = uni.createSelectorQuery().in(getCurrentInstance())

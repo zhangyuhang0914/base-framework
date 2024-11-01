@@ -4,6 +4,7 @@
     :showHeaderBar.sync="showHeaderBar"
     :statusBackground="statusBackground"
     :headerBackground="headerBackground"
+    :headerColor="headerColor"
     :showBack="showBack"
     :headerTitle="headerTitle"
     :goBack="goBack"
@@ -14,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, getCurrentInstance, computed, onMounted, nextTick } from 'vue'
+import { defineComponent, getCurrentInstance, computed } from 'vue'
 import CustomHeaderBar from '@/components/custom-header-bar/index.vue'
 import CustomTabBar from '@/components/custom-tab-bar/index.vue'
 import { userCommonStoreHook } from '@/store/modules/common'
@@ -38,6 +39,10 @@ export default defineComponent({
     headerBackground: {
       type: String,
       default: 'transparent'
+    },
+    headerColor: {
+      type: String,
+      default: '#333'
     },
     showBack: {
       type: Boolean,

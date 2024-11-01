@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-view
-  Layout(showTabBar showHeaderBar showBack headerBackground="#DAECFE" statusBackground="#DAECFE" :headerTitle="getHeaderTitle")
+  Layout(showTabBar showHeaderBar showBack headerBackground="#132B5B" statusBackground="#132B5B" headerColor="#FFFFFF" :headerTitle="getHeaderTitle")
     template(#main)
       .layoutMain
         .mainContainer
@@ -13,40 +13,33 @@
           )
             .scroll-box(v-if="listData.length")
               .scroll-item(v-for="(item, index) in listData" :key="index")
-                .product-box(@click='handleDetail(item)')
-                  .product-tips
-                    i.iconfont.icon-shigong
-                    .title {{ `本产品由${item.institutionsName}提供` }}
+                .product-box(@click="handleDetail(item)")
                   .product-header
-                    img(:src="item.logoUrl" alt="")
-                    .title {{ item.name }}
+                    .img-logo
+                      image(:src="item.logoUrl" mode="widthFix" :lazy-load="true" alt="")
+                    .product-title
+                      .name.text-line2-overflow {{ item.name }}
+                      .source {{ item.companySource }}
                   .product-content
                     .product-data
+                      .rate-range-box.c-column
+                        .value {{ item.rateRange }}
+                        .label {{ '参考利率' }}
                       .loan-limit-box.c-column
                         .value {{ item.loanLimit }}
                         .label {{ '贷款额度' }}
-                      .rate-range-box.c-column
-                        .value {{ item.rateRange }}
-                        .label {{ '参考利率(年化)' }}
                       .loan-period-box.c-column
                         .value {{ item.loanPeriod }}
                         .label {{ '贷款期限' }}
-                    .product-info
-                      .guarantee-mode-box.c-row
-                        .label {{ '担保方式：' }}
-                        .value(v-if="item.guaranteeMode + ''") {{ formatMode(item.guaranteeMode, guaranteeModeList, item.guaranteeModeExtra) }}
-                      //- .product-source-box.c-row
-                      //-   .label {{ item.productSource }}
                   .product-footer
-                    .product-tag
-                      .tag-box(v-for="(tagItem, index) in getTabName(item)" :key="index" :class="tagItem.class")
-                        .tag-name {{ tagItem.tag }}
-                    .product-operation
-                      .operation-box(@click.stop="collectionClick(item)")
+                    .guarantee-mode-left
+                      .mode-value(v-if="item.guaranteeMode + ''") {{ '担保方式：' + formatMode(item.guaranteeMode, guaranteeModeList, item.guaranteeModeExtra) }}
+                    .operation-box-right
+                      .operation-box.collection-btn(@click.stop="collectionClick(item)")
                         i.iconfont(:class="item.isCollect ? 'icon-shouzanghou' : 'icon-shouzang'")
-                      .operation-box(@click.stop="applyClick(item)")
+                      .operation-box.apply-btn(@click.stop="applyClick(item)")
                         i.iconfont.icon-shenqing
-                      .operation-box(@click.stop='handleCompare(item)')
+                      .operation-box.compare-btn(@click.stop='handleCompare(item)')
                         i.iconfont.icon-duibi
               u-loadmore(:status="loadMoreStatus" @loadmore="getMore")
             .no-data-view(v-else)
@@ -56,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, type Ref, onMounted, computed } from 'vue'
+import { ref, reactive, type Ref, computed } from 'vue'
 import Layout from '@/components/layout/index.vue'
 import CNoData from '@/components/c-no-data/index.vue'
 import CProductContrast from '@/components/c-product-contrast/index.vue'
@@ -67,10 +60,11 @@ import { formatMode } from '@/util/utils'
 import type { DictListItem } from '@/api/index/types'
 import type { ProductListItem } from '@/api/financeProduct/types'
 import type { ApiResponse } from '@/common/http/types'
-import { onLoad } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { handleJudgeCollection, productApplyHandle, setProductContrast } from '@/hooks/common'
 import { linkJump } from '@/common/common'
 import { carouselProductList, fileDownload } from '@/api/index'
+import Bus, { REFRESH, REFRESH_COLLECTION } from '@/common/bus'
 const commonStoreHook = userCommonStoreHook()
 const type = ref<string>('')
 const listData = ref<ProductListItem[]>([])
@@ -136,7 +130,7 @@ const getListData = (reset = false) => {
       let data = result.page
       data.list.map((item: ProductListItem) => {
         item['logoUrl'] = item.logoFileId && fileDownload(item.logoFileId)
-        item['companySource'] = '本产品由' + item.institutionsName + '提供'
+        item['companySource'] = item.institutionsName + '提供'
         item['loanPeriod'] = item.loanPeriodBegin === 0 ? item.loanPeriodEnd + '个月及以下' : item.loanPeriodBegin + '-' + item.loanPeriodEnd + '个月'
         item['rateRange'] = item.rateRangeBegin + '%-' + item.rateRangeEnd + '%'
         item['loanLimit'] = item.loanLimitBegin + '~' + item.loanLimitEnd + '万元'
@@ -170,6 +164,7 @@ const collectionClick = (item: ProductListItem) => {
   // 收藏
   handleJudgeCollection('1', item, (isCollect: boolean) => {
     item.isCollect = isCollect
+    Bus.$emit(REFRESH, true)
   })
 }
 // 产品申请
@@ -185,19 +180,26 @@ const handleCompare = (item: ProductListItem) => {
 }
 // 产品详情
 const handleDetail = (item: ProductListItem) => {
-  linkJump(`/pagesFinanceProduct/productDetail/index?id=${item.id}`)
+  linkJump(`/pagesFinanceProduct/productDetail/index?id=${item.id}&isCollect=${item.isCollect}`)
 }
 const getHeaderTitle = computed(() => {
   return type.value === '08' ? '热门推荐' : '快贷产品'
 })
-onMounted(() => {
+// 隐藏小程序后会自动销毁
+onShow(() => {
+  Bus.$on(REFRESH_COLLECTION, (beforePage: string) => {
+    // 获取产品列表
+    if (beforePage === 'pagesIndex/indexProduct/index') {
+      getListData(true)
+    }
+  })
+})
+onLoad((options: any) => {
+  type.value = options.type
   // 获取担保方式
   getGuaranteeMode()
   // 获取产品列表
   getListData(true)
-})
-onLoad((options: any) => {
-  type.value = options.type
 })
 </script>
 

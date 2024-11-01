@@ -1,10 +1,10 @@
 <template lang="pug">
-.page-view(:style="{ background: `url(${preview(imgConstant['wx_login_header'])})`, backgroundSize: '100%', backgroundRepeat: 'no-repeat' }")
-  Layout(showHeaderBar showBack)
+.page-view(:style="{ background: `url(${previewImg('wx_login_header')})`, backgroundSize: '100% 20%', backgroundRepeat: 'no-repeat' }")
+  Layout(showHeaderBar showBack headerColor="#FFFFFF")
     template(#main)
       .main-wrap
         .logo-box
-          img(:src="preview(imgConstant['wx_login_logo'])")
+          img(:src="previewImg('wx_login_logo')")
         .scroll-main
           scroll-view.scroll-view(scroll-y)
             .container
@@ -17,7 +17,7 @@
                     span.item-label {{ '验证码' }}
                     u-input(v-model="forgotForm.vericode" type="number" border="none" placeholder="请输入验证码")
                       template(#suffix)
-                        u-button(type="primary" :disabled="sendBtnDisabled" @click="sendPhoneCode") {{ sendBtnText }}
+                        u-button.send-code-btn(type="primary" :disabled="sendBtnDisabled" @click="sendPhoneCode") {{ sendBtnText }}
                   u-form-item(prop="newPassword")
                     span.item-label {{ '新密码' }}
                     u--input(v-model="forgotForm.newPassword" password border="none" placeholder="包含8-18位大小写字母和数字的密码")
@@ -25,7 +25,7 @@
                     span.item-label {{ '确认密码' }}
                     u--input(v-model="forgotForm.confirmPassword" password border="none" placeholder="请再次确认密码")
                 .footer-opeartion
-                  u-button.larger-btn(type="primary" @click="updatePasswordClick") {{ '立即修改' }}
+                  u-button.larger-btn.u-primary(type="primary" @click="updatePasswordClick") {{ '立即修改' }}
 </template>
 
 <script lang="ts">
@@ -33,11 +33,10 @@ import { defineComponent, onMounted, reactive, ref } from 'vue'
 import Layout from '@/components/layout/index.vue'
 import { useCaptchaCode } from '@/hooks/common'
 import { validateMobile, validatePassword } from '@/util/validator'
-import { preview, uiasForgotPsd } from '@/api/common/index'
-import imgConstant from '@/common/imgConstant'
+import { uiasForgotPsd } from '@/api/common/index'
+import { previewImg } from '@/util/utils'
 import myEncrypt from '@/util/encrypt'
 import type { ApiResponse } from '@/common/http/types'
-import { linkJump } from '@/common/common'
 import { userCommonStoreHook } from '@/store/modules/common'
 
 export default defineComponent({
@@ -111,8 +110,7 @@ export default defineComponent({
       forgotFormRef.value?.setRules(forgotFormRules)
     })
     return {
-      preview,
-      imgConstant,
+      previewImg,
       sendBtnText,
       sendBtnDisabled,
       forgotFormRef,

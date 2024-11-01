@@ -2,7 +2,7 @@
 import { API as configApi } from '@/conf/index'
 import Request from '@/common/http/http'
 import type { httpRequestConfig, ApiResponse } from '@/common/http/types'
-import type { CarouselImgItem, DictListItem, InstitutionsByIdListParam, InstitutionsListItem } from './types'
+import type { CarouselImgItem, DictListItem, InstitutionsByIdListParam, InstitutionsListItem, CountryListItem, CmsInfoResponseType, CMSCategoryLevelItemType, CMSInfoDataListItemType } from './types'
 import type { BankListItem, ProductListItem } from '@/api/financeProduct/types'
 
 // 获取接口根路径
@@ -62,7 +62,7 @@ export const carouselProductList = (params: AnyObject = {}): Promise<ApiResponse
 }
 
 /**
- * @desc: 数据统计
+ * @desc: 首页数据统计
  * @return {*}
  */
 export const countDisplay = <T>(params: AnyObject = {}): Promise<ApiResponse<T>> => {
@@ -71,6 +71,21 @@ export const countDisplay = <T>(params: AnyObject = {}): Promise<ApiResponse<T>>
     method: 'GET',
     loading: true,
     url: '/api/fin/loan/countDisplay',
+    params: params
+  }
+  return Request.request(param)
+}
+
+/**
+ * @desc: 供应链融资规模统计
+ * @return {*}
+ */
+export const countLoanAmount = <T>(params: AnyObject = {}): Promise<ApiResponse<T>> => {
+  const param: httpRequestConfig = {
+    apiType: 'BASE_URL',
+    method: 'GET',
+    loading: true,
+    url: '/api/fin/report/countLoanAmount',
     params: params
   }
   return Request.request(param)
@@ -117,4 +132,76 @@ export const institutionsByIdList = (params: InstitutionsByIdListParam): Promise
     url: `/api/web/institutions/list?page=${params.page}&limit=${params.limit}&finInstitutionsBankId=${params.finInstitutionsBankId}&cityCode=${params.cityCode}`
   }
   return Request.request(param) as Promise<ApiResponse<InstitutionsListItem[]>>
+}
+
+/**
+ * 政策新闻列表
+ */
+export const queryPublishListByType = (params: AnyObject): Promise<ApiResponse<CountryListItem[]>> => {
+  const param: httpRequestConfig = {
+    apiType: 'BASE_URL',
+    method: 'POST',
+    loading: false,
+    url: '/api/fin/cmsInfo/queryPublishListByType',
+    params: params
+  }
+  return Request.request(param) as Promise<ApiResponse<CountryListItem[]>>
+}
+
+/**
+ * 政策新闻详情
+ */
+export const cmsInfo = (id: string) => {
+  const param: httpRequestConfig = {
+    apiType: 'BASE_URL',
+    method: 'GET',
+    loading: false,
+    url: `/api/fin/cmsInfo/info/${id}`
+  }
+  return Request.request(param) as Promise<ApiResponse<CmsInfoResponseType>>
+}
+
+/**
+ * 平台资讯
+ */
+export const platformConsultationUrl = (params: AnyObject) => {
+  const param: httpRequestConfig = {
+    apiType: 'BASE_URL',
+    method: 'POST',
+    loading: false,
+    // url: '/api/I02028/ERT',
+    url: 'https://jrb.hubei.gov.cn/szxqyxyxx/api/I02028/ERT',
+    params: params
+  }
+  return Request.request(param)
+}
+
+/**
+ * 查询分类栏目列表
+ */
+export const cmsCategoryListByPid = (params: AnyObject): Promise<ApiResponse<CMSCategoryLevelItemType[]>> => {
+  const param: httpRequestConfig = {
+    apiType: 'BASE_URL',
+    method: 'POST',
+    loading: false,
+    isForm: true,
+    url: '/api/fin/cmsInfo/listByPid',
+    params: params
+  }
+  return Request.request(param)
+}
+
+/**
+ * 查询分类栏目下列表数据
+ */
+export const cmsInfoDataList = (params: AnyObject): Promise<ApiResponse<CMSInfoDataListItemType[]>> => {
+  const param: httpRequestConfig = {
+    apiType: 'BASE_URL',
+    method: 'POST',
+    loading: false,
+    isForm: true,
+    url: '/api/fin/cmsInfo/dataList',
+    params: params
+  }
+  return Request.request(param)
 }

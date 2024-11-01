@@ -1,11 +1,11 @@
 <template lang="pug">
 .page-view
-  Layout(showTabBar showHeaderBar showBack headerBackground="#DAECFE" statusBackground="#DAECFE" headerTitle="关于鄂融通")
+  Layout(showTabBar showHeaderBar showBack statusBackground="#132B5B" headerBackground="#132B5B" headerColor="#FFFFFF" headerTitle="关于鄂融通")
     template(#main)
       view.layoutMain
         .mainContainer
           scroll-view.scrollView(scroll-y)
-            img.topImg(:src="preview(imgConstant.wx_user_about)" alt="")
+            //- img.topImg(:src="preview(imgConstant.wx_user_about)" alt="")
             .content
               CRich(:content='detailInfo.content')
               CAttachment(v-if='detailInfo.fileList && detailInfo.fileList.length' :attachmentList='detailInfo.fileList')
@@ -14,16 +14,16 @@
 <script setup lang="ts">
 import Layout from '@/components/layout/index.vue'
 import { ref, onMounted } from 'vue'
-import { cmsInfo, queryPublishListByType } from '@/api/policyNews'
+import { cmsInfo, queryPublishListByType } from '@/api/index/index'
 import { decode } from '@/util/base64'
 import CRich from '@/components/c-rich/index.vue'
+import CAttachment from '@/components/c-attachment/index.vue'
 import { preview } from '@/api/common'
 import imgConstant from '@/common/imgConstant'
 let detailInfo = ref({})
 // 获取详情信息
 const getDetailInfo = (id: string) => {
-  let params: AnyObject = {}
-  cmsInfo(params, id)
+  cmsInfo(id)
     .then(value => {
       let data = value.data || {}
       data.content = decode(data.content)

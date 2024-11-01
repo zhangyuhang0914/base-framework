@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-view
-  Layout(showTabBar showHeaderBar showBack headerBackground="#DAECFE" statusBackground="#DAECFE" headerTitle="金融产品")
+  Layout(showTabBar showHeaderBar showBack headerBackground="#132B5B" statusBackground="#132B5B" headerColor="#FFFFFF" headerTitle="金融产品")
     template(#main)
       .layout-main
         .main-container
@@ -12,8 +12,8 @@
               @refresherrefresh='refresherrefresh'
             )
               .detail-main
-                .header-detail(:style="{ backgroundImage: `url(${preview(imgConstant['wx_financeProduct_header-bg'])})`, backgroundSize: '100%', backgroundRpeat: 'no-repeat' }")
-                  img.logo-img(:src="detailInfo.logoUrl" alt="")
+                .header-detail
+                  image.logo-img(:src="detailInfo.logoUrl" mode="widthFix" :lazy-load="true" alt="")
                   .header-title-box
                     .title {{ detailInfo.name }}
                     .institutions-name {{ detailInfo.institutionsName }}
@@ -32,6 +32,9 @@
                       .value(v-if="detailInfo.guaranteeMode + ''") {{ formatMode(detailInfo.guaranteeMode, guaranteeModeList, detailInfo.guaranteeModeExtra) }}
                       .label {{ '担保方式' }}
                   .product-info
+                    CustomTitle(title="产品介绍")
+                    .customer-desc(v-if="detailInfo.productDesc") {{ detailInfo.productDesc }}
+                    CNoData(v-else :showImg="false")
                     CustomTitle(title="适用客户")
                     .customer-desc(v-if="detailInfo.customerDesc") {{ detailInfo.customerDesc }}
                     CNoData(v-else :showImg="false")
@@ -39,7 +42,12 @@
                     .entry-criteria(v-if="detailInfo.entryCriteria") {{ detailInfo.entryCriteria }}
                     CNoData(v-else :showImg="false")
               .footer-operation
-                u-button(type="primary" @click="handleApply") {{ '立即申请' }}
+                .operation-box.pinia-btn(@click.stop="collectionClick(detailInfo)")
+                  i.iconfont(:class="detailInfo.isCollect ? 'icon-shouzanghou' : 'icon-shouzang'")
+                  span.value {{ detailInfo.isCollect ? '取消收藏' : '加入收藏' }}
+                .operation-box.primary-btn(@click.stop="applyClick(detailInfo)")
+                  i.iconfont.icon-shenqing
+                  span.value {{ '我要申请' }}
             LoginValidateModal(ref='loginValidateRef' :type='loginValidateType')
 </template>
 
@@ -57,9 +65,10 @@ import type { ProductListItem } from '@/api/financeProduct/types'
 import { fileDownload } from '@/api/index'
 import { userCommonStoreHook } from '@/store/modules/common'
 import type { DictListItem } from '@/api/index/types'
-import { productApplyHandle } from '@/hooks/common'
+import { handleJudgeCollection, productApplyHandle } from '@/hooks/common'
 import { preview } from '@/api/common/index'
 import imgConstant from '@/common/imgConstant'
+import Bus, { REFRESH, REFRESH_COLLECTION } from '@/common/bus'
 
 export default defineComponent({
   name: 'ProductDetail',
@@ -70,8 +79,10 @@ export default defineComponent({
     const refresherTriggered = ref<boolean>(false)
     const guaranteeModeList: Ref<DictListItem[]> = ref([])
     const id: Ref<string> = ref('')
+    const isCollect: Ref<boolean> = ref(false)
     const detailInfo: Ref<ProductListItem> = ref({} as ProductListItem)
-    const { loginValidateRef, loginValidateType, linkProductApply } = productApplyHandle()
+    // 产品申请
+    const { loginValidateRef, loginValidateType, jumpLoginFn, linkProductApply } = productApplyHandle()
     // 下拉刷新
     const refresherrefresh = () => {
       refresherTriggered.value = true
@@ -86,7 +97,8 @@ export default defineComponent({
           data['loanPeriod'] = data.loanPeriodBegin === 0 ? data.loanPeriodEnd + '个月及以下' : data.loanPeriodBegin + '-' + data.loanPeriodEnd + '个月'
           data['rateRange'] = data.rateRangeBegin + '%-' + data.rateRangeEnd + '%'
           data['loanLimit'] = data.loanLimitBegin + '~' + data.loanLimitEnd + '万元'
-          data['isCollect'] = data.whetherCollection === '0' ? true : false
+          console.log('isCollect', isCollect.value)
+          data['isCollect'] = isCollect.value
           detailInfo.value = data
         })
         .finally(() => {
@@ -98,9 +110,24 @@ export default defineComponent({
       const result: DictListItem[] = await commonStoreHook.getDict('guarantee_type')
       guaranteeModeList.value = result
     }
+    // 产品收藏
+    const collectionClick = async (item: ProductListItem) => {
+      if (!item.id) return
+      if (!jumpLoginFn()) return
+      // 收藏
+      handleJudgeCollection('1', item, (collectStatus: boolean) => {
+        item.isCollect = collectStatus
+        isCollect.value = item.isCollect
+        const pages = getCurrentPages()
+        const beforePage = pages[pages.length - 2].route
+        console.log('beforePage', beforePage)
+        Bus.$emit(REFRESH, true)
+        Bus.$emit(REFRESH_COLLECTION, beforePage)
+      })
+    }
     // 产品申请
-    const handleApply = () => {
-      linkProductApply(detailInfo.value)
+    const applyClick = async (item: ProductListItem) => {
+      linkProductApply(item)
     }
     onMounted(() => {
       getGuaranteeMode()
@@ -108,18 +135,21 @@ export default defineComponent({
     })
     onLoad((options: any) => {
       id.value = options.id
+      isCollect.value = options.isCollect === 'true' ? true : false
     })
     return {
       preview,
       imgConstant,
       formatMode,
       guaranteeModeList,
+      isCollect,
       refresherTriggered,
       detailInfo,
       loginValidateRef,
       loginValidateType,
       refresherrefresh,
-      handleApply
+      collectionClick,
+      applyClick
     }
   }
 })

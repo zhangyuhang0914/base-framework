@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-view
-  Layout(showTabBar showHeaderBar showBack headerBackground="#DAECFE" statusBackground="#DAECFE" headerTitle="绑定企业信息")
+  Layout(showTabBar showHeaderBar showBack statusBackground="#132B5B" headerBackground="#132B5B" headerColor="#FFFFFF" headerTitle="绑定企业信息")
     template(#main)
       view.layoutMain
         .mainContainer
@@ -13,9 +13,11 @@
                       up-radio(
                         label="是"
                         name="true"
+                        activeColor="#4C5F99"
                         :customStyle="{marginRight: '30rpx'}")
                       up-radio(
                         label="否"
+                        activeColor="#4C5F99"
                         name="false")
               BindForm.formContent(v-if="hasRegister === 'true'")
               RegisterForm.formContent(v-if="hasRegister === 'false'")

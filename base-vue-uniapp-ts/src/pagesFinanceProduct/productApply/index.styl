@@ -1,13 +1,13 @@
 .layout-main
   height 100%
   padding-top 120rpx
-  background-color #DAECFE
+  background $background-main
   line-height 32rpx
   .main-container
-    height calc(100% - 100rpx)
+    height calc(100% - 120rpx)
     padding 0 25rpx
-    background-color #FFFFFF
-    border-radius 30rpx
+    background $white
+    border-radius 30rpx 30rpx 0 0
     .product-apply-main
       height calc(100% + 100rpx)
       box-shadow 0 0 22rpx 0 #4285f61c
@@ -19,12 +19,12 @@
         overflow-x hidden
         overflow-y auto
         .apply-main
-          border 2rpx solid #D5E6F6
           box-shadow 0 0 24rpx 0 #4285f61c
           .header-apply
             height 180rpx
             padding 24rpx
             border-radius 16rpx
+            background $active-tab-icon
             display flex
             align-items center
             box-sizing border-box
@@ -42,13 +42,13 @@
               padding 0 0 0 24rpx
               line-height 48rpx
               .title
-                color #FFFFFF
                 font-weight bold
                 font-size 32rpx
               .institutions-name
-                color #FFFFFF
                 font-size 24rpx
           .content-main
+            border 2rpx solid #D5E6F6
+            border-top none
             background-color #FFFFFF
             .loan-data
               padding 36rpx 32rpx 0 32rpx
@@ -59,7 +59,7 @@
                 margin 0 0 24rpx 0
                 line-height 36rpx
                 .value
-                  color #f3841f
+                  color $text-main
                   font-size 30rpx
                   font-weight bold
                 .label
@@ -67,14 +67,27 @@
                   font-size 24rpx
               .loan-limit-box
                 .value
-                  color #dd3c32 !important
+                  color $danger !important
             .product-info
               .product-apply-form
                 padding 0 48rpx
+                .downBtn
+                  padding 0rpx 0 32rpx 0
+                  display flex
+                  align-items center
+                  justify-content center
+                  .contract-file
+                    color $text-main
+                    font-size 26rpx
+                    padding 0 12rpx
+                  .icon-xiazai
+                    color $text-main
           .footer-operation
             padding 0 48rpx 36rpx 48rpx
             /deep/ .u-button
               margin 36rpx 0 0 0 !important
+              border none !important
+              background $primary
               font-size 32rpx !important
       .contact-popup
         /deep/ .u-popup

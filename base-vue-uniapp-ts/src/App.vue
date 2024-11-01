@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 import { getCurrentInstance } from 'vue'
-import Bus, { POLICYTYPE, REFRESH } from './common/bus'
+import Bus, { FINANCE_RECORD_STATUS_REFRESH, GLOBAL_SEARCH, POLICYTYPE, REFRESH, REFRESH_COLLECTION } from './common/bus'
+import { autoUpdateApp } from './hooks/common'
 onLaunch(() => {
   const appContext: any = getCurrentInstance()?.appContext
   const proxy: any = getCurrentInstance()?.proxy
   // const { appContext, proxy } = getCurrentInstance()
   const global = appContext.config.globalProperties
-  console.log('App Launch', global)
+  console.log('App Launch', global, import.meta.env.MODE)
   // 获取系统信息
   uni.getSystemInfo({
     success: (e: AnyObject) => {
@@ -27,6 +28,8 @@ onLaunch(() => {
       // #endif
     }
   })
+  // 自动更新小程序
+  autoUpdateApp()
 })
 onShow(() => {
   console.log('App Show')
@@ -35,6 +38,9 @@ onHide(() => {
   console.log('App Hide')
   Bus.$off(REFRESH)
   Bus.$off(POLICYTYPE)
+  Bus.$off(REFRESH_COLLECTION)
+  Bus.$off(GLOBAL_SEARCH)
+  Bus.$off(FINANCE_RECORD_STATUS_REFRESH)
 })
 </script>
 <style lang="scss">
@@ -55,6 +61,6 @@ page {
   font-size: 28rpx;
   line-height: 64rpx;
   letter-spacing: 3rpx;
-  overflow: hidden;
+  overscroll-behavior-x: none;
 }
 </style>

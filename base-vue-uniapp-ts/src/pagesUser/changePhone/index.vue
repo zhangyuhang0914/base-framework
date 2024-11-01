@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-view
-  Layout(showTabBar showHeaderBar showBack headerBackground="#DAECFE" statusBackground="#DAECFE" headerTitle="修改手机号")
+  Layout(showTabBar showHeaderBar showBack statusBackground="#132B5B" headerBackground="#132B5B" headerColor="#FFFFFF" headerTitle="修改手机号")
     template(#main)
       view.layoutMain
         .mainContainer
@@ -14,9 +14,9 @@
                 up-form-item.require(label="验证码" prop="verifyCode")
                   up-input(v-model.trim="basicForm.verifyCode" border='none' placeholder="请输入验证码")
                   template(#right)
-                    u-button(type="primary" :disabled="sendBtnDisabled" @click="sendPhoneCode") {{ sendBtnText }}
-              view.bottomBtn
-                up-button(
+                    u-button.send-code-btn(type="primary" :disabled="sendBtnDisabled" @click="sendPhoneCode") {{ sendBtnText }}
+              view.bottomBtn.u-big-btn
+                up-button.u-primary(
                   type="primary"
                   text="完成"
                   @click="handleSubmit")
@@ -66,16 +66,26 @@ const sendPhoneCode = async () => {
 // 保存
 const handleSubmit = async () => {
   if (await basicFormRef.value.validate()) {
-    let params = {
-      userid: uiasUserInfo.value.userId,
-      mobilePhone: basicForm.value.mobilePhone,
-      verifyCode: basicForm.value.verifyCode,
-      oldMobilePhone: uiasUserInfo.value.mobilePhone
-    }
-    changePhone(params).then(res => {
-      toast.show('手机号修改成功', 'success')
-      userCommonStoreHook().setUiasUserInfo(Object.assign({}, uiasUserInfo.value, { mobilePhone: basicForm.value.mobilePhone }))
-      goBack()
+    uni.showModal({
+      title: '提示',
+      content: '手机号变更后，若您要对使用旧手机号作为联系方式的融资申请或供应链金融需求执行取消操作，需联系企业经办人进行取消。确认变更吗？',
+      showCancel: true,
+      confirmText: '确定',
+      success: (result: UniApp.ShowModalRes) => {
+        if (result.confirm) {
+          let params = {
+            userid: uiasUserInfo.value.userId,
+            mobilePhone: basicForm.value.mobilePhone,
+            verifyCode: basicForm.value.verifyCode,
+            oldMobilePhone: uiasUserInfo.value.mobilePhone
+          }
+          changePhone(params).then(res => {
+            toast.show('手机号修改成功', 'success')
+            userCommonStoreHook().setUiasUserInfo(Object.assign({}, uiasUserInfo.value, { mobilePhone: basicForm.value.mobilePhone }))
+            goBack()
+          })
+        }
+      }
     })
   }
 }

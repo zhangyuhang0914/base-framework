@@ -57,7 +57,8 @@
       "postcss": true, // 上传代码时样式是否自动补全
       "minified": true, // 上传代码时是否自动压缩
       "ignoreDevUnusedFiles": false, // 关闭开发环境依赖分析
-      "ignoreUploadUnusedFiles": false
+      "ignoreUploadUnusedFiles": false,
+      "crossDomainAccess": true // 允许小程序进行跨域请求
     },
     "resizable": true, // 在iPad上小程序支持屏幕旋转
     "usingComponents": true,

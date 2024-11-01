@@ -1,10 +1,10 @@
 <template lang="pug">
-.page-view(:style="{ background: `url(${preview(imgConstant['wx_login_header'])})`, backgroundSize: '100%', backgroundRepeat: 'no-repeat' }")
-  Layout(showHeaderBar showBack)
+.page-view(:style="{ background: `url(${previewImg('wx_login_header')})`, backgroundSize: '100% 20%', backgroundRepeat: 'no-repeat' }")
+  Layout(showHeaderBar showBack headerColor="#FFFFFF")
     template(#main)
       .main-wrap
         .logo-box
-          img(:src="preview(imgConstant['wx_login_logo'])")
+          img(:src="previewImg('wx_login_logo')")
         .scroll-main
           scroll-view.scroll-view(scroll-y)
             .container
@@ -29,9 +29,9 @@
                       span.item-label {{ '验证码' }}
                       u-input(v-model="phoneForm.verifyCode" type="number" border="none" placeholder="请输入验证码")
                         template(#suffix)
-                          u-button(type="primary" :disabled="sendBtnDisabled" @click="sendPhoneCode") {{ sendBtnText }}
+                          u-button.send-code-btn(type="primary" :disabled="sendBtnDisabled" @click="sendPhoneCode") {{ sendBtnText }}
                 .footer-opeartion
-                  u-button.larger-btn(type="primary" @click="loginFn") {{ '登 录' }}
+                  u-button.larger-btn.u-primary(type="primary" @click="loginFn") {{ '登 录' }}
                   .other-btn
                     .register.text-btn(@click="togglePageMode('register')") {{ '注册' }}
                     .forgot-password.text-btn(@click="togglePageMode('forgot')") {{ '忘记密码？' }}
@@ -49,8 +49,7 @@ import { defineComponent, getCurrentInstance, nextTick, onMounted, reactive, ref
 import type { ComponentInternalInstance, Ref } from 'vue'
 import Layout from '@/components/layout/index.vue'
 import LoginValidateModal from '@/pages/user/loginValidateModal/index.vue'
-import { preview } from '@/api/common'
-import imgConstant from '@/common/imgConstant'
+import { previewImg } from '@/util/utils'
 import { validateMobile } from '@/util/validator'
 import { useCaptchaCode } from '@/hooks/common'
 import { goBack, linkJump } from '@/common/common'
@@ -221,8 +220,7 @@ export default defineComponent({
       userFormRef.value?.setRules(userFormRules)
     })
     return {
-      preview,
-      imgConstant,
+      previewImg,
       loginMode,
       userFormRef,
       userForm,

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { store } from '@/store/index'
 import { goBack, linkJump } from '@/common/common'
-import type { CommonType } from './types'
+import type { CommonType, IfaceIntervalTime } from './types'
 import { getDictParamData } from '@/api/index'
 import type { DictListItem } from '@/api/index/types'
 import type { ApiResponse } from '@/common/http/types'
@@ -16,6 +16,8 @@ export const commonStore = defineStore({
     token: getStorage('token'),
     uiasUserInfo: getStorage('uiasUserInfo'),
     entInfo: getStorage('entInfo'),
+    flowId: '', // 获取人脸识别结果flowId
+    faceIntervalTime: getStorage('faceIntervalTime'), // 人脸识别间隔时间
     tabBar: {
       selectName: '首页',
       selectIndex: 0,
@@ -34,10 +36,10 @@ export const commonStore = defineStore({
           text: '金融产品'
         },
         {
-          pagePath: '/pages/policyNews/index',
-          iconPath: 'icon-zhengcexinwen',
-          selectedIconPath: 'icon-zhengcexinwen',
-          text: '政策新闻'
+          pagePath: '/pages/servicesZone/index',
+          iconPath: 'icon-fuwuzhuanqu',
+          selectedIconPath: 'icon-fuwuzhuanqu',
+          text: '服务专区'
         },
         {
           pagePath: '/pages/user/index',
@@ -127,6 +129,13 @@ export const commonStore = defineStore({
         const index = this.productContrastList.findIndex((item: ProductListItem) => item.id === id)
         this.productContrastList[index] = data
       }
+    },
+    setFlowId(flowId: string) {
+      this.flowId = flowId
+    },
+    setFaceIntervalTime(faceIntervalTime: IfaceIntervalTime) {
+      this.faceIntervalTime = faceIntervalTime
+      setStorage('faceIntervalTime', faceIntervalTime)
     }
   },
   getters: {}

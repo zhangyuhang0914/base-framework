@@ -2,7 +2,7 @@
 .c-common-header
   .c-handle-box
     .c-tips
-    .c-title {{ title || '' }}
+    .c-title(:style="{ color: headerColor }") {{ title || '' }}
     i.iconfont(v-if="icon" :class="icon" :style="{ color: iconColor }")
   .c-more(v-if="showMore" @click="$emit('onClickMore')")
     span.more {{ '查看更多' }}
@@ -27,6 +27,10 @@ export default defineComponent({
     icon: {
       type: String,
       default: ''
+    },
+    headerColor: {
+      type: String,
+      default: '#333'
     },
     iconColor: {
       type: String,

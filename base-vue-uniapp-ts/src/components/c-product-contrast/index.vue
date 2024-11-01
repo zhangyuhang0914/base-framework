@@ -13,10 +13,10 @@
           .title-name {{ item.name || '' }}
           .bank-name {{ item.institutionsName || '' }}
         .right-detele(@click="delProductContrast(item)")
-          u-icon(name="trash" color="#409EFF" size="20")
+          u-icon(name="trash" color="#4C5F99" size="20")
     .popup-footer
-      u-button.larger-btn.close-btn(type="info" @click="showContrastPopup = false") {{ '关闭' }}
-      u-button.larger-btn(type="primary" :disabled="!contrastData.length" @click="startContrast") {{ '开始对比' }}
+      u-button.larger-btn.u-pinia-btn(type="info" @click="showContrastPopup = false") {{ '关闭' }}
+      u-button.larger-btn.u-primary-btn(type="primary" :disabled="!contrastData.length" @click="startContrast") {{ '开始对比' }}
 </template>
 
 <script lang="ts">

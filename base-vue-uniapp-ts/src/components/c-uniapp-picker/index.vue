@@ -49,6 +49,8 @@ watch(
   val => {
     if (val) {
       pIndex.value = getPIndex(val)
+    } else {
+      pIndex.value = null
     }
   },
   {

@@ -4,11 +4,12 @@ view.licenseConfirm
     up-checkbox-group(v-model="isAgree")
       up-checkbox(name="1" disabled)
     view.agreeItem(@click='handleConfirm') {{'确认授权对象'}}
-    view.agreeItem.iconfont.icon-shizhi(:class='{disableColor: !isAgree}' @click='handlePreviewConfirm')
-    view.downBtn(@click='handleDownload')
-      view.iconfont.icon-xiazai(:class='{disableColor: !isAgree}')
-      Text(:class='{disableColor: !isAgree}') {{'下载'}}
-  up-modal.custromModel(:show="confirmShow" :showConfirmButton='false' :showCancelButton='false')
+  u-button.send-code-btn.license-btn(type="primary" @click="onSignLicense") {{ contract.contractFileId ? '重新签署授权协议' : '签署授权协议' }}
+    //- view.agreeItem.iconfont.icon-shizhi(:class='{disableColor: !isAgree}' @click='handlePreviewConfirm')
+    //- view.downBtn(@click='handleDownload')
+    //-   view.iconfont.icon-xiazai(:class='{disableColor: !isAgree}')
+    //-   Text(:class='{disableColor: !isAgree}') {{'下载'}}
+  up-modal.custromModel(v-if="confirmShow" :show="confirmShow" :showConfirmButton='false' :showCancelButton='false')
     template(#default)
       view.modalContent
         view.modalTitle.text-center {{'确认授权对象'}}
@@ -35,10 +36,10 @@ view.licenseConfirm
             :disabled='disConfirmFlg'
             type="primary"
             text="确定"
-            :customStyle="{width: '90%'}"
+            :customStyle="{width: '90%', background: '#4c5f99', border: 'none'}"
             shape="circle"
             @click='handleConfirmSubmit')
-  up-modal.custromModel(:show="previewShow" :showConfirmButton='false' :showCancelButton='false')
+  up-modal.custromModel(v-if="previewShow" :show="previewShow" :showConfirmButton='false' :showCancelButton='false')
     view.modalContent
       view.modalTitle.text-center {{'授权协议'}}
       scroll-view.modalBody(scroll-y)
@@ -83,6 +84,7 @@ import { downloadFile } from '@/api/common'
 import { handleDownloadFile } from '@/util/utils'
 import { toast } from '@/common/uni-utils'
 import type { ConfirmData } from '@/api/user/type'
+import type { ContractDataType } from '@/api/common/types'
 const props = defineProps({
   // 确认授权对象
   confirmData: {
@@ -96,10 +98,15 @@ const props = defineProps({
     type: Object as () => ConfirmData,
     default() {
       return {
-        entName: '湖北省征信有限公司',
-        uniscId: '91420000MAC45WE57R'
+        entName: '',
+        uniscId: ''
       } as ConfirmData
     }
+  },
+  // 授权协议
+  contract: {
+    type: Object as () => ContractDataType,
+    default: () => {}
   }
 })
 let confirmDataHis = ref({})
@@ -112,7 +119,7 @@ let disConfirmFlg = computed(() => {
       }) && licenseId.value
   )
 })
-const $emit = defineEmits(['onLicenseConfirm'])
+const $emit = defineEmits(['onLicenseConfirm', 'onSignLicense'])
 let isAgree = ref()
 let confirmShow = ref(false)
 let previewShow = ref(false)
@@ -132,13 +139,19 @@ const handleConfirm = () => {
 const handleConfirmCancel = () => {
   confirmShow.value = false
 }
+// 签署授权协议
+const onSignLicense = () => {
+  $emit('onSignLicense')
+}
 // 提交
 const handleConfirmSubmit = () => {
   let params = {
     uniscid: props.confirmData.uniscId,
     entName: props.confirmData.entName,
-    finInstitutionsUniscID: '91420000MAC45WE57R',
-    finInstitutionsName: '湖北省征信有限公司',
+    // 91420000MAC45WE57R
+    finInstitutionsUniscID: props.licensedData.uniscId || '',
+    // 湖北省征信有限公司
+    finInstitutionsName: props.licensedData.entName || '',
     finLoanInstitutionsInfoIds: '1',
     finLoanInstitutionsInfoIdsArr: ['1'],
     contactMan: entInfo.entInfoagentName || uiasUserInfo.name

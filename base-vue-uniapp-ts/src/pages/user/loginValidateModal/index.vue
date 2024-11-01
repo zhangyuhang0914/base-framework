@@ -7,15 +7,15 @@ up-modal.custromModel(
   template(#default)
     view.modalContent
       .modalBody
-        img.img(:src="preview(imgConstant['wx_login_needLogin'])" alt="")
+        img.img(:src="previewImg('wx_login_needLogin')" alt="")
         view.notice {{type==='login' ? '您的操作需要登录并绑定企业！': '您的操作需要先绑定企业！'}}
       .modalBottom
-        up-button(
+        up-button.u-info-btn(
           :text="type==='login' ? '暂不登录': '暂不绑定'"
           shape="circle"
           :customStyle="{background: '#f1f1f1', width: '90%'}"
           @click='handleCancel')
-        up-button(
+        up-button.u-primary(
           type="primary"
           :text="type==='login' ? '去登录': '去绑定'"
           :customStyle="{width: '90%'}"
@@ -26,8 +26,7 @@ up-modal.custromModel(
 <script setup lang="ts">
 import { ref } from 'vue'
 import { linkJump } from '@/common/common'
-import { preview } from '@/api/common/index'
-import imgConstant from '@/common/imgConstant'
+import { previewImg } from '@/util/utils'
 let show = ref(false)
 const props = defineProps({
   // type 登录提示-login、绑定企业提示-authentication

@@ -1,0 +1,60 @@
+.layoutMain
+  padding-top 0
+  .search-input
+    padding 48rpx 24rpx 24rpx 24rpx
+  .topTab
+    :deep(.u-tabs__wrapper__scroll-view-wrapper)
+      width 100%
+    :deep(.u-tabs__wrapper__nav__item__text)
+      white-space nowrap
+      overflow hidden
+      text-overflow ellipsis
+    :deep(.u-tabs__wrapper__nav__line)
+      bottom 0
+  .mainContainer
+    height calc(100% - 108rpx - 146rpx) !important
+    up-row.rowBox
+      :deep(.u-row)
+        width auto
+    .policyType
+      padding 40rpx 60px
+      :deep(.u-button--plain.u-button--primary)
+        background-image linear-gradient(to bottom, #F9EBB0, #F2D279)
+        border-width 0
+        color #132b5b
+      :deep(.u-button)
+        font-weight 600
+    .scrollContent
+      height 100%
+      padding-bottom 20rpx
+      padding-top 20rpx
+      box-sizing border-box
+      &.policyScrollContent
+        height calc(100% - 85px)
+        padding-top 0
+      .scroll-view
+        height 100%
+        .scrollBox
+          height 100%
+          .scrollItem
+            border-bottom 1px solid #E6E6E6
+            margin 0 40rpx
+            padding 20rpx 0
+            line-height 40rpx
+            display flex
+            justify-content space-between
+            &:nth-last-child(2)
+              border-bottom none
+            .topTitle
+              font-weight bold
+            .bottomText
+              color #909399
+              font-size 24rpx
+              margin-top 10rpx
+              .publisher
+                margin-right 20rpx
+            .rightImg
+              width 30%
+              min-width 30%
+              border-radius 8rpx
+              margin-left 20rpx

@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-view
-  Layout(showTabBar showHeaderBar showBack headerBackground="#DAECFE" statusBackground="#DAECFE" headerTitle="产品收藏")
+  Layout(showTabBar showHeaderBar showBack headerBackground="#132B5B" statusBackground="#132B5B" headerColor="#FFFFFF" headerTitle="产品收藏")
     template(#main)
       .layoutMain
         .mainContainer
@@ -12,48 +12,40 @@
             :refresher-triggered='refresherTriggered'
           )
             .scroll-item(v-for="(item, index) in listData" :key="index")
-              .product-box(@click='handleDetail(item.finProductInfo)')
-                .product-tips
-                  i.iconfont.icon-shigong
-                  .title {{ `本产品由${item.finProductInfo.institutionsName}提供` }}
+              .product-box(@click="handleDetail(item.finProductInfo)")
                 .product-header
-                  img(:src="item.finProductInfo.logoUrl" alt="")
-                  .title {{ item.finProductInfo.name }}
+                  .img-logo
+                    image(:src="item.finProductInfo.logoUrl" mode="widthFix" :lazy-load="true" alt="")
+                  .product-title
+                    .name.text-line2-overflow {{ item.finProductInfo.name }}
+                    .source {{ item.finProductInfo.companySource }}
                 .product-content
                   .product-data
-                    .loan-limit-box.c-column
-                      .value {{ `${item.finProductInfo.loanLimitBegin}-${item.finProductInfo.loanLimitEnd}万元` }}
-                      .label {{ '贷款额度' }}
                     .rate-range-box.c-column
-                      .value {{ `${item.finProductInfo.rateRangeBegin}%-${item.finProductInfo.rateRangeEnd}%` }}
-                      .label {{ '参考利率(年化)' }}
+                      .value {{ item.finProductInfo.rateRange }}
+                      .label {{ '参考利率' }}
+                    .loan-limit-box.c-column
+                      .value {{ item.finProductInfo.loanLimit }}
+                      .label {{ '贷款额度' }}
                     .loan-period-box.c-column
-                      .value(v-if="item.finProductInfo.loanPeriodBegin === 0") {{ `${item.finProductInfo.loanPeriodEnd}个月及以下` }}
-                      .value(v-else) {{ `${item.finProductInfo.loanPeriodBegin}-${item.finProductInfo.loanPeriodEnd}个月` }}
+                      .value {{ item.finProductInfo.loanPeriod }}
                       .label {{ '贷款期限' }}
-                  .product-info
-                    .guarantee-mode-box.c-row
-                      .label {{ '担保方式：' }}
-                      .value(v-if="item.guaranteeMode + ''") {{ item.finProductInfo && formatMode(item.finProductInfo.guaranteeMode, guaranteeModeList, item.finProductInfo.guaranteeModeExtra) }}
-                    .product-source-box.c-row
-                      .label {{ `产品来源：${item.finProductInfo.institutionsName}` }}
                 .product-footer
-                  .product-tag
-                    .tag-box(v-for="(tagItem, index) in getTabName(item)" :key="index" :class="tagItem.class")
-                      .tag-name {{ tagItem.tag }}
-                  .product-operation
-                    .operation-box(@click.stop="collectionClick(item.finProductInfo)")
+                  .guarantee-mode-left
+                    .mode-value(v-if="item.finProductInfo.guaranteeMode + ''") {{ '担保方式：' + formatMode(item.finProductInfo.guaranteeMode, guaranteeModeList, item.finProductInfo.guaranteeModeExtra) }}
+                  .operation-box-right
+                    .operation-box.collection-btn(@click.stop="collectionClick(item.finProductInfo)")
                       i.iconfont(class="icon-shouzanghou")
-                    .operation-box(@click.stop="applyClick(item.finProductInfo)")
+                    .operation-box.apply-btn(@click.stop="applyClick(item.finProductInfo)")
                       i.iconfont.icon-shenqing
-                    .operation-box(@click.stop='handleCompare(item.finProductInfo)')
+                    .operation-box.compare-btn(@click.stop='handleCompare(item.finProductInfo)')
                       i.iconfont.icon-duibi
             u-loadmore(:status="loadMoreStatus" @loadmore="getMore")
           CProductContrast(ref="CProductContrastRef")
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, type Ref, onMounted } from 'vue'
+import { ref, reactive, type Ref } from 'vue'
 import Layout from '@/components/layout/index.vue'
 import type { PageItem } from '@/api/user/type'
 import { collectionSave } from '@/api/financeProduct/index'
@@ -64,11 +56,12 @@ import type { CollectionParamsType, ProductListItem } from '@/api/financeProduct
 import type { ApiResponse } from '@/common/http/types'
 import { collectionList } from '@/api/user'
 import { preview } from '@/api/common'
-import { onShow } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { toast } from '@/common/uni-utils'
 import { cancelCollection, productApplyHandle, setProductContrast } from '@/hooks/common'
 import { linkJump } from '@/common/common'
 import CProductContrast from '@/components/c-product-contrast/index.vue'
+import Bus, { REFRESH, REFRESH_COLLECTION } from '@/common/bus'
 const commonStoreHook = userCommonStoreHook()
 const listData = ref<ProductListItem[]>([])
 // LoadMore组件状态：loadmore查看更多 loading加载中 nomore没有更多
@@ -125,10 +118,17 @@ const getListData = (reset = false) => {
   collectionList(params)
     .then(result => {
       let data = result.page
-      data.list.map((item: ProductListItem) => {
+      data.list.map((item: AnyObject) => {
         if (!item.finProductInfo) item.finProductInfo = {}
         if (item.finProductInfo.logoFileId) {
           item.finProductInfo['logoUrl'] = preview(item.finProductInfo.logoFileId)
+          item.finProductInfo['companySource'] = item.finProductInfo.institutionsName + '提供'
+          item.finProductInfo['loanPeriod'] =
+            item.finProductInfo.loanPeriodBegin === 0 ? item.finProductInfo.loanPeriodEnd + '个月及以下' : item.finProductInfo.loanPeriodBegin + '-' + item.finProductInfo.loanPeriodEnd + '个月'
+          item.finProductInfo['rateRange'] = item.finProductInfo.rateRangeBegin + '%-' + item.finProductInfo.rateRangeEnd + '%'
+          item.finProductInfo['loanLimit'] = item.finProductInfo.loanLimitBegin + '~' + item.finProductInfo.loanLimitEnd + '万元'
+          item.finProductInfo['productSource'] = '产品来源：' + item.finProductInfo.institutionsName
+          item.finProductInfo['isCollect'] = true
         }
       })
       listData.value = listData.value.concat(data.list || [])
@@ -165,6 +165,7 @@ const collectionClick = (item: ProductListItem) => {
         collectionSave(params).then(<T,>(result: ApiResponse<T>) => {
           toast.show('取消成功', 'none', 1500)
           getListData(true)
+          Bus.$emit(REFRESH, true)
         })
       }
     }
@@ -196,15 +197,22 @@ const handleDetail = (item: ProductListItem) => {
     })
     return
   }
-  linkJump(`/pagesFinanceProduct/productDetail/index?id=${item.id}`)
+  linkJump(`/pagesFinanceProduct/productDetail/index?id=${item.id}&isCollect=${item.isCollect}`)
 }
-onMounted(() => {
-  // 获取担保方式
-  getGuaranteeMode()
-})
 onShow(() => {
   // 获取产品列表
   getListData(true)
+  // 隐藏小程序后会自动销毁
+  Bus.$on(REFRESH_COLLECTION, (beforePage: string) => {
+    // 获取产品列表
+    if (beforePage === 'pagesUser/productCollection/index') {
+      getListData(true)
+    }
+  })
+})
+onLoad(() => {
+  // 获取担保方式
+  getGuaranteeMode()
 })
 </script>
 
