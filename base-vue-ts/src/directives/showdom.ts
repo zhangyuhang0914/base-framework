@@ -2,7 +2,7 @@
 
 import { useIntersectionObserver } from '@vueuse/core'
 export default {
-  async mounted (el:any, binding:any, vnode?:any) {
+  async mounted(el: any, binding: any, vnode?: any) {
     // stop 是一个函数，用于停止检测元素可见性
     const { stop } = useIntersectionObserver(
       el,
@@ -20,7 +20,7 @@ export default {
         }
       },
       // 🔔优化： 0 元素刚进入可视区触发，1 表示元素完整进入可视区才触发
-      { threshold: [0] })
+      { threshold: [0] }
+    )
   }
-
 }

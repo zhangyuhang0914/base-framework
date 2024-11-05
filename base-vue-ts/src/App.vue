@@ -4,11 +4,9 @@ router-view(v-slot="{ Component }")
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
 import { onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import { userCommonStoreHook } from '@/stores/modules/common'
 const commonHook = userCommonStoreHook()
-const route = useRouter()
 // 禁用拖拽
 const firbitFn = (e: any) => {
   e.preventDefault()

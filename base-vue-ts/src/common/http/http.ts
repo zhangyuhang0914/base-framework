@@ -68,7 +68,6 @@ export class Request {
 
     this.instance.interceptors.response.use(
       (response: AxiosResponse) => {
-        const options: httpRequestConfig = response.config
         const responseData = response.data
         const responseCode = responseData.code
         const responseMsg = responseData?.msg

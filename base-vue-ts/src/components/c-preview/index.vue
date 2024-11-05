@@ -43,7 +43,7 @@ import { ElImageViewer, ElDialog } from 'element-plus'
 import { getDomFontSize } from '@/utils/utils'
 export default defineComponent({
   name: 'Preview',
-  components: { Picture, ElImageViewer, ElDialog },
+  components: { ElImageViewer, ElDialog },
   props: {
     type: {
       type: String,
@@ -95,7 +95,7 @@ export default defineComponent({
     }
     setTimeout(() => {
       if (props.type === 'video') {
-        videoRef.value && videoRef.value.play()
+        videoRef.value?.play()
       }
     }, 500)
 
@@ -104,6 +104,7 @@ export default defineComponent({
       emit('close')
     }
     return {
+      Picture,
       previewImgVisible,
       videoRef,
       imgUrls,

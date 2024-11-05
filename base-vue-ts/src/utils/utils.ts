@@ -43,13 +43,12 @@ export const throttle = (fn: () => void, delay: number = 300, first: boolean = t
  * @param {*} fn 要执行的方法
  * @param {*} delay 延迟
  */
-export const debounce = (fn: Function, delay: number = 300) => {
+export const debounce = (fn: (...args: unknown[]) => void, delay: number = 300) => {
   // 维护一个 timer
   let timer: any
-  return function (this: any) {
+  return function (this: unknown, ...args: unknown[]) {
     // 取debounce执行作用域的this
-    let self = this
-    let args = arguments
+    const self = this
     if (timer) {
       clearTimeout(timer)
     }
@@ -98,7 +97,7 @@ export const maskString = (str: string, startIndex: number = 2, endIndex: number
  * @returns 文件后缀
  */
 export const getFileType = (fileName: string) => {
-  let filea = fileName.split('.')
+  const filea = fileName.split('.')
   return filea[filea.length - 1].toLowerCase()
 }
 
@@ -117,7 +116,7 @@ export const hasDecimal = (value: number | string): boolean => {
  * @param {string} name - 附件名称
  */
 export const download = (url: string, name: string): void => {
-  let a = document.createElement('a')
+  const a = document.createElement('a')
   a.href = url
   a.download = name
   a.target = '_blank'
@@ -146,7 +145,7 @@ export const formatToYearMonthDay = (str: string): string => {
  */
 export const amountRule = (amount: string) => {
   let defaultAmount = ''
-  let setAmount = amount + ''
+  const setAmount = amount + ''
   if (setAmount != 'null' && setAmount != '' && setAmount != 'undefined') {
     defaultAmount = setAmount
       .split('')

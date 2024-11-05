@@ -4,10 +4,13 @@
   </template>
 
 <script setup lang="ts" name="CInput">
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ElInput } from 'element-plus'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { defineComponent, h, ref, defineModel } from 'vue'
 
 const inputRef = ref()
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const model = defineModel()
 defineExpose(
   new Proxy(
