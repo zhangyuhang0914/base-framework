@@ -33,7 +33,18 @@ Object.keys(modules).forEach(key => {
 const router: Router = createRouter({
   strict: true,
   history: createWebHashHistory(BASE_URL),
-  routes
+  routes,
+  /**
+   * 切换路由时，滚动条位置还原
+   * @param to 路由对象
+   * @param form 上一个路由对象
+   * @param savedPosition 保存滚动位置
+   * @returns
+   * https://router.vuejs.org/zh/guide/advanced/scroll-behavior.html
+   */
+  scrollBehavior(to, form, savedPosition) {
+    return savedPosition ?? { top: 0 }
+  }
 })
 // 路由守卫
 router.beforeEach((to, from, next) => {
