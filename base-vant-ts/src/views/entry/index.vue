@@ -1,15 +1,41 @@
 <template lang="pug">
 .page-wrap
-  span 入口文件
+  .entry-content
+    .entry-title {{ '千企万户大走访' }}
+    .operation-btn
+      vanButton.custom-primary-btn(v-for="(item, index) in operationBtn" :key="index" :type="item.type" @click="handlerOperation(item.path)")
+        img(:src="item.icon" alt="加载失败")
+        span {{ item.text }}
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive } from 'vue'
 
 export default defineComponent({
   name: 'Entry',
   setup(props) {
-    return {}
+    const { VITE_APP_IMG_URL } = import.meta.env
+    const operationBtn = reactive([
+      {
+        text: '企业需求申报',
+        type: 'default',
+        icon: VITE_APP_IMG_URL + 'entry/enterpriseApply.png',
+        path: ''
+      },
+      {
+        text: '我的申报清单',
+        type: 'default',
+        icon: VITE_APP_IMG_URL + 'entry/applyRecord.png',
+        path: ''
+      }
+    ])
+    const handlerOperation = (path: string) => {
+      console.log('handlerOperation', path)
+    }
+    return {
+      operationBtn,
+      handlerOperation
+    }
   }
 })
 </script>

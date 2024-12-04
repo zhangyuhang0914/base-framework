@@ -13,6 +13,7 @@ module.exports = {
     },
     'postcss-pxtorem': {
       rootValue ({ file }) {
+        console.log('file', file)
         return file.indexOf('vant') !== -1 ? 37.5 : 75
       },
       propList: ['*'],
