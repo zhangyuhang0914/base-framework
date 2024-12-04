@@ -13,8 +13,8 @@ module.exports = {
     },
     'postcss-pxtorem': {
       rootValue ({ file }) {
-        console.log('file', file)
-        return file.indexOf('vant') !== -1 ? 37.5 : 75
+        // return file.indexOf('vant') !== -1 ? 37.5 : 75
+        return 37.5
       },
       propList: ['*'],
       unitPrecision: 5
