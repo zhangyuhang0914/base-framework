@@ -1,13 +1,13 @@
 /*
  * @Desc         : 指令定义逻辑
  * @Autor        : ZhangYuHang
- * @Date         : 2023-08-14 14:59:06
+ * @Date         : 2024-12-03 18:06:07
  * @LastEditors  : ZhangYuHang
- * @LastEditTime : 2023-08-21 11:37:36
+ * @LastEditTime : 2024-12-04 10:21:25
  */
-import { App } from 'vue'
+import { type App } from 'vue'
 
-const files = import.meta.globEager('./*.ts')
+const files = import.meta.glob('./*.ts', { eager: true })
 const modules: any = {}
 for (const key in files) {
   if (Object.prototype.hasOwnProperty.call(files, key)) {

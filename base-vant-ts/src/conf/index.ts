@@ -1,23 +1,21 @@
 /*
- * @Desc         : 环境配置信息
+ * @Desc         :
  * @Autor        : ZhangYuHang
- * @Date         : 2023-08-17 16:45:28
+ * @Date         : 2024-12-03 18:06:07
  * @LastEditors  : ZhangYuHang
- * @LastEditTime : 2023-08-23 10:05:13
+ * @LastEditTime : 2024-12-04 09:26:11
  */
-
 export const API = {
   // 开发环境
   development: {
     DEFAULT: import.meta.env.BASE_URL,
-    defaultAjaxPath: '/webspiderweb'
+    BASE_URL: '/api'
   },
   // 生产环境
   production: {
     DEFAULT: import.meta.env.BASE_URL,
-    defaultAjaxPath: '/webspiderweb'
+    BASE_URL: '/api'
   }
 }
-
 const isProd = import.meta.env.MODE === 'production'
 export const BASE_CONFIG = isProd ? API.production : API.development

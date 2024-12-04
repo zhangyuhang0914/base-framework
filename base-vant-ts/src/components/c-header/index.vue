@@ -14,7 +14,7 @@
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 export default defineComponent({
-  name: 'Header',
+  name: 'CHeader',
   props: {
     back: {
       type: Boolean,

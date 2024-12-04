@@ -12,10 +12,9 @@ module.exports = {
       grid: true,
     },
     'postcss-pxtorem': {
-      rootValue: 37.5,
-      // rootValue({ file }) {
-      //   return file.indexOf('vant') !== -1 ? 37.5 : 75;
-      // },
+      rootValue ({ file }) {
+        return file.indexOf('vant') !== -1 ? 37.5 : 75
+      },
       propList: ['*'],
       unitPrecision: 5
     }

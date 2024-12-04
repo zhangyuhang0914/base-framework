@@ -1,9 +1,9 @@
 /*
  * @Desc         : 全局定义
  * @Autor        : ZhangYuHang
- * @Date         : 2023-08-17 16:43:06
+ * @Date         : 2024-12-03 18:06:07
  * @LastEditors  : ZhangYuHang
- * @LastEditTime : 2023-08-24 18:14:09
+ * @LastEditTime : 2024-12-04 10:22:14
  */
 
 interface AnyObject {

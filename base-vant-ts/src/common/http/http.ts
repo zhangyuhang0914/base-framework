@@ -1,29 +1,28 @@
 import axios, {
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-  AxiosError
+  type AxiosInstance,
+  type AxiosRequestConfig,
+  type AxiosResponse,
+  AxiosError,
+  type InternalAxiosRequestConfig
 } from 'axios'
-import { httpRequestConfig, ApiResponse } from './types'
-import { showToast } from 'vant'
+import type { httpRequestConfig, ApiResponse } from './types'
+import { $toast } from '@/plugins/vant'
 import { API as configApi } from '@/conf/index'
 import { userCommonStoreHook } from '@/stores/modules/common'
-import * as qs from 'querystring'
+import qs from 'qs'
+import { getToken } from '@/utils/cookie'
 
 // 获取接口根路径
-const isProd = import.meta.env.MODE === 'production'
+const isProd = import.meta.env.PROD
 const BASE_PATH: any = isProd ? configApi.production : configApi.development
-// 获取接口地址
-const BASE_URL: any = import.meta.env.VITE_APP_HBJT_BASE_URL
 
 // 导出Request类，可以用来自定义传递配置来创建实例
 export class Request {
-  // private baseUrl: any = BASE_PATH
   // axios 实例
   public instance: AxiosInstance
   // 基础配置
   private baseConfig: httpRequestConfig = {
-    // baseURL: this.baseUrl['DEFAULT'],
+    url: BASE_PATH['BASE_URL'],
     headers: {
       'X-Requested-With': 'XMLHttpRequest',
       'Content-Type': 'application/json; charset=UTF-8'
@@ -32,17 +31,19 @@ export class Request {
   }
 
   constructor(options: httpRequestConfig) {
-    // 使用axios.create创建axios实例
+    // 创建axios实例
     this.instance = axios.create(Object.assign(this.baseConfig, options))
     this.instance.interceptors.request.use(
-      (options: httpRequestConfig) => {
+      (
+        options: httpRequestConfig
+      ): InternalAxiosRequestConfig<httpRequestConfig> => {
         // 简化类型设置
         const headers = (options.headers = options.headers || {})
 
-        if (options.form) {
+        if (options.isForm) {
           headers['Content-Type'] =
             'application/x-www-form-urlencoded; charset=UTF-8'
-          delete options.form
+          delete options.isForm
         }
         if (options.formUpload) {
           headers['Content-Type'] = 'multipart/form-data; charset=UTF-8'
@@ -57,13 +58,20 @@ export class Request {
         ) {
           options.data = qs.stringify(options.data)
         }
-
-        let url: any = options.url
-        let ajaxPath = BASE_PATH[options.apiType || 'defaultAjaxPath']
-        if (ajaxPath && !url.startsWith('http') && !url.startsWith('https')) {
-          options.url = BASE_URL + ajaxPath + url
+        // post数据格式为form-data
+        if (options.isPostAndFormData) {
+          options.url += `?${qs.stringify(options.data)}`
+          delete options.data
         }
-        return options
+        // 设置token
+        if (getToken()) {
+          headers['token'] = getToken() ?? ''
+        }
+        const url = options.url ?? ''
+        if (!url.startsWith('http') && !url.startsWith('https')) {
+          options.url = BASE_PATH[options.apiType || 'BASE_URL'] + options.url
+        }
+        return options as InternalAxiosRequestConfig<httpRequestConfig>
       },
       (error: AxiosError) => {
         // 请求错误，这里可以用全局提示框进行提示
@@ -73,13 +81,27 @@ export class Request {
 
     this.instance.interceptors.response.use(
       (response: AxiosResponse) => {
-        return response.data
+        const responseData = response.data
+        const responseCode = responseData.code
+        const responseMsg = responseData?.msg
+        const responseBz = responseData?.bz
+        if (responseCode === 0) {
+          return Promise.resolve(responseData)
+        } else if (responseCode === 500 || responseMsg === 'token不能为空') {
+          // token失效，处理退出登录逻辑
+          // $toast('登录已失效，请重新登录！')
+          // userCommonStoreHook().logout()
+          this.errorMessage(responseMsg, responseBz)
+          return Promise.reject(responseData)
+        } else {
+          this.errorMessage(responseMsg, responseBz)
+          return Promise.reject(responseData)
+        }
       },
       (error: any) => {
         if (error.response) {
-          const data = error.response.data
           const status = error.response.status
-          let errMessage = data.message || '服务忙，请稍后重试(error)'
+          let errMessage = error.message || '服务忙，请稍后重试(error)'
           switch (status) {
             case 400:
               errMessage = '请求错误(400)'
@@ -98,7 +120,7 @@ export class Request {
               errMessage = '请求超时(408)'
               break
             case 500:
-              errMessage = '服务器错误(500)'
+              errMessage = error.msg || '服务器错误(500)'
               break
             case 501:
               errMessage = '服务未实现(501)'
@@ -116,9 +138,9 @@ export class Request {
               errMessage = 'HTTP版本不受支持(505)'
               break
             default:
-              errMessage = `连接出错(${error.response.status})!`
+              errMessage = `连接出错(${error.status})!`
           }
-          showToast(`${errMessage}，请检查网络或联系管理员！`)
+          $toast(`${errMessage}，请检查网络或联系管理员！`)
         } else {
           // 默认放一个空对象避免其他地方报错
           error.response = {}
@@ -126,10 +148,10 @@ export class Request {
             (error.config && error.config.url) || '无url',
             '请求接口超过一分钟无响应'
           )
-          const msg = userCommonStoreHook().networkState
+          const msg = userCommonStoreHook().onlineState
             ? '您与服务器的连接已经断开，请联系管理员处理'
             : '网络连接已断开'
-          showToast(msg)
+          $toast(msg)
         }
         return Promise.reject(error)
       }
@@ -137,32 +159,34 @@ export class Request {
   }
 
   // 定义请求方法
-  public request(config: AxiosRequestConfig): Promise<AxiosResponse> {
+  public request<T>(config: AxiosRequestConfig): Promise<ApiResponse<T>> {
     return this.instance.request(config)
   }
 
-  public get<T = any>(
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<ApiResponse<T>>> {
+  public get<T>(config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
     return this.instance.get(config?.url as string, config)
   }
 
-  public post<T = any>(
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<ApiResponse<T>>> {
+  public post<T>(config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
     return this.instance.post(config?.url as string, config?.data, config)
   }
 
-  public put<T = any>(
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<ApiResponse<T>>> {
+  public put<T>(config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
     return this.instance.put(config?.url as string, config?.data, config)
   }
 
-  public delete<T = any>(
-    config?: AxiosRequestConfig
-  ): Promise<AxiosResponse<ApiResponse<T>>> {
+  public delete<T>(config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
     return this.instance.delete(config?.url as string, config)
+  }
+
+  public errorMessage(responseMsg: string, responseBz: string) {
+    if (responseMsg && typeof responseMsg === 'string') {
+      $toast(responseMsg)
+    } else if (responseBz && typeof responseBz === 'string') {
+      $toast(responseBz)
+    } else {
+      $toast(responseMsg || responseBz || '')
+    }
   }
 }
 

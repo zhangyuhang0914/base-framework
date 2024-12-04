@@ -7,17 +7,17 @@ interface ProxyStorage {
 
 class sessionStorageProxy implements ProxyStorage {
   protected storage: ProxyStorage
-  constructor (storageModel: ProxyStorage) {
+  constructor(storageModel: ProxyStorage) {
     this.storage = storageModel
   }
 
   // 存
-  public setItem (key: string, value: any): void {
+  public setItem(key: string, value: any): void {
     this.storage.setItem(key, JSON.stringify(value))
   }
 
   // 取
-  public getItem (key: string): any {
+  public getItem(key: string): any {
     return JSON.parse(this.storage.getItem(key))
   }
 
@@ -33,7 +33,7 @@ class sessionStorageProxy implements ProxyStorage {
 }
 
 class localStorageProxy extends sessionStorageProxy implements ProxyStorage {
-  constructor (localStorage: ProxyStorage) {
+  constructor(localStorage: ProxyStorage) {
     super(localStorage)
   }
 }

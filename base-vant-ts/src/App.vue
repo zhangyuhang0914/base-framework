@@ -4,22 +4,18 @@ router-view(v-slot="{ Component }")
 </template>
 <script setup lang="ts">
 import { onUnmounted } from 'vue'
-import { showNotify } from 'vant'
 import { userCommonStoreHook } from '@/stores/modules/common'
-let noticyObj: any = null
+import { $notify } from './plugins/vant'
 const updateOnline = () => {
   const commonHook = userCommonStoreHook()
   const onlineState = !!navigator.onLine
+  const notify = $notify()
   if (!onlineState) {
-    noticyObj = showNotify({
-      type: 'danger',
-      message: '网络连接已断开',
-      duration: 0
-    })
+    notify.showNotification('网络连接已断开', { duration: 0 })
   } else {
-    noticyObj && noticyObj.closeNotify()
+    notify && notify.closeNotification()
   }
-  commonHook.setNetwork(onlineState)
+  commonHook.setOnlineState(onlineState)
 }
 // 监听网络变化
 window.addEventListener('online', updateOnline)
