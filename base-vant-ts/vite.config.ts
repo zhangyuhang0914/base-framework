@@ -15,9 +15,9 @@ export default ({ command, mode }: any) => {
   // 根据当前工作目录中的 `mode` 加载 .env 文件
   // 设置第三个参数为 '' 来加载所有环境变量，而不管是否有 `VITE_` 前缀。
   const env = loadEnv(mode, process.cwd(), '') || {}
-  console.log('command', command)
-  console.log('mode', mode)
-  console.log(loadEnv(mode, process.cwd(), ''))
+  // console.log('command', command)
+  // console.log('mode', mode)
+  // console.log(loadEnv(mode, process.cwd(), ''))
   return defineConfig({
     plugins: [
       vue(),
@@ -77,12 +77,12 @@ export default ({ command, mode }: any) => {
           changeOrigin: true,
           rewrite: path =>
             path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
-        },
-        '/api': {
-          target: 'http://192.168.0.144:7010',
-          changeOrigin: true, //是否跨域
-          rewrite: path => path.replace(/^\/api/, '')
         }
+        // '/api': {
+        //   target: 'http://192.168.0.144:7010',
+        //   changeOrigin: true, //是否跨域
+        //   rewrite: path => path.replace(/^\/api/, '')
+        // }
       }
     }
   })

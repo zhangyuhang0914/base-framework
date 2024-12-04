@@ -11,6 +11,10 @@ interface ImportMetaEnv {
   // 和其他环境变量
 }
 
+// Import
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+// qs
+declare module 'qs'

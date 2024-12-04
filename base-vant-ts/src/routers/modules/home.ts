@@ -9,15 +9,6 @@ const routers: AppRouteModule[] = [
     }
   },
   {
-    path: '/helloWorld',
-    name: 'HelloWorld',
-    component: () => import('@/components/HelloWorld.vue'),
-    meta: {
-      title: 'HelloWorld',
-      ignoreAuth: true
-    }
-  },
-  {
     path: '/404',
     name: '404',
     component: () => import('@/views/error-page/404.vue'),
