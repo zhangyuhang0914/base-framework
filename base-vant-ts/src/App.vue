@@ -1,11 +1,28 @@
 <template lang="pug">
-router-view(v-slot="{ Component }")
-  component(:is="Component")
+vanConfigProvider(:theme-vars="themeVars" heme-vars-scope="global")
+  router-view(v-slot="{ Component }")
+    component(:is="Component")
 </template>
 <script setup lang="ts">
-import { onUnmounted } from 'vue'
+import { onUnmounted, reactive } from 'vue'
 import { userCommonStoreHook } from '@/stores/modules/common'
 import { $notify } from './plugins/vant'
+import type { ConfigProviderThemeVars } from 'vant'
+/**
+ * 初始化主题样式
+ * 基础变量只能通过 `root 选择器` 修改，不能通过 `ConfigProvider 组件` 修改。
+ * 组件变量可以通过 `root 选择器` 和 `ConfigProvider 组件` 修改。
+ */
+const themeVars: ConfigProviderThemeVars = reactive({
+  rateIconFullColor: '#07c160',
+  sliderBarHeight: '4px',
+  sliderButtonWidth: '20px',
+  sliderButtonHeight: '20px',
+  sliderActiveBackground: '#07c160',
+  buttonPrimaryBackground: '#07c160',
+  buttonPrimaryBorderColor: '#07c160'
+})
+// 初始化网络状态
 const updateOnline = () => {
   const commonHook = userCommonStoreHook()
   const onlineState = !!navigator.onLine

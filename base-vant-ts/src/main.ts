@@ -21,4 +21,5 @@ getConf(app).then(async config => {
   vantPlugins(app)
   // 指令
   directivesHook(app)
+  app.mount('#app')
 })

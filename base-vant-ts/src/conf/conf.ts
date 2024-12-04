@@ -1,16 +1,16 @@
 /*
- * @Desc         :
+ * @Desc         : 配置文件
  * @Autor        : ZhangYuHang
- * @Date         : 2023-08-17 16:42:46
+ * @Date         : 2024-12-03 18:06:07
  * @LastEditors  : ZhangYuHang
- * @LastEditTime : 2023-08-17 16:51:25
+ * @LastEditTime : 2024-12-04 10:38:33
  */
 
-import { App } from 'vue'
+import { type App } from 'vue'
 import axios from 'axios'
 const BASE_URL = import.meta.env.BASE_URL
 // 配置存储定义
-let config: AnyObject = {}
+const config: AnyObject = {}
 // 获取配置
 const getConfig = (key?: string, valKey: string = 'value') => {
   if (key) {

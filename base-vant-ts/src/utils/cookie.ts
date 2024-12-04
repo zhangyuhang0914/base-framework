@@ -3,10 +3,10 @@
  * @Autor        : ZhangYuHang
  * @Date         : 2024-12-03 18:06:07
  * @LastEditors  : ZhangYuHang
- * @LastEditTime : 2024-12-04 10:22:29
+ * @LastEditTime : 2024-12-04 11:23:51
  */
 
-import * as Cookies from 'js-cookie'
+import Cookies from 'js-cookie'
 
 const TokenKey = 'Admin-Token'
 
