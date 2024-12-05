@@ -14,6 +14,7 @@
   "dependencies": {
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20.14.2",
+    "@vant/use": "^1.6.0",
     "@vueuse/core": "^10.11.0",
     "js-cookie": "^3.0.5",
     "nprogress": "^0.2.0",

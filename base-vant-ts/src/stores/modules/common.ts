@@ -3,7 +3,7 @@ import { store } from '../index'
 import { type CommonType } from '../model/common'
 import type { DictListItem } from '@/api/model'
 import type { ApiResponse } from '@/common/http/types'
-import { getDictParamData } from '@/api/index'
+import { getDictParamData } from '@/api/common'
 
 export const userCommonStore = defineStore({
   id: 'common',

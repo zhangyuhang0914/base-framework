@@ -14,13 +14,13 @@ import type { ConfigProviderThemeVars } from 'vant'
  * 组件变量可以通过 `root 选择器` 和 `ConfigProvider 组件` 修改。
  */
 const themeVars: ConfigProviderThemeVars = reactive({
-  rateIconFullColor: '#07c160',
+  rateIconFullColor: '#4C5F99',
   sliderBarHeight: '4px',
   sliderButtonWidth: '20px',
   sliderButtonHeight: '20px',
-  sliderActiveBackground: '#07c160',
-  buttonPrimaryBackground: '#07c160',
-  buttonPrimaryBorderColor: '#07c160'
+  sliderActiveBackground: '#4C5F99',
+  buttonPrimaryBackground: '#4C5F99',
+  buttonPrimaryBorderColor: '#4C5F99'
 })
 // 初始化网络状态
 const updateOnline = () => {

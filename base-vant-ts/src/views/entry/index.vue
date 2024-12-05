@@ -11,6 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 
 interface OperationBtnType {
   text: string
@@ -22,6 +23,7 @@ export default defineComponent({
   name: 'Entry',
   setup(props) {
     const { VITE_APP_IMG_URL } = import.meta.env
+    const router = useRouter()
     const operationBtn: OperationBtnType[] = reactive([
       {
         text: '企业需求申报',
@@ -37,7 +39,9 @@ export default defineComponent({
       }
     ])
     const handlerOperation = (path: string) => {
-      console.log('handlerOperation', path)
+      router.push({
+        path: path
+      })
     }
     return {
       operationBtn,

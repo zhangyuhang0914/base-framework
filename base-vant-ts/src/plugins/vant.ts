@@ -5,7 +5,7 @@ import {
   showNotify,
   showToast,
   type NotifyOptions,
-  type NotifyType,
+  type ToastType,
   type ToastOptions
 } from 'vant'
 import { type App } from 'vue'
@@ -19,9 +19,14 @@ interface NotifyHandlers {
 /**
  * 轻提示
  */
-export const $toast = (message: string, options?: ToastOptions) => {
+export const $toast = (
+  message: string,
+  type?: ToastType,
+  options?: ToastOptions
+) => {
   showToast({
     message: message,
+    type: type ?? 'text',
     ...options
   })
 }

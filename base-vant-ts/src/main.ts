@@ -7,6 +7,7 @@ import vantPlugins from '@/plugins/vant'
 import { directivesHook } from '@/directives/index'
 import '@/plugins/flexible'
 // 引入css样式
+import 'vant/lib/index.css'
 import 'vant/es/toast/style'
 import 'vant/es/notify/style'
 import 'vant/es/dialog/style'
