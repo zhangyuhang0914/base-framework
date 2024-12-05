@@ -25,18 +25,16 @@ const getConfig = (key?: string, valKey: string = 'value') => {
 
 export const getConf = async (app: App): Promise<undefined> => {
   app.config.globalProperties.$config = getConfig()
-  return axios
-    .get(`${BASE_URL}config.json?timeStap=${Date.now()}`)
-    .then(({ data: config }) => {
-      let $config = app.config.globalProperties.$config
-      // 自动注入项目配置
-      if (app && $config && typeof config === 'object') {
-        $config = Object.assign($config, config)
-        app.config.globalProperties.$config = $config
-        app.config.globalProperties.$baseUrl = import.meta.env.BASE_URL
-      }
-      return $config
-    })
+  return axios.get(`${BASE_URL}config.json?timeStap=${Date.now()}`).then(({ data: config }) => {
+    let $config = app.config.globalProperties.$config
+    // 自动注入项目配置
+    if (app && $config && typeof config === 'object') {
+      $config = Object.assign($config, config)
+      app.config.globalProperties.$config = $config
+      app.config.globalProperties.$baseUrl = import.meta.env.BASE_URL
+    }
+    return $config
+  })
 }
 
 export { getConfig }

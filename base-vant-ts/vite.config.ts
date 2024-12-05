@@ -40,9 +40,7 @@ export default ({ command, mode }: any) => {
     css: {
       preprocessorOptions: {
         stylus: {
-          imports: [
-            resolve(__dirname, './src/assets/css/components/theme.styl')
-          ]
+          imports: [resolve(__dirname, './src/assets/css/components/theme.styl')]
         }
       }
     },
@@ -75,8 +73,7 @@ export default ({ command, mode }: any) => {
         [env.VITE_APP_BASE_API]: {
           target: env.VITE_APP_DEV_URL,
           changeOrigin: true,
-          rewrite: path =>
-            path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
+          rewrite: path => path.replace(new RegExp('^' + env.VITE_APP_BASE_API), '')
         }
         // '/api': {
         //   target: 'http://192.168.0.144:7010',

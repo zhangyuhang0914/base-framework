@@ -19,8 +19,9 @@ const themeVars: ConfigProviderThemeVars = reactive({
   sliderButtonWidth: '20px',
   sliderButtonHeight: '20px',
   sliderActiveBackground: '#4C5F99',
-  buttonPrimaryBackground: '#4C5F99',
-  buttonPrimaryBorderColor: '#4C5F99'
+  buttonPrimaryBackground: '#4C5F99', // primary按钮背景色
+  buttonPrimaryBorderColor: '#4C5F99', // primary按钮边框颜色
+  cellBorderColor: '#DADDE7' // 输入框下边框颜色
 })
 // 初始化网络状态
 const updateOnline = () => {
