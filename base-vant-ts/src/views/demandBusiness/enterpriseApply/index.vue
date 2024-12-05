@@ -1,27 +1,43 @@
 <template lang="pug">
 .page-wrap
-  TabsBar(:data="tabsData" :tabActive="tabActive")
+  TabsBar(v-model="tabActive" :tabData="tabsData")
   .content-wrap
-    vanForm(ref="formRef" label-width="130px" :show-error-message="false" @submit="onSubmit")
+    vanForm(
+      ref="formRef"
+      label-width="140px"
+      input-align="right"
+      required="auto"
+      show-error
+      :show-error-message="false"
+      @submit="onSubmit"
+    )
       //- 基本信息
-      template(v-if="tabActive === 'base_info'")
+      template(v-if="step === 1")
         vanField(v-model="form.baseInfo.enterpriseName" name="企业名称" label="企业名称" placeholder="请输入企业名称" :rules="[{ required: true, message: '请输入企业名称' }]")
         vanField(v-model="form.baseInfo.uscc" name="统一社会信用代码" label="统一社会信用代码" placeholder="请输入统一社会信用代码" :rules="[{ required: true, message: '请输入统一社会信用代码' }]")
         vanField(:value="form.baseInfo.industryTypeName" name="行业类型" label="行业类型" placeholder="请选择行业类型" clickable readonly :rules="[{ required: true, message: '请选择行业类型' }]" @click="industryTypePicker = true")
           template(#button)
             vanIcon(name="arrow")
-        vanField
-        vanField
-        vanField
-        vanField
-        vanField
-        vanField
+        vanField(:value="form.baseInfo.businessTypeName" name="经营主体类型" label="经营主体类型" placeholder="请选择经营主体类型" clickable readonly :rules="[{ required: true, message: '请选择经营主体类型' }]" @click="businessTypePicker = true")
+          template(#button)
+            vanIcon(name="arrow")
+        vanField( v-if="form.baseInfo.businessType === 'qt'" v-model="form.baseInfo.businessRemark" name="经营主体类型备注" label="经营主体类型备注" placeholder="请输入经营主体类型备注" :rules="[{ required: true, message: '请输入经营主体类型备注' }]")
+        vanField(v-model="form.baseInfo.contactPerson" name="联系人" label="联系人" placeholder="请输入联系人" :rules="[{ required: true, message: '请输入联系人' }]")
+        vanField(v-model="form.baseInfo.contactPhone" name="联系电话" label="联系电话" placeholder="请输入联系电话" type="tel" :rules="[{ required: true, message: '请输入联系电话' }, { validator: validateMobile }]")
+        vanField(style="display: none;")
       //- 经营场所
-      template(v-if="tabActive === 'business_place'")
+      template(v-if="step === 2")
       //- 贷款需求
-      template(v-if="tabActive === 'loan_demand'")
+      template(v-if="step === 3")
+      //- 提交按钮
+      .operation-btn
+        vanButton.custom-info-btn(v-if="step !== 1" block native-type="button" @click="handlePrev") {{ '上一步' }}
+        vanButton(v-if="step !== 3" block type="primary" native-type="button" @click="handleNext") {{ '下一步' }}
+        vanButton(v-if="step === 3" block type="primary" native-type="submit") {{ '提交申请' }}
   //- 行业类型选择器
   PopupPicker(v-model="industryTypePicker" :columns="industryTypeList")
+  //- 经营主体类型选择器
+  PopupPicker(v-model="businessTypePicker" :columns="businessTypeList")
 </template>
 
 <script lang="ts">
@@ -33,6 +49,7 @@ import type { FormInstance } from 'vant'
 import type { DictListItem } from '@/api/model'
 import { userCommonStoreHook } from '@/stores/modules/common'
 import { listToTree } from '@/utils/utils'
+import { validateMobile } from '@/utils/validator'
 
 export default defineComponent({
   name: 'EnterpriseApply',
@@ -54,10 +71,13 @@ export default defineComponent({
         type: 'loan_demand'
       }
     ])
+    const step = ref<number>(1)
     const tabActive = ref<TabsItemType>('base_info')
     // 字典
     const industryTypePicker = ref<boolean>(false) // 行业类型选择器
     const industryTypeList = ref<DictListItem[]>([]) // 行业类型字典
+    const businessTypePicker = ref<boolean>(false) // 经营主体类型选择器
+    const businessTypeList = ref<DictListItem[]>([]) // 经营主体类型字典
     // 表单
     const formRef = ref<FormInstance>()
     const form = reactive({
@@ -94,7 +114,27 @@ export default defineComponent({
         'pId',
         'children'
       )
-      console.log('industryTypeList', industryTypeList.value)
+    }
+    // 获取经营主体类型字典
+    const getBusinessType = async () => {
+      const result: DictListItem[] = await commonStore.getDict('microEnterpriseSubject')
+      businessTypeList.value = result.map(item => {
+        return {
+          text: item.name,
+          ...item
+        }
+      })
+    }
+    // 上一步
+    const handlePrev = () => {
+      step.value--
+    }
+    // 下一步
+    const handleNext = () => {
+      step.value++
+      // formRef.value?.validate().then(() => {
+      //   step.value++
+      // })
     }
     const onSubmit = () => {
       console.log('onSubmit')
@@ -102,14 +142,22 @@ export default defineComponent({
     onMounted(() => {
       // 获取行业类型字典
       getIndustryType()
+      // 获取经营主体类型字典
+      getBusinessType()
     })
     return {
       tabsData,
+      step,
       tabActive,
       industryTypePicker,
       industryTypeList,
+      businessTypePicker,
+      businessTypeList,
       formRef,
       form,
+      validateMobile,
+      handlePrev,
+      handleNext,
       onSubmit
     }
   }

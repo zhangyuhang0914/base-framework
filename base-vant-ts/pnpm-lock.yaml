@@ -33,7 +33,7 @@ importers:
         specifier: ^6.13.0
         version: 6.13.1
       vant:
-        specifier: ^4.6.5
+        specifier: ^4.9.6
         version: 4.9.9(vue@3.5.13(typescript@5.7.2))
       vue:
         specifier: ^3.4.21
