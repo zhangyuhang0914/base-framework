@@ -14,18 +14,18 @@ import type { ConfigProviderThemeVars } from 'vant'
  * 组件变量可以通过 `root 选择器` 和 `ConfigProvider 组件` 修改。
  */
 const themeVars: ConfigProviderThemeVars = reactive({
-  rateIconFullColor: '#4C5F99',
-  sliderBarHeight: '4px',
-  sliderButtonWidth: '20px',
-  sliderButtonHeight: '20px',
-  sliderActiveBackground: '#4C5F99',
+  primaryColor: '#4C5F99',
   buttonDefaultBackground: 'linear-gradient(180deg, #FFFFFF, #EAEEFA)', // default按钮背景
   buttonDefaultBorderColor: '#EAEEFA', // default按钮边框
   buttonPrimaryBackground: '#4C5F99', // primary按钮背景
   buttonPrimaryBorderColor: '#4C5F99', // primary按钮边框
   cellBorderColor: '#DADDE7', // 输入框下边框
   pickerConfirmActionColor: '#4C5F99', // picker选择器确认操作
-  pickerActionFontSize: '14px' // picker选择器操作按钮字体大小
+  pickerActionFontSize: '14px', // picker选择器操作按钮字体大小
+  radioSize: '18px', // radio单选框大小
+  radioDotSize: '6px', // radio单选框圆点到边界的距离
+  radioCheckedIconColor: '#4C5F99', // radio单选框选中图标颜色
+  cascaderTabColor: '#4C5F99' // 级联选择器标签颜色
 })
 // 初始化网络状态
 const updateOnline = () => {

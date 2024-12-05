@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-wrap
-  TabsBar(v-model="tabActive" :tabData="tabsData")
+  TabsBar(v-model="activeTab" :tabData="tabsData")
   .content-wrap
     vanForm(
       ref="formRef"
@@ -12,9 +12,9 @@
       @submit="onSubmit"
     )
       //- 基本信息
-      template(v-if="step === 1")
-        vanField(v-model="form.baseInfo.enterpriseName" name="企业名称" label="企业名称" placeholder="请输入企业名称" :rules="[{ required: true, message: '请输入企业名称' }]")
-        vanField(v-model="form.baseInfo.uscc" name="统一社会信用代码" label="统一社会信用代码" placeholder="请输入统一社会信用代码" :rules="[{ required: true, message: '请输入统一社会信用代码' }]")
+      template(v-if="activeTab === 1")
+        vanField(v-model="form.baseInfo.enterpriseName" name="企业名称" label="企业名称" placeholder="请输入企业名称" readonly :rules="[{ required: true, message: '请输入企业名称' }]")
+        vanField(v-model="form.baseInfo.uscc" name="统一社会信用代码" label="统一社会信用代码" placeholder="请输入统一社会信用代码" readonly :rules="[{ required: true, message: '请输入统一社会信用代码' }]")
         vanField(:value="form.baseInfo.industryTypeName" name="行业类型" label="行业类型" placeholder="请选择行业类型" clickable readonly :rules="[{ required: true, message: '请选择行业类型' }]" @click="industryTypePicker = true")
           template(#button)
             vanIcon(name="arrow")
@@ -26,78 +26,95 @@
         vanField(v-model="form.baseInfo.contactPhone" name="联系电话" label="联系电话" placeholder="请输入联系电话" type="tel" :rules="[{ required: true, message: '请输入联系电话' }, { validator: validateMobile }]")
         vanField(style="display: none;")
       //- 经营场所
-      template(v-if="step === 2")
-      //- 贷款需求
-      template(v-if="step === 3")
+      template(v-if="activeTab === 2")
+        vanField(v-model="form.placeInfo.businessAddress" name="实际经营地址" label="实际经营地址" placeholder="请输入实际经营地址" type="textarea" rows="2" autosize maxlength="100" show-word-limit :rules="[{ required: true, message: '请输入实际经营地址' }]")
+        vanField(name="经营场所是否自有" label="经营场所是否自有" placeholder="请选择经营场所是否自有" :rules="[{ required: true, message: '请选择经营场所是否自有' }]")
+          template(#input)
+            vanRadioGroup.custom-radio-group(v-model="form.placeInfo.isSelfOwned" shape="dot")
+              vanRadio(name="1") {{ '是' }}
+              vanRadio(name="0") {{ '否' }}
+        vanField(:value="form.placeInfo.assignArea" name="经营场所所在地区" label="经营场所所在地区" placeholder="请选择经营场所所在地区" clickable readonly :rules="[{ required: true, message: '请选择经营场所所在地区' }]" @click="assignAreaPicker = true")
+          template(#button)
+            vanIcon(name="arrow")
+        //- 贷款需求
+      template(v-if="activeTab === 3")
       //- 提交按钮
       .operation-btn
-        vanButton.custom-info-btn(v-if="step !== 1" block native-type="button" @click="handlePrev") {{ '上一步' }}
-        vanButton(v-if="step !== 3" block type="primary" native-type="button" @click="handleNext") {{ '下一步' }}
-        vanButton(v-if="step === 3" block type="primary" native-type="submit") {{ '提交申请' }}
+        vanButton.custom-info-btn(v-if="activeTab !== 1" block native-type="button" @click="handlePrev") {{ '上一步' }}
+        vanButton(v-if="activeTab !== 3" block type="primary" native-type="button" @click="handleNext") {{ '下一步' }}
+        vanButton(v-if="activeTab === 3" block type="primary" native-type="submit") {{ '提交申请' }}
   //- 行业类型选择器
-  PopupPicker(v-model="industryTypePicker" :columns="industryTypeList")
+  popupSelect(v-model="industryTypePicker" :columns="industryTypeList")
   //- 经营主体类型选择器
-  PopupPicker(v-model="businessTypePicker" :columns="businessTypeList")
+  popupSelect(v-model="businessTypePicker" :columns="businessTypeList")
+  //- 经营场所所在地区
+  popupSelect(v-model="assignAreaPicker" type="cascader" title="请选择经营场所所在地区" :columns="assignAreaList")
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref } from 'vue'
 import TabsBar from '@/views/demandBusiness/components/tabsBar/index.vue'
-import PopupPicker from '@/views/demandBusiness/components/popupPicker/index.vue'
-import type { TabsItem, TabsItemType } from '../components/type'
+import popupSelect from '@/views/demandBusiness/components/popupSelect/index.vue'
+import type { TabsItem } from '../components/type'
 import type { FormInstance } from 'vant'
 import type { DictListItem } from '@/api/model'
 import { userCommonStoreHook } from '@/stores/modules/common'
 import { listToTree } from '@/utils/utils'
 import { validateMobile } from '@/utils/validator'
+import { useCascaderAreaData } from '@vant/area-data'
 
 export default defineComponent({
   name: 'EnterpriseApply',
-  components: { TabsBar, PopupPicker },
+  components: { TabsBar, popupSelect },
   setup(props) {
     const commonStore = userCommonStoreHook()
     // tab
     const tabsData: TabsItem[] = reactive([
       {
+        index: 1,
         text: '基本信息',
         type: 'base_info'
       },
       {
+        index: 2,
         text: '经营场所',
         type: 'business_place'
       },
       {
+        index: 3,
         text: '贷款需求',
         type: 'loan_demand'
       }
     ])
-    const step = ref<number>(1)
-    const tabActive = ref<TabsItemType>('base_info')
+    const activeTab = ref<number>(1)
     // 字典
     const industryTypePicker = ref<boolean>(false) // 行业类型选择器
     const industryTypeList = ref<DictListItem[]>([]) // 行业类型字典
     const businessTypePicker = ref<boolean>(false) // 经营主体类型选择器
     const businessTypeList = ref<DictListItem[]>([]) // 经营主体类型字典
+    const assignAreaPicker = ref<boolean>(false) // 所在地区选择器
+    // const assignAreaList = ref<DictListItem[]>([]) // 所在地区字典
+    const assignAreaList = useCascaderAreaData()
     // 表单
     const formRef = ref<FormInstance>()
     const form = reactive({
+      // 基本信息
       baseInfo: {
         enterpriseName: '', // 企业名称
-        uscc: '', // 统一社会信用代码
         industryType: '', // 行业类型
         industryTypeName: '', // 行业类型名称
         businessType: '', // 经营主体类型
         businessTypeName: '', // 经营主体类型名称
         businessRemark: '', // 经营主体类型备注
-        enterpriseType: '', // 企业类型
-        enterpriseTypeName: '', // 企业类型名称
-        enterpriseRemark: '', // 企业备注
-        stockRight: '', // 股权情况
         contactPerson: '', // 联系人
         contactPhone: '', // 联系电话
+        legalPerson: '' // 法人
+      },
+      // 经营场所
+      placeInfo: {
         businessAddress: '', // 实际经营地址
-        assignArea: '420000', // 区划
-        isDraft: '0' // 是否暂存
+        isSelfOwned: '0', // 经营场所是否自有
+        assignArea: '' // 申请区划/经营场所所在地区
       }
     })
     // 获取行业类型字典
@@ -127,13 +144,13 @@ export default defineComponent({
     }
     // 上一步
     const handlePrev = () => {
-      step.value--
+      activeTab.value--
     }
     // 下一步
     const handleNext = () => {
-      step.value++
+      activeTab.value++
       // formRef.value?.validate().then(() => {
-      //   step.value++
+      //   activeTab.value++
       // })
     }
     const onSubmit = () => {
@@ -147,12 +164,13 @@ export default defineComponent({
     })
     return {
       tabsData,
-      step,
-      tabActive,
+      activeTab,
       industryTypePicker,
       industryTypeList,
       businessTypePicker,
       businessTypeList,
+      assignAreaPicker,
+      assignAreaList,
       formRef,
       form,
       validateMobile,

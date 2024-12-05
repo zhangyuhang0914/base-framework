@@ -13,7 +13,7 @@
     vanTab(
       v-for="(tab, index) in tabData"
       :key="index"
-      :name="tab.type"
+      :name="tab.index"
       :title="tab.text"
       :disabled="tab.disabled"
     )
@@ -28,8 +28,8 @@ export default defineComponent({
   name: 'TabsBar',
   props: {
     modelValue: {
-      type: String,
-      default: 'base_info'
+      type: [String, Number],
+      default: 1
     },
     tabData: {
       type: Array as PropType<TabsItem[]>,
@@ -44,6 +44,7 @@ export default defineComponent({
     }
     // 当前激活的标签改变时触发
     const onChange = (name: string | number, title: string) => {
+      console.log('step', name, title)
       emit('onChange', name)
       emit('update:modelValue', name)
     }

@@ -14,6 +14,9 @@ importers:
       '@types/node':
         specifier: ^20.14.2
         version: 20.17.9
+      '@vant/area-data':
+        specifier: ^2.0.0
+        version: 2.0.0
       '@vant/use':
         specifier: ^1.6.0
         version: 1.6.0(vue@3.5.13(typescript@5.7.2))
@@ -1228,6 +1231,9 @@ packages:
   '@typescript-eslint/visitor-keys@8.17.0':
     resolution: {integrity: sha512-1Hm7THLpO6ww5QU6H/Qp+AusUUl+z/CAm3cNZZ0jQvon9yicgO7Rwd+/WWRpMKLYV6p2UvdbR27c86rzCPpreg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@vant/area-data@2.0.0':
+    resolution: {integrity: sha512-zgP4AA8z09S9QTNgVCCHo9cHjcybrv22RJDYPjuCkecn4SB98T5EoPQh2TwqbQXmUhbaOGgiZGy3OUaUxnY7qg==}
 
   '@vant/popperjs@1.3.0':
     resolution: {integrity: sha512-hB+czUG+aHtjhaEmCJDuXOep0YTZjdlRR+4MSmIFnkCQIxJaXLQdSsR90XWvAI2yvKUI7TCGqR8pQg2RtvkMHw==}
@@ -4108,6 +4114,8 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.17.0
       eslint-visitor-keys: 4.2.0
+
+  '@vant/area-data@2.0.0': {}
 
   '@vant/popperjs@1.3.0': {}
 

@@ -9,28 +9,55 @@
     @click-overlay="onPopupClose"
     @close="onPopupClose"
   )
+    //- 选择器
     vanPicker(
+      v-if="type === 'picker'"
       ref="pickerRef"
+      :title="title"
       :columns="columns"
       :show-toolbar="showToolbar"
-      @confirm="onConfirm"
+      @confirm="onPickerConfirm"
       @cancel="onPopupClose"
       v-bind="$attrs"
+    )
+    //- 联级选择器
+    vanCascader(
+      v-if="type === 'cascader'"
+      v-model="visible"
+      :title="title"
+      :options="columns"
+      active-color="#F6D687"
+      :swipeable="swipeable"
+      :closeable="closeable"
+      @close="onPopupClose"
+      @change="onCascaderChange"
+      @finish="onCascaderFinish"
+      @click-tab="onPopupClose"
     )
 </template>
 
 <script lang="ts">
 import type { DictListItem } from '@/api/model'
-import type { PickerInstance, PopupInstance } from 'vant'
+import type { CascaderOption, PickerInstance, PopupInstance } from 'vant'
 import { computed, defineComponent, ref, type PropType } from 'vue'
 
 export default defineComponent({
-  name: 'PopupPicker',
+  name: 'PopupSelect',
   props: {
     // 是否显示
     modelValue: {
       type: Boolean,
       default: false
+    },
+    // 选择类型 picker选择器、cascader联级选择
+    type: {
+      type: String,
+      default: 'picker'
+    },
+    // 标题
+    title: {
+      type: String,
+      default: ''
     },
     // 模块数据
     columns: {
@@ -56,9 +83,19 @@ export default defineComponent({
     showToolbar: {
       type: Boolean,
       default: true
+    },
+    // 是否开启手势左右滑动切换
+    swipeable: {
+      type: Boolean,
+      default: true
+    },
+    // 	是否显示关闭图标
+    closeable: {
+      type: Boolean,
+      default: true
     }
   },
-  emits: ['onConfirm', 'update:modelValue', 'onChange'],
+  emits: ['onPickerConfirm', 'update:modelValue', 'onCascaderChange', 'onCascaderFinish'],
   setup(props, { emit }) {
     const popupRef = ref<PopupInstance>()
     const pickerRef = ref<PickerInstance>()
@@ -68,14 +105,20 @@ export default defineComponent({
       emit('update:modelValue', false)
     }
     // 点击完成按钮时触发
-    const onConfirm = (selectedValues: any, selectedOptions: any, selectedIndexes: number) => {
-      emit('onConfirm', selectedValues, selectedOptions, selectedIndexes)
+    const onPickerConfirm = (selectedValues: any, selectedOptions: any, selectedIndexes: number) => {
+      emit('onPickerConfirm', selectedValues, selectedOptions, selectedIndexes)
       onPopupClose()
     }
-    // 选中的选项改变时触发
-    const onChange = (selectedValues: any, selectedOptions: any, selectedIndexes: number, columnIndex: number) => {
-      emit('onChange', selectedValues, selectedOptions, selectedIndexes, columnIndex)
+    // 选中项变化时触发
+    const onCascaderChange = (value: string | number, selectedOptions: CascaderOption[], tabIndex: number) => {
+      emit('onCascaderChange', value, selectedOptions, tabIndex)
     }
+    // 全部选项选择完成后触发
+    const onCascaderFinish = (value: string | number, selectedOptions: CascaderOption[], tabIndex: number) => {
+      emit('onCascaderFinish', value, selectedOptions, tabIndex)
+      onPopupClose()
+    }
+    // 点击标签时触发
     const visible = computed(() => {
       return props.modelValue
     })
@@ -83,8 +126,9 @@ export default defineComponent({
       popupRef,
       pickerRef,
       onPopupClose,
-      onConfirm,
-      onChange,
+      onPickerConfirm,
+      onCascaderChange,
+      onCascaderFinish,
       visible
     }
   }
