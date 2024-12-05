@@ -7,7 +7,7 @@ const routers: AppRouteModule[] = [
     component: () => import('@/views/entry/index.vue'),
     meta: {
       title: 'Entry',
-      ignoreAuth: true,
+      ignoreAuth: false,
       keepAlive: true
     }
   }

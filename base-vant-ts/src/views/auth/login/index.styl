@@ -1,0 +1,40 @@
+.page-wrap
+  background $background-default
+  .main-box
+    position relative
+    height 100%
+    background url('/static/images/login/mainBg.png') top center no-repeat
+    .suspend-view
+      position absolute
+      left 50%
+      transform translate(-50%, 35%)
+      width 90%
+      height auto
+      padding 18px
+      background #FFFFFF
+      border-radius 8px
+      box-sizing border-box
+      display flex
+      flex-direction column
+      align-items center
+      overflow-x hidden
+      overflow-y auto
+      .micro-dialog__title
+        color $primary
+        font-size 22px
+      .toggle-header
+        width 100%
+        padding 24px 12px
+        color #CCCCCC
+        font-size 17px
+        display flex
+        justify-content space-around
+        .enterprise-title:after
+          content '|'
+          position relative
+          left 30px
+          color #CCCCCC
+        .active-title
+          color #333333
+      .custom-login-wrap
+        width 100%

@@ -4,12 +4,16 @@ import { type CommonType } from '../model/common'
 import type { DictListItem } from '@/api/model'
 import type { ApiResponse } from '@/common/http/types'
 import { getDictParamData } from '@/api/common'
+import { getToken, setToken as setAdminToken } from '@/utils/cookie'
+import { storageLocal } from '@/utils/storage'
 
 export const userCommonStore = defineStore({
   id: 'common',
   state: (): CommonType => ({
     onlineState: true,
     cachedRoute: [],
+    token: getToken() ?? '', // token
+    userId: storageLocal.getItem('USER_ID') ?? '', // 用户id
     dictData: {} // 字典集合
   }),
   actions: {
@@ -20,14 +24,22 @@ export const userCommonStore = defineStore({
     // 设置缓存路由
     setCached(str: string, type?: string) {
       if (type === 'del') {
-        this.cachedRoute = this.cachedRoute.filter(
-          (item: string) => item !== str
-        )
+        this.cachedRoute = this.cachedRoute.filter((item: string) => item !== str)
         return false
       }
       if (!this.cachedRoute.some(item => item === str)) {
         this.cachedRoute.push(str)
       }
+    },
+    // 设置token
+    setToken(token: string, expire?: number) {
+      this.token = token
+      setAdminToken(token, expire)
+    },
+    // 设置用户ID
+    setUserId(id: string) {
+      this.userId = id
+      storageLocal.setItem('USER_ID', id)
     },
     setDict(key: string, data: DictListItem[]) {
       this.dictData[key] = data

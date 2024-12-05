@@ -3,6 +3,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { nextTick } from 'vue'
 import { getToken } from '@/utils/cookie'
+import { $toast } from '@/plugins/vant'
 
 // 全局进度条配置
 NProgress.configure({
@@ -55,7 +56,10 @@ router.beforeEach((to, from, next) => {
   console.log('ignoreAuth', to.meta.ignoreAuth, getToken())
   if (!to.meta.ignoreAuth && !getToken()) {
     // 添加弹出登录逻辑
-    next()
+    $toast('登录失效，请重新登录！')
+    next({
+      name: 'Login'
+    })
     return false
   }
   if (to.meta.ignoreAuth) {

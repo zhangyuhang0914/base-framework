@@ -1,8 +1,15 @@
 import type { DictListItem } from '@/api/model/index'
 
 export interface CommonType {
-  onlineState: boolean // 网络状态
+  // 网络状态
+  onlineState: boolean
+  // 缓存路由
   cachedRoute: Array<string>
+  // token
+  token: string
+  // 用户id
+  userId: string
+  // 字典数据
   dictData: DictDataItem
 }
 

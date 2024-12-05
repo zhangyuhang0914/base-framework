@@ -1,10 +1,4 @@
-import axios, {
-  type AxiosInstance,
-  type AxiosRequestConfig,
-  type AxiosResponse,
-  AxiosError,
-  type InternalAxiosRequestConfig
-} from 'axios'
+import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse, AxiosError, type InternalAxiosRequestConfig } from 'axios'
 import type { httpRequestConfig, ApiResponse } from './types'
 import { $toast } from '@/plugins/vant'
 import { API as configApi } from '@/conf/index'
@@ -34,15 +28,12 @@ export class Request {
     // 创建axios实例
     this.instance = axios.create(Object.assign(this.baseConfig, options))
     this.instance.interceptors.request.use(
-      (
-        options: httpRequestConfig
-      ): InternalAxiosRequestConfig<httpRequestConfig> => {
+      (options: httpRequestConfig): InternalAxiosRequestConfig<httpRequestConfig> => {
         // 简化类型设置
         const headers = (options.headers = options.headers || {})
 
         if (options.isForm) {
-          headers['Content-Type'] =
-            'application/x-www-form-urlencoded; charset=UTF-8'
+          headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
           delete options.isForm
         }
         if (options.formUpload) {
@@ -51,11 +42,7 @@ export class Request {
         }
         // 校验post数据格式
         const contentType = headers['Content-Type']
-        if (
-          typeof options.data === 'object' &&
-          contentType &&
-          String(contentType).indexOf('application/x-www-form-urlencoded') > -1
-        ) {
+        if (typeof options.data === 'object' && contentType && String(contentType).indexOf('application/x-www-form-urlencoded') > -1) {
           options.data = qs.stringify(options.data)
         }
         // post数据格式为form-data
@@ -144,13 +131,8 @@ export class Request {
         } else {
           // 默认放一个空对象避免其他地方报错
           error.response = {}
-          console.error(
-            (error.config && error.config.url) || '无url',
-            '请求接口超过一分钟无响应'
-          )
-          const msg = userCommonStoreHook().onlineState
-            ? '您与服务器的连接已经断开，请联系管理员处理'
-            : '网络连接已断开'
+          console.error((error.config && error.config.url) || '无url', '请求接口超过一分钟无响应')
+          const msg = userCommonStoreHook().onlineState ? '您与服务器的连接已经断开，请联系管理员处理' : '网络连接已断开'
           $toast(msg)
         }
         return Promise.reject(error)
