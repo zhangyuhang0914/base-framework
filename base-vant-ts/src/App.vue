@@ -19,9 +19,13 @@ const themeVars: ConfigProviderThemeVars = reactive({
   sliderButtonWidth: '20px',
   sliderButtonHeight: '20px',
   sliderActiveBackground: '#4C5F99',
-  buttonPrimaryBackground: '#4C5F99', // primary按钮背景色
-  buttonPrimaryBorderColor: '#4C5F99', // primary按钮边框颜色
-  cellBorderColor: '#DADDE7' // 输入框下边框颜色
+  buttonDefaultBackground: 'linear-gradient(180deg, #FFFFFF, #EAEEFA)', // default按钮背景
+  buttonDefaultBorderColor: '#EAEEFA', // default按钮边框
+  buttonPrimaryBackground: '#4C5F99', // primary按钮背景
+  buttonPrimaryBorderColor: '#4C5F99', // primary按钮边框
+  cellBorderColor: '#DADDE7', // 输入框下边框
+  pickerConfirmActionColor: '#4C5F99', // picker选择器确认操作
+  pickerActionFontSize: '14px' // picker选择器操作按钮字体大小
 })
 // 初始化网络状态
 const updateOnline = () => {

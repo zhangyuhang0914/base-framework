@@ -1,4 +1,4 @@
-import type { DictListItem } from '@/api/model/index'
+import type { DictListItem, EnterpriseInfoType } from '@/api/model/index'
 
 export interface CommonType {
   // 网络状态
@@ -9,6 +9,8 @@ export interface CommonType {
   token: string
   // 用户id
   userId: string
+  // 企业信息
+  enterpriseInfo: EnterpriseInfoType
   // 字典数据
   dictData: DictDataItem
 }

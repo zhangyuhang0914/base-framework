@@ -112,8 +112,12 @@ export default defineComponent({
               commonStore.setToken(data.token, data.expire)
               commonStore.setUserId(data.userId)
               router.push({
-                path: 'entry'
+                path: '/entry',
+                query: {
+                  loginMode: loginMode.value
+                }
               })
+              resetForm()
             })
             .catch(error => {
               console.log('error', error)

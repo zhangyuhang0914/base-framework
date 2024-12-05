@@ -2,7 +2,7 @@
 import { API as configApi } from '@/conf/index'
 import Request from '@/common/http/http'
 import type { httpRequestConfig, ApiResponse } from '@/common/http/types'
-import type { AttachmentInfo, DictListItem, MicroEnterpriseLoginParamType, MicroEnterpriseLoginResultType, MicroEnterpriseRegisterParamType } from './model/index.ts'
+import type { AttachmentInfo, DictListItem, EnterpriseInfoType, MicroEnterpriseLoginParamType, MicroEnterpriseLoginResultType, MicroEnterpriseRegisterParamType } from './model/index.ts'
 
 // 获取接口根路径
 const isProd = import.meta.env.MODE === 'production'
@@ -83,4 +83,16 @@ export const microEnterpriseLogin = (params: MicroEnterpriseLoginParamType): Pro
     data: params
   }
   return Request.post(param)
+}
+/**
+ * @desc: 登录
+ * @return {*}
+ */
+export const webEnterprisesInfo = (): Promise<ApiResponse<EnterpriseInfoType>> => {
+  const param: httpRequestConfig = {
+    apiType: 'BASE_URL',
+    loading: true,
+    url: '/api/web/enterprises/info'
+  }
+  return Request.get(param)
 }

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { store } from '../index'
 import { type CommonType } from '../model/common'
-import type { DictListItem } from '@/api/model'
+import type { DictListItem, EnterpriseInfoType } from '@/api/model'
 import type { ApiResponse } from '@/common/http/types'
 import { getDictParamData } from '@/api/common'
 import { getToken, setToken as setAdminToken } from '@/utils/cookie'
@@ -14,6 +14,7 @@ export const userCommonStore = defineStore({
     cachedRoute: [],
     token: getToken() ?? '', // token
     userId: storageLocal.getItem('USER_ID') ?? '', // 用户id
+    enterpriseInfo: storageLocal.getItem('ENTERPRISE_INFO'), // 企业信息
     dictData: {} // 字典集合
   }),
   actions: {
@@ -41,6 +42,12 @@ export const userCommonStore = defineStore({
       this.userId = id
       storageLocal.setItem('USER_ID', id)
     },
+    // 设置企业信息
+    setEnterpriseInfo(info: EnterpriseInfoType) {
+      this.enterpriseInfo = info
+      storageLocal.setItem('ENTERPRISE_INFO', info)
+    },
+    // 设置字典
     setDict(key: string, data: DictListItem[]) {
       this.dictData[key] = data
     },
