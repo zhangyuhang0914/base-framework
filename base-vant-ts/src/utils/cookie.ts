@@ -3,7 +3,7 @@
  * @Autor        : ZhangYuHang
  * @Date         : 2024-12-03 18:06:07
  * @LastEditors  : ZhangYuHang
- * @LastEditTime : 2024-12-09 15:37:57
+ * @LastEditTime : 2024-12-09 16:02:26
  */
 
 import Cookies from 'js-cookie'
@@ -13,9 +13,9 @@ const CookieKeys = {
   JsessionKey: 'JSESSIONID'
 }
 // key值类型 ('TokenKey' | 'JsessionKey')
-type CookieKeyType = keyof typeof CookieKeys
+export type CookieKeyType = keyof typeof CookieKeys
 // 具体值类型 ('Admin-Token' | 'JSESSIONID')
-type CookieKeyValues = (typeof CookieKeys)[CookieKeyType]
+export type CookieKeyValues = (typeof CookieKeys)[CookieKeyType]
 
 // 获取cookie
 export function getCookie(cookieKey: CookieKeyType): string | undefined {
