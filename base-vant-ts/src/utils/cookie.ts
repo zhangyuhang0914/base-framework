@@ -3,7 +3,7 @@
  * @Autor        : ZhangYuHang
  * @Date         : 2024-12-03 18:06:07
  * @LastEditors  : ZhangYuHang
- * @LastEditTime : 2024-12-09 15:31:39
+ * @LastEditTime : 2024-12-09 15:37:57
  */
 
 import Cookies from 'js-cookie'
@@ -12,18 +12,30 @@ const CookieKeys = {
   TokenKey: 'Admin-Token',
   JsessionKey: 'JSESSIONID'
 }
-// key值类型
+// key值类型 ('TokenKey' | 'JsessionKey')
 type CookieKeyType = keyof typeof CookieKeys
-// 具体值类型
+// 具体值类型 ('Admin-Token' | 'JSESSIONID')
 type CookieKeyValues = (typeof CookieKeys)[CookieKeyType]
-export function getToken(cookieKey: CookieKeyValues): any {
-  return Cookies.get(cookieKey)
+
+// 获取cookie
+export function getCookie(cookieKey: CookieKeyType): string | undefined {
+  return Cookies.get(CookieKeys[cookieKey])
 }
 
-export function setToken(token: string, expires: number | Date, cookieKey: CookieKeyValues): void {
-  Cookies.set(cookieKey, token, { expires: expires })
+// 设置cookie (缓存不传默认设置 7 天)
+export function setCookie(cookieKey: CookieKeyType, token: string, expires: number | Date = 7): void {
+  Cookies.set(CookieKeys[cookieKey], token, { expires: expires })
 }
 
-export function removeToken(cookieKey: CookieKeyValues): void {
-  Cookies.remove(cookieKey)
+// 移除cookie
+export function removeCookie(cookieKey: CookieKeyType): void {
+  Cookies.remove(CookieKeys[cookieKey])
+}
+
+// 获取所有cookie
+export function getAllCookies(): Record<CookieKeyType, string | undefined> {
+  return {
+    TokenKey: Cookies.get(CookieKeys.TokenKey),
+    JsessionKey: Cookies.get(CookieKeys.JsessionKey)
+  }
 }
