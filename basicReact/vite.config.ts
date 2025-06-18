@@ -5,12 +5,6 @@ import VitePluginCompression from 'vite-plugin-compression'
 import { resolve } from 'path'
 
 export default defineConfig({
-  resolve: {
-    // 设置快捷指向
-    alias: {
-      '@': resolve(__dirname, 'src')
-    }
-  },
   plugins: [
     tsconfigPaths(),
     VitePluginCompression({
@@ -28,6 +22,29 @@ export default defineConfig({
       ext: '.gz'
     })
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        // 启用现代API
+        api: 'modern-compiler',
+        // 每个引入scss文件时，自动引入公共样式（导出全局变量和 mixin）
+        additionalData: `@use "@/assets/css/components/theme.scss" as *;`,
+        // 静默特定弃用警告
+        silenceDeprecations: ['legacy-js-api']
+      }
+    }
+  },
+  resolve: {
+    // 设置快捷指向
+    alias: {
+      '@': resolve(__dirname, 'src'),
+      '@assets': resolve(__dirname, 'src/assets'),
+      '@components': resolve(__dirname, 'src/components'),
+      '@utils': resolve(__dirname, 'src/utils'),
+      '@redux': resolve(__dirname, 'src/redux')
+    },
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
+  },
   server: {
     port: 8086,
     host: '0.0.0.0',

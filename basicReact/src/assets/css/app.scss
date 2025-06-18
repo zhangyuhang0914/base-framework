@@ -1,0 +1,14 @@
+@use './common/commons.scss';
+@use './components/common.scss';
+html, body {
+  height: 100%;
+  width: 100%;
+}
+#app {
+  height: 100%;
+  width: 100%;
+  font-size: $smallFontSize;
+  color: #03091B;
+  background: #F6F6F9;
+  text-align: center;
+}
