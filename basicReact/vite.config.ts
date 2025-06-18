@@ -6,7 +6,9 @@ import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [
+    // 解析 TypeScript 路径别名
     tsconfigPaths(),
+    // 静态资源压缩
     VitePluginCompression({
       // 是否在控制台输出压缩结果
       verbose: true,
@@ -41,7 +43,8 @@ export default defineConfig({
       '@assets': resolve(__dirname, 'src/assets'),
       '@components': resolve(__dirname, 'src/components'),
       '@utils': resolve(__dirname, 'src/utils'),
-      '@redux': resolve(__dirname, 'src/redux')
+      '@redux': resolve(__dirname, 'src/redux'),
+      '@pages': resolve(__dirname, 'src/pages')
     },
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
   },

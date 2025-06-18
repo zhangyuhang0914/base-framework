@@ -11,7 +11,10 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^1.23.0",
     "@reduxjs/toolkit": "^2.8.2",
+    "antd": "^5.26.1",
+    "i18next": "^25.2.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",
