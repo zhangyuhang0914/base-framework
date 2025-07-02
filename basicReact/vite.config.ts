@@ -4,7 +4,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 import legacy from '@vitejs/plugin-legacy'
 // 静态资源压缩
 import VitePluginCompression from 'vite-plugin-compression'
-import { resolve } from 'path'
+import path from 'path'
 
 // @ts-ignore
 export default ({ mode }) => {
@@ -52,12 +52,12 @@ export default ({ mode }) => {
     resolve: {
       // 设置快捷指向
       alias: {
-        '@': resolve(__dirname, 'src'),
-        '@assets': resolve(__dirname, 'src/assets'),
-        '@components': resolve(__dirname, 'src/components'),
-        '@utils': resolve(__dirname, 'src/utils'),
-        '@redux': resolve(__dirname, 'src/redux'),
-        '@pages': resolve(__dirname, 'src/pages')
+        '@': path.resolve(__dirname, 'src'),
+        '@assets': path.resolve(__dirname, 'src/assets'),
+        '@components': path.resolve(__dirname, 'src/components'),
+        '@utils': path.resolve(__dirname, 'src/utils'),
+        '@redux': path.resolve(__dirname, 'src/redux'),
+        '@pages': path.resolve(__dirname, 'src/pages')
       },
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
     },

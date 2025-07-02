@@ -2,12 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider } from 'react-router'
 import { globalRouters } from './router/index.tsx'
-import { ConfigProvider, theme } from 'antd'
+import { ConfigProvider } from 'antd'
 import {
   legacyLogicalPropertiesTransformer,
   StyleProvider
 } from '@ant-design/cssinjs'
 import '@/assets/css/app.scss'
+import { antdTheme } from '@/constants/theme.ts'
+// React 19兼容 Ant Design
+import '@ant-design/v5-patch-for-react-19'
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
@@ -15,16 +18,9 @@ root.render(
     {/* 全局化配置 */}
     <ConfigProvider
       theme={{
-        // 全局样式
-        token: {},
-        // 组件样式
-        components: {},
-        /**
-         * defaultAlgorithm: 默认算法
-         * darkAlgorithm: 暗色算法
-         * compactAlgorithm: 紧凑算法
-         */
-        algorithm: theme.defaultAlgorithm
+        token: antdTheme.token,
+        components: antdTheme.components,
+        algorithm: antdTheme.algorithm
       }}
     >
       {/*

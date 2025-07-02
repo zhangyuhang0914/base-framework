@@ -1,6 +1,20 @@
-$smallFontSize: 14px;
-$baseFontSize: 16px;
-$largeFontSize: 18px;
-$titleText: #2154E1;
-$headerHoverText: #B4FFFC;
-$primaryBtnBackground: #2B48B4;
+:root {
+  --color-primary: #4965CC;
+  --color-success: #4AC497;
+  --color-warning: #F1AC3B;
+  --color-error: #cf4444;
+  --font-size-small: 14px;
+  --font-size-base: 16px;
+  --font-size-large: 18px;
+}
+
+// 颜色
+$colorPrimary: var(--color-primary);
+$colorSuccess: var(--color-success);
+$colorWarning: var(--color-warning);
+$colorError: var(--color-error);
+
+// 字体
+$smallFontSize: --var(--font-size-small);
+$baseFontSize: --var(--font-size-base);
+$largeFontSize: --var(--font-size-large);
