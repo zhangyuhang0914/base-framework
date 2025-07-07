@@ -1,6 +1,8 @@
 // * Vite
 declare type RecordT<T = any> = Record<string, T>
 
+declare module 'js-cookie'
+
 declare interface ViteEnv {
   NODE_ENV: string
   VITE_API_URL: string

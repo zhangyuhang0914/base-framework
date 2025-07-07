@@ -1,4 +1,5 @@
 import { defineConfig, loadEnv } from 'vite'
+import { loadEnvConf } from './src/utils/common'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import react from '@vitejs/plugin-react-swc'
 import tsconfigPaths from 'vite-tsconfig-paths'
@@ -10,15 +11,16 @@ import path from 'path'
 // @ts-ignore
 export default ({ mode }) => {
   const env = loadEnv(mode, process.cwd())
+  const viteEnvConf = loadEnvConf(env)
   // console.log('环境变量', env)
   return defineConfig({
     plugins: [
       createHtmlPlugin({
         inject: {
           data: {
-            title: env.VITE_GLOBAL_APP_TITLE,
-            description: env.VITE_GLOBAL_APP_DESCRIPTION,
-            keywords: env.VITE_GLOBAL_APP_KEYWORDS
+            title: viteEnvConf.VITE_GLOBAL_APP_TITLE,
+            description: viteEnvConf.VITE_GLOBAL_APP_DESCRIPTION,
+            keywords: viteEnvConf.VITE_GLOBAL_APP_KEYWORDS
           }
         }
       }),
@@ -78,7 +80,7 @@ export default ({ mode }) => {
     // 预构建
     esbuild: {
       // 删除console、debugger----(console.*)
-      pure: env.VITE_DROP_CONSOLE ? ['console.log', 'debugger'] : []
+      pure: viteEnvConf.VITE_DROP_CONSOLE ? ['console.log', 'debugger'] : []
     },
     // 构建
     build: {
@@ -88,8 +90,8 @@ export default ({ mode }) => {
       // minify: 'terser',
       // terserOptions: {
       //   compress: {
-      //     drop_console: env.VITE_DROP_CONSOLE as unknown as boolean, // 删除console
-      //     drop_debugger: env.VITE_DROP_DEBUGGER as unknown as boolean // 删除debugger
+      //     drop_console: viteEnvConf.VITE_DROP_CONSOLE as unknown as boolean, // 删除console
+      //     drop_debugger: viteEnvConf.VITE_DROP_DEBUGGER as unknown as boolean // 删除debugger
       //   }
       // },
       rollupOptions: {
@@ -104,10 +106,10 @@ export default ({ mode }) => {
       }
     },
     server: {
-      host: env.VITE_HOST,
-      port: env.VITE_PORT as unknown as number,
-      open: env.VITE_OPEN, // 启动服务是否自动打开浏览器
-      cors: env.VITE_CORE as unknown as boolean, // 跨域
+      host: viteEnvConf.VITE_HOST,
+      port: viteEnvConf.VITE_PORT as unknown as number,
+      open: viteEnvConf.VITE_OPEN, // 启动服务是否自动打开浏览器
+      cors: viteEnvConf.VITE_CORE as unknown as boolean, // 跨域
       // 设置 http 代理
       proxy: {
         '/szxqyxyxx': {
