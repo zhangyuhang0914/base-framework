@@ -1,19 +1,19 @@
-import { getCssVariable } from '@/utils/common'
+import { UnitConverter } from '@/hooks/unitConverter'
 import { theme, type ThemeConfig } from 'antd'
 
 export const themeVariables = {
   // 颜色
   colors: {
-    primary: getCssVariable('--color-primary'),
-    success: getCssVariable('--color-success'),
-    warning: getCssVariable('--color-warning'),
-    error: getCssVariable('--color-error')
+    primary: UnitConverter.getCssVariable('--color-primary'),
+    success: UnitConverter.getCssVariable('--color-success'),
+    warning: UnitConverter.getCssVariable('--color-warning'),
+    error: UnitConverter.getCssVariable('--color-error')
   },
   // 字体
   fontSize: {
-    small: getCssVariable('--font-size-small'),
-    base: getCssVariable('--font-size-base'),
-    large: getCssVariable('--font-size-large')
+    small: UnitConverter.getCssVariablePx('--font-size-small'),
+    base: UnitConverter.getCssVariablePx('--font-size-base'),
+    large: UnitConverter.getCssVariablePx('--font-size-large')
   }
 }
 
@@ -25,7 +25,7 @@ export const antdTheme: ThemeConfig = {
     colorSuccess: themeVariables.colors.success,
     colorWarning: themeVariables.colors.warning,
     colorError: themeVariables.colors.error,
-    fontSize: Number(themeVariables.fontSize.base.replace('px', ''))
+    fontSize: themeVariables.fontSize.base
   },
   // 组件样式
   components: {},

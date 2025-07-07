@@ -1,11 +1,17 @@
 import { Spin } from 'antd'
+import styled from 'styled-components'
+
+const StyledGlobalSkeletonLoader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 
 const GlobalSkeletonLoader = () => {
   return (
-    <div className="global-skeleton-loader">
+    <StyledGlobalSkeletonLoader className="globalSkeletonLoader">
       <Spin size="large" tip="加载中..." />
-      {/* 这里可以添加更复杂的骨架屏UI */}
-    </div>
+    </StyledGlobalSkeletonLoader>
   )
 }
 
