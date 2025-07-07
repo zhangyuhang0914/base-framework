@@ -9,15 +9,16 @@ import path from 'path'
 
 // @ts-ignore
 export default ({ mode }) => {
-  console.log('环境变量', loadEnv(mode, process.cwd()).VITE_APP_ENV)
+  const env = loadEnv(mode, process.cwd())
+  // console.log('环境变量', env)
   return defineConfig({
     plugins: [
       createHtmlPlugin({
         inject: {
           data: {
-            title: '武汉佳软信息技术有限公司',
-            description: '这是一个使用vite构建的React+Ant Design项目',
-            keywords: 'Vite, Ts, Web开发'
+            title: env.VITE_GLOBAL_APP_TITLE,
+            description: env.VITE_GLOBAL_APP_DESCRIPTION,
+            keywords: env.VITE_GLOBAL_APP_KEYWORDS
           }
         }
       }),
@@ -48,6 +49,9 @@ export default ({ mode }) => {
       })
     ],
     css: {
+      modules: {
+        localsConvention: 'camelCase' // 默认只支持驼峰，修改为同时支持横线和驼峰
+      },
       preprocessorOptions: {
         scss: {
           // 启用现代API
@@ -71,16 +75,45 @@ export default ({ mode }) => {
       },
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
     },
+    // 预构建
+    esbuild: {
+      // 删除console、debugger----(console.*)
+      pure: env.VITE_DROP_CONSOLE ? ['console.log', 'debugger'] : []
+    },
+    // 构建
+    build: {
+      outDir: 'dist',
+      // esbuild 打包更快，但是不能去除 console.log，去除 console 使用 terser 模式
+      minify: 'esbuild',
+      // minify: 'terser',
+      // terserOptions: {
+      //   compress: {
+      //     drop_console: env.VITE_DROP_CONSOLE as unknown as boolean, // 删除console
+      //     drop_debugger: env.VITE_DROP_DEBUGGER as unknown as boolean // 删除debugger
+      //   }
+      // },
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            // 打包分割，拆分只打包代码模块
+            if (id.includes('node_modules')) {
+              return 'vendor'
+            }
+          }
+        }
+      }
+    },
     server: {
-      port: 8086,
-      host: '0.0.0.0',
-      open: false, // 启动服务是否自动打开浏览器
-      cors: true, // 跨域
+      host: env.VITE_HOST,
+      port: env.VITE_PORT as unknown as number,
+      open: env.VITE_OPEN, // 启动服务是否自动打开浏览器
+      cors: env.VITE_CORE as unknown as boolean, // 跨域
       // 设置 http 代理
       proxy: {
         '/szxqyxyxx': {
           target: 'https://jrb.hubei.gov.cn',
-          changeOrigin: true
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/api/, '')
         }
       }
     }
