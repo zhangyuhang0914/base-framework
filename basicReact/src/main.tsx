@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { RouterProvider } from 'react-router'
-import { globalRouters } from './router/index.tsx'
+import { RouterProvider } from 'react-router-dom'
+import globalRouters from '@/router'
 import { ConfigProvider } from 'antd'
 import {
   legacyLogicalPropertiesTransformer,

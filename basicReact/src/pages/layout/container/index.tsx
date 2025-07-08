@@ -1,24 +1,16 @@
-import GlobalLoadingLoader from '@/components/globalLoadingLoader'
 import React from 'react'
-import { Outlet } from 'react-router'
+import { Outlet } from 'react-router-dom'
 import styled from 'styled-components'
 
 const StyledContainer = styled.div`
+  position: relative;
   flex: 1;
-`
-const OutletContainer = styled.div`
-  width: 100%;
-  height: 100%;
 `
 
 const LayoutContainer: React.FC = () => {
   return (
     <StyledContainer className="layoutContainer">
-      <React.Suspense fallback={<GlobalLoadingLoader />}>
-        <OutletContainer className="outletContainer">
-          <Outlet />
-        </OutletContainer>
-      </React.Suspense>
+      <Outlet />
     </StyledContainer>
   )
 }

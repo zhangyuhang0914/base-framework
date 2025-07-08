@@ -1,6 +1,11 @@
 // * Vite
+interface AnyObject {
+  [key: string]: any
+}
+
 declare type RecordT<T = any> = Record<string, T>
 
+declare module 'nprogress'
 declare module 'js-cookie'
 
 declare interface ViteEnv {

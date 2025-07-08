@@ -1,15 +1,16 @@
 import { themeVariables } from '@/constants/theme'
 import { Button } from 'antd'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 
 /**
  * template
  */
 const StyledNotFoundPage = styled.div`
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   width: 100%;
-  height: 100%;
-  padding: 30% 0;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -32,7 +33,7 @@ const NotFoundPage = () => {
 
   return (
     <StyledNotFoundPage className="container">
-      <StyledText>404</StyledText>
+      <StyledText>403</StyledText>
       <Button type="primary" onClick={handleBack}>
         回到首页
       </Button>
