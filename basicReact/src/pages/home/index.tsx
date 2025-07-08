@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import reactLogo from '@assets/react.svg'
 import { Button, ColorPicker, Input, theme } from 'antd'
-import reactEasyI18n, { $t, changeLanguage } from '@/language'
+import { $t, changeLanguage } from '@/language'
 
 const Home: React.FC = () => {
   const [primary, setPrimary] = React.useState('#1677ff')
