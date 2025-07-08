@@ -1,4 +1,5 @@
 const enUsTrans = {
-  welcome: 'Welcome'
+  welcome: 'Welcome',
+  notData: 'NotData'
 }
 export default enUsTrans

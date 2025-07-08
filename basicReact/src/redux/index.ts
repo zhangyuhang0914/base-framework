@@ -6,7 +6,7 @@ import userReducer from '@/redux/modules/user'
 import globalReducer from '@/redux/modules/global'
 
 // 临时 RootState 类型定义（供 persistConfig 用）
-type RootState = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof rootReducer>
 
 // Redux Persist 配置
 const persistConfig: PersistConfig<RootState> = {

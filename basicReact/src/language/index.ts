@@ -1,3 +1,4 @@
+import type { LanguageKey } from '@/language/interface'
 import enUsTrans from '@/language/modules/en-US'
 import zhCnTrans from '@/language/modules/zh-CN'
 import i18n from 'i18next'
@@ -45,6 +46,14 @@ reactEasyI18n.init({
 export const $t = (key: string) => {
   const { t } = useTranslation()
   return t(key)
+}
+
+/**
+ * 切换语言
+ * @param lang 语言
+ */
+export const changeLanguage = (lang: LanguageKey) => {
+  reactEasyI18n.changeLanguage(lang)
 }
 
 export default reactEasyI18n

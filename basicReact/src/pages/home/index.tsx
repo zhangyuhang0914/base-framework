@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import reactLogo from '@assets/react.svg'
 import { Button, ColorPicker, Input, theme } from 'antd'
+import reactEasyI18n, { $t, changeLanguage } from '@/language'
 
-const Dispatch: React.FC = () => {
+const Home: React.FC = () => {
   const [primary, setPrimary] = React.useState('#1677ff')
   const { useToken } = theme
   const { token } = useToken()
@@ -33,9 +34,15 @@ const Dispatch: React.FC = () => {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
         <p>这是美妙的一天</p>
+        <Button type="primary">我是首页</Button>
+        <p>{$t('welcome')}</p>
+        <p>{$t('notData')}</p>
+        <Button type="primary">{$t('notData')}</Button>
+        <button onClick={() => changeLanguage('zh')}>切换中文</button>
+        <button onClick={() => changeLanguage('en')}>切换英文</button>
       </div>
     </>
   )
 }
 
-export default Dispatch
+export default Home
