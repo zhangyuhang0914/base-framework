@@ -13,7 +13,7 @@ const rootRouter: AppRouteModule[] = [
   },
   ...errorRouter,
   {
-    path: '/:pathMatch(.*)*',
+    path: '*',
     element: <ErrorPage />
   }
 ]

@@ -33,7 +33,6 @@ const Dispatch: React.FC = () => {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
         <p>这是美妙的一天</p>
-        <Button type="primary">我是首页</Button>
       </div>
     </>
   )
