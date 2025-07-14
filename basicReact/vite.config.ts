@@ -20,7 +20,8 @@ export default ({ mode }) => {
           data: {
             title: viteEnvConf.VITE_GLOBAL_APP_TITLE,
             description: viteEnvConf.VITE_GLOBAL_APP_DESCRIPTION,
-            keywords: viteEnvConf.VITE_GLOBAL_APP_KEYWORDS
+            keywords: viteEnvConf.VITE_GLOBAL_APP_KEYWORDS,
+            baseUrl: viteEnvConf.VITE_BASE_URL
           }
         }
       }),
