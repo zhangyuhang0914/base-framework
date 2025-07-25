@@ -9,16 +9,16 @@ import {
   legacyLogicalPropertiesTransformer,
   StyleProvider
 } from '@ant-design/cssinjs'
-import { antdTheme } from '@/constants/theme.ts'
 import zhCN_WEB from 'antd/lib/locale/zh_CN'
 import enUS_WEB from 'antd/lib/locale/en_US'
 import { getBrowserLang } from '@/utils/system'
 import { changeLanguage } from '@/language'
 import type { Locale } from 'antd/es/locale'
+import { ThemeUtils } from '@/utils/common/themeUtils'
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
-  const { language } = useSelector((state: RootState) => state.global)
+  const { language, settingConf } = useSelector((state: RootState) => state.global)
   const [i18nLocaleWeb, setI18nLocaleWeb] = useState(zhCN_WEB)
 
   // 设置 antd 语言国际化
@@ -36,15 +36,22 @@ const App: React.FC = () => {
     dispatch(setLanguage(language || getBrowserLang()))
     setAntdLanguage() // 监听 antd 语言国际化
   }, [language])
+  
+  // 应用主题色
+  useEffect(() => {
+    if (settingConf && settingConf.theme && settingConf.theme.primaryColor) {
+      ThemeUtils.updateThemeColor(settingConf.theme.primaryColor)
+    }
+  }, [settingConf.theme.primaryColor])
 
   return (
     <>
       {/* 全局化配置 */}
       <ConfigProvider
         theme={{
-          token: antdTheme.token,
-          components: antdTheme.components,
-          algorithm: antdTheme.algorithm
+          token: settingConf.theme.config?.token || {},
+          components: settingConf.theme.config?.components || {},
+          algorithm: settingConf.theme.config?.algorithm
         }}
         locale={i18nLocaleWeb as Locale}
       >

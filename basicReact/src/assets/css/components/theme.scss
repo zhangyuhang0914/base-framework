@@ -15,6 +15,6 @@ $colorWarning: var(--color-warning);
 $colorError: var(--color-error);
 
 // 字体
-$smallFontSize: --var(--font-size-small);
-$baseFontSize: --var(--font-size-base);
-$largeFontSize: --var(--font-size-large);
+$smallFontSize: var(--font-size-small);
+$baseFontSize: var(--font-size-base);
+$largeFontSize: var(--font-size-large);

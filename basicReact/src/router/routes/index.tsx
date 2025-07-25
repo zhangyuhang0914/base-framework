@@ -9,6 +9,9 @@ const rootRouter: AppRouteModule[] = [
     path: '/',
     element: <Layout />,
     errorElement: <ErrorPage />,
+    meta: {
+      title: '首页'
+    },
     children: [...mainRouter]
   },
   ...errorRouter,

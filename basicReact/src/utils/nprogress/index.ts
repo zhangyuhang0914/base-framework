@@ -2,7 +2,7 @@
  * @Author       : 超人
  * @Description  : 授人以渔，功德无量，利在千秋
  * @Date         : 2025-07-07 18:01:44
- * @LastEditTime : 2025-07-08 16:19:49
+ * @LastEditTime : 2025-07-18 15:20:22
  */
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -11,7 +11,7 @@ NProgress.configure({
   // 动画方式
   easing: 'ease',
   // 递增进度条的速度
-  speed: 1000,
+  speed: 800,
   // 是否显示加载ico
   showSpinner: false,
   // 自动递增间隔

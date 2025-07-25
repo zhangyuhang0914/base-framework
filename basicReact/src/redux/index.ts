@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { persistStore, persistReducer, type PersistConfig } from 'redux-persist'
-import storageSession from 'redux-persist/lib/storage/session'
+import storage from 'redux-persist/lib/storage'
 
 import userReducer from '@/redux/modules/user'
 import globalReducer from '@/redux/modules/global'
@@ -11,7 +11,12 @@ export type RootState = ReturnType<typeof rootReducer>
 // Redux Persist 配置
 const persistConfig: PersistConfig<RootState> = {
   key: 'root',
-  storage: storageSession,
+  /**
+   * 存储
+   * localStorage: 'redux-persist/lib/storage'
+   * sessionStorage: import storageSession from 'redux-persist/lib/storage/session'
+   */
+  storage: storage,
   whitelist: ['global', 'user']
 }
 
