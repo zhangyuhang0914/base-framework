@@ -1,13 +1,22 @@
 @use './common/commons.scss';
 @use './components/common.scss';
-html, body, #root, .App {
+// tailwind CSS
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
   width: 100%;
   height: 100%;
+  color: #323639;
+  line-height: 1.15;
+  font-size: 16px;
 }
+
 #app {
   height: 100%;
   width: 100%;
-  font-size: $smallFontSize;
+  font-size: $baseFontSize;
   color: #03091B;
   background: #F6F6F9;
   text-align: center;

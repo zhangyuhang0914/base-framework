@@ -35,8 +35,7 @@ export const store = configureStore({
   reducer: persistedReducer,
   // 自定义中间件（添加额外的中间件，可以在这里配置）
   // 关闭 redux 序列化检测
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({ serializableCheck: false }),
+  middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }),
   // 默认启用 Redux DevTools
   devTools: process.env.NODE_ENV !== 'production'
 })

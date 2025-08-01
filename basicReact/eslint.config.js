@@ -1,11 +1,13 @@
 import globals from 'globals'
 import pluginJs from '@eslint/js'
-import tseslint from 'typescript-eslint'
+import tseslint from '@typescript-eslint/eslint-plugin'
+import tsParser from '@typescript-eslint/parser'
 import prettierPlugin from 'eslint-plugin-prettier'
+import reactEslint from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
-import reactX from 'eslint-plugin-react-x'
 import reactDom from 'eslint-plugin-react-dom'
+import eslintConfigPrettier from 'eslint-config-prettier'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 /* global process */
@@ -13,45 +15,52 @@ export default [
   {
     // 配置语言选项
     languageOptions: {
-      globals: [globals.browser, globals.es2022, globals.node, globals.jest, globals.commonjs], // 定义支持的全局变量
+      globals: {
+        ...globals.browser,
+        ...globals.es2022,
+        ...globals.node,
+        ...globals.jest,
+        ...globals.commonjs
+      }, // 定义支持的全局变量
+      parser: tsParser, // 使用 TypeScript 解析器
       parserOptions: {
         project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'], // 指定 TypeScript 配置文件
         tsconfigRootDir: import.meta.dirname, // 设置 TypeScript 配置文件的根目录
         ecmaVersion: 'latest', // 使用最新的 ECMAScript 版本
+        sourceType: 'module', // 添加 sourceType
+        ecmaFeatures: {
+          jsx: true // 启用 JSX
+        }
       }
     }
   },
-  // 引入 JavaScript 和 TypeScript 推荐规则
+  // 引入 JavaScript
   pluginJs.configs.recommended, // JavaScript 推荐规则
-  // ...tseslint.configs.recommended, // TypeScript 推荐规则
-  ...tseslint.configs.recommendedTypeChecked, // TypeScript 推荐类型检查规则 - 基于类型信息的推荐规则
-  ...tseslint.configs.strictTypeChecked, // TypeScript 严格类型检查规则 - 更严格的类型检查规则
-  ...tseslint.configs.stylisticTypeChecked, // TypeScript 风格检查规则 - 代码风格相关的类型检查规则
   {
     // 配置 React.js 相关的插件和规则
     files: ['**/*.js', '**/*.ts', '**/*.jsx', '**/*.tsx'],
     plugins: {
+      // React 推荐规则
+      'react': reactEslint,
       // react相关钩子函数
       'react-hooks': reactHooks,
       // 热更新
       'react-refresh': reactRefresh,
-      // 现代 React 代码的 Lint 规则
-      'react-x': reactX,
       // React DOM 相关的 Lint 规则
       'react-dom': reactDom,
       // Prettier 插件
-      prettier: prettierPlugin
+      prettier: prettierPlugin,
     },
     rules: {
+      ...react.configs.recommended.rules, // 官方推荐规则
+      'react/no-deprecated': 'error', // 禁止使用 deprecated 的 API
       ...reactHooks.configs.recommended.rules, // 使用 react-hooks 的推荐规则
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true }
       ], // 允许导出常量
-      ...reactX.configs['recommended-typescript'].rules, // 使用 react-x 的推荐规则
       ...reactDom.configs.recommended.rules, // 使用 react-dom 的推荐规则
-      'prettier/prettier': 'error', // 使用 Prettier 的规则，将格式问题报告为错误
-      'react-dom/no-deprecated': 'error' // 例如：禁止使用已废弃的API
+      'prettier/prettier': 'error' // 使用 Prettier 的规则，将格式问题报告为错误
     }
   },
   {
@@ -74,10 +83,11 @@ export default [
   {
     // 配置 TypeScript 相关的插件和规则
     plugins: {
-      tseslint: tseslint
+      files: ['**/*.ts', '**/*.tsx'],
+      '@typescript-eslint': tseslint,
     },
     rules: {
-      '@typescript-eslint/no-unused-vars': 'error', // 禁止定义未使用的变量
+      '@typescript-eslint/no-unused-vars': 'off', // 禁止定义未使用的变量
       '@typescript-eslint/prefer-ts-expect-error': 'off', // 允许使用 @ts-ignore
       '@typescript-eslint/ban-ts-comment': 'off', // 允许使用 @ts-ignore
       '@typescript-eslint/no-explicit-any': 'off', // 允许使用 any 类型
@@ -94,8 +104,10 @@ export default [
   },
   {
     // 忽略特定目录
-    ignores: ['node_modules/', 'dist/']
+    ignores: ['node_modules/', 'dist/', 'eslint.config.js', 'tailwind.config.js']
   },
+  // 先放 eslintConfigPrettier 关闭冲突规则
+  eslintConfigPrettier,
   // 使用 Prettier 推荐规则 - 用于代码格式化（必须放在最后以覆盖其他样式规则）
   eslintPluginPrettierRecommended
 ]

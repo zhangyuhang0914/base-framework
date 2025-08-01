@@ -1,4 +1,4 @@
-import type { UserState } from '@/redux/interface'
+import type { UserState } from '@/redux/interface/global'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 
 const initialState: UserState = {

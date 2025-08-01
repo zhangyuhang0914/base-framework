@@ -12,7 +12,7 @@ const StyledGlobalLoadingLoader = styled.div`
 const GlobalLoadingLoader = () => {
   return (
     <StyledGlobalLoadingLoader className="globalLoadingLoader">
-      <Spin size="large" tip="加载中..." />
+      <Spin size="large" />
     </StyledGlobalLoadingLoader>
   )
 }

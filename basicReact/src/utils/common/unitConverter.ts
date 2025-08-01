@@ -23,9 +23,7 @@ export class UnitConverter {
 
   // 获取CSS变量名称的值
   static getCssVariable = (name: string) => {
-    return getComputedStyle(document.documentElement)
-      .getPropertyValue(name)
-      .trim()
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
   }
 
   // 获取CSS变量并自动转换为px

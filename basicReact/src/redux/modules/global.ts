@@ -1,22 +1,11 @@
 import type { LanguageKey } from '@/language/interface'
-import type { GlobalState, ThemeSettings, SettingConf, LayoutSettings } from '@/redux/interface'
+import type { GlobalState } from '@/redux/interface/global'
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import { antdTheme } from '@/constants/theme'
-import { UnitConverter } from '@/utils/common/unitConverter'
+import { preferencesManager } from '@/config/preferencesManager'
 
 const initialState: GlobalState = {
-  language: 'zh',
-  settingConf: {
-    theme: {
-      primaryColor: UnitConverter.getCssVariable('--color-primary'),
-      config: antdTheme
-    },
-    layout: {
-      siderCollapsed: false,
-      showHeader: true,
-      showFooter: true
-    }
-  }
+  language: preferencesManager.getLanguage() as LanguageKey,
+  algorithmTheme: preferencesManager.getAlgorithmTheme()
 }
 
 const globalSlice = createSlice({
@@ -25,31 +14,22 @@ const globalSlice = createSlice({
   reducers: {
     setLanguage(state: GlobalState, action: PayloadAction<LanguageKey>) {
       state.language = action.payload
+      // 同步更新到配置管理器
+      preferencesManager.setLanguage(action.payload)
     },
-    setSettingConf(state: GlobalState, action: PayloadAction<SettingConf>) {
-      state.settingConf = action.payload
+    setAlgorithmTheme(state: GlobalState, action: PayloadAction<'light' | 'dark' | 'compact'>) {
+      state.algorithmTheme = action.payload
+      // 同步更新到配置管理器
+      preferencesManager.setAlgorithmTheme(action.payload)
     },
-    setTheme(state: GlobalState, action: PayloadAction<ThemeSettings>) {
-      state.settingConf.theme = action.payload
-    },
-    setLayout(state: GlobalState, action: PayloadAction<LayoutSettings>) {
-      state.settingConf.layout = {
-        ...state.settingConf.layout,
-        ...action.payload
-      }
-    },
-    setPrimaryColor(state: GlobalState, action: PayloadAction<string>) {
-      state.settingConf.theme.primaryColor = action.payload
-      if (state.settingConf.theme.config) {
-        state.settingConf.theme.config.token = {
-          ...state.settingConf.theme.config.token,
-          colorPrimary: action.payload
-        }
-      }
+    // 从配置管理器同步状态到 Redux
+    syncFromPreferences(state: GlobalState) {
+      state.language = preferencesManager.getLanguage() as LanguageKey
+      state.algorithmTheme = preferencesManager.getAlgorithmTheme()
     }
   }
 })
 
-export const { setLanguage, setSettingConf, setTheme, setLayout, setPrimaryColor } = globalSlice.actions
+export const { setLanguage, setAlgorithmTheme, syncFromPreferences } = globalSlice.actions
 const globalReducer = globalSlice.reducer
 export default globalReducer
