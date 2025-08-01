@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button } from 'antd'
 import styled from 'styled-components'
 import { Icon } from '@iconify/react/dist/iconify.js'
-import Widgets from '../components/widgets'
+import Widgets from '@/pages/layout/components/widgets'
 
 interface HeaderProps {
   className?: string
