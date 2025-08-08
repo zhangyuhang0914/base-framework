@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "language": {
+    "remark": "默认语言",
+    "value": "zh_CN"
+  },
+  "org-name": {
+    "remark": "公司名称",
+    "value": "武汉佳软信息技术有限公司"
+  }
+}
