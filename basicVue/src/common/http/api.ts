@@ -1,256 +1,84 @@
 /*
- * @Desc         : Alova.js API 封装
+ * @Desc         : HTTP API 封装
  * @Autor        : ZhangYuHang
  * @Date         : 2024-12-19 18:00:00
  * @LastEditors  : Please set LastEditors
- * @LastEditTime : 2025-08-07 17:28:42
+ * @LastEditTime : 2025-09-03 17:33:39
  */
 
-import alovaInstance from './config'
-import type {
-  RequestConfig,
-  ResponseData,
-  PaginationParams,
-  PaginationResponse,
-  UploadParams,
-  UploadResponse,
-  HttpMethod
-} from '../interface/http'
+import { defaultInstance, baseInstance, fileInstance, ApiServiceType } from './config'
+import type { httpRequestConfig, ApiResponse, HttpMethod } from '../interface/http'
+
+/**
+ * 根据apiType获取对应的服务实例
+ * @param apiType API类型
+ */
+const getInstanceByApiType = (apiType?: string) => {
+  switch (apiType) {
+    case ApiServiceType.BASE:
+      return baseInstance
+    case ApiServiceType.FILE:
+      return fileInstance
+    default:
+      return defaultInstance
+  }
+}
 
 /**
  * 通用请求方法
  * @param method HTTP 方法
- * @param url 请求地址
- * @param data 请求数据
  * @param config 请求配置
  */
-export const request = <T = any>(
-  method: HttpMethod,
-  url: string,
-  data?: any,
-  config?: RequestConfig
-) => {
+export const request = <T = any>(method: HttpMethod, config?: httpRequestConfig) => {
   switch (method.toUpperCase()) {
     case 'GET':
-      return get<T>(url, data, config)
+      return get<T>(config)
     case 'POST':
-      return post<T>(url, data, config)
+      return post<T>(config)
     case 'PUT':
-      return put<T>(url, data, config)
+      return put<T>(config)
     case 'DELETE':
-      return del<T>(url, config)
+      return del<T>(config)
     case 'PATCH':
-      return patch<T>(url, data, config)
+      return patch<T>(config)
     default:
       throw new Error(`Unsupported HTTP method: ${method}`)
   }
 }
 
-/**
- * GET 请求
- * @param url 请求地址
- * @param params 查询参数
- * @param config 请求配置
- */
-export const get = <T = any>(url: string, params?: Record<string, any>, config?: RequestConfig) => {
-  // 提取 Alova 原生配置，排除自定义属性
-  const {
-    loading,
-    showError,
-    showSuccess,
-    successMessage,
-    errorMessage,
-    retryTimes,
-    auth,
-    ...alovaConfig
-  } = config || {}
-
-  return alovaInstance.Get<ResponseData<T>>(url, {
-    ...alovaConfig,
-    params
-  } as any)
+// GET 请求
+export const get = <T>(config?: httpRequestConfig): Promise<ApiResponse<T>> => {
+  const instance = getInstanceByApiType(config?.apiType)
+  return instance.get<T>(config?.url as string, config)
 }
-
-/**
- * POST 请求
- * @param url 请求地址
- * @param data 请求数据
- * @param config 请求配置
- */
-export const post = <T = any>(url: string, data?: any, config?: RequestConfig) => {
-  // 提取 Alova 原生配置，排除自定义属性
-  const {
-    loading,
-    showError,
-    showSuccess,
-    successMessage,
-    errorMessage,
-    retryTimes,
-    auth,
-    ...alovaConfig
-  } = config || {}
-
-  return alovaInstance.Post<ResponseData<T>>(url, data, alovaConfig as any)
+// POST 请求
+export const post = <T>(config?: httpRequestConfig): Promise<ApiResponse<T>> => {
+  const instance = getInstanceByApiType(config?.apiType)
+  return instance.post<T>(config?.url as string, config)
 }
-
-/**
- * PUT 请求
- * @param url 请求地址
- * @param data 请求数据
- * @param config 请求配置
- */
-export const put = <T = any>(url: string, data?: any, config?: RequestConfig) => {
-  // 提取 Alova 原生配置，排除自定义属性
-  const {
-    loading,
-    showError,
-    showSuccess,
-    successMessage,
-    errorMessage,
-    retryTimes,
-    auth,
-    ...alovaConfig
-  } = config || {}
-
-  return alovaInstance.Put<ResponseData<T>>(url, data, alovaConfig as any)
+// PUT 请求
+export const put = <T>(config?: httpRequestConfig): Promise<ApiResponse<T>> => {
+  const instance = getInstanceByApiType(config?.apiType)
+  return instance.put<T>(config?.url as string, config)
 }
-
-/**
- * DELETE 请求
- * @param url 请求地址
- * @param config 请求配置
- */
-export const del = <T = any>(url: string, config?: RequestConfig) => {
-  // 提取 Alova 原生配置，排除自定义属性
-  const {
-    loading,
-    showError,
-    showSuccess,
-    successMessage,
-    errorMessage,
-    retryTimes,
-    auth,
-    ...alovaConfig
-  } = config || {}
-
-  return alovaInstance.Delete<ResponseData<T>>(url, alovaConfig as any)
+// DELETE 请求
+export const del = <T>(config?: httpRequestConfig): Promise<ApiResponse<T>> => {
+  const instance = getInstanceByApiType(config?.apiType)
+  return instance.delete<T>(config?.url as string, config)
 }
-
-/**
- * PATCH 请求
- * @param url 请求地址
- * @param data 请求数据
- * @param config 请求配置
- */
-export const patch = <T = any>(url: string, data?: any, config?: RequestConfig) => {
-  // 提取 Alova 原生配置，排除自定义属性
-  const {
-    loading,
-    showError,
-    showSuccess,
-    successMessage,
-    errorMessage,
-    retryTimes,
-    auth,
-    ...alovaConfig
-  } = config || {}
-
-  return alovaInstance.Patch<ResponseData<T>>(url, data, alovaConfig as any)
-}
-
-/**
- * 分页查询
- * @param url 请求地址
- * @param params 分页参数
- * @param config 请求配置
- */
-export const getPage = <T = any>(url: string, params: PaginationParams, config?: RequestConfig) => {
-  return get<PaginationResponse<T>>(url, params, config)
-}
-
-/**
- * 文件上传
- * @param url 上传地址
- * @param uploadParams 上传参数
- * @param config 请求配置
- */
-export const upload = <T = any>(
-  url: string,
-  uploadParams: UploadParams,
-  config?: RequestConfig
-) => {
-  const formData = new FormData()
-  formData.append('file', uploadParams.file)
-  if (uploadParams.filename) {
-    formData.append('filename', uploadParams.filename)
-  }
-  if (uploadParams.path) {
-    formData.append('path', uploadParams.path)
-  }
-  if (uploadParams.data) {
-    Object.keys(uploadParams.data).forEach(key => {
-      formData.append(key, uploadParams.data![key])
-    })
-  }
-  return post<UploadResponse>(url, formData, {
-    ...config,
-    headers: {
-      ...config?.headers,
-      'Content-Type': 'multipart/form-data'
-    }
-  })
-}
-
-/**
- * 文件下载
- * @param url 下载地址
- * @param filename 文件名
- * @param config 请求配置
- */
-export const download = async (url: string, filename?: string, config?: RequestConfig) => {
-  // 提取 Alova 原生配置，排除自定义属性
-  const {
-    loading,
-    showError,
-    showSuccess,
-    successMessage,
-    errorMessage,
-    retryTimes,
-    auth,
-    ...alovaConfig
-  } = config || {}
-
-  const response = await alovaInstance.Get(url, {
-    ...alovaConfig,
-    transform: (data: any) => data // 保持原始数据
-  } as any)
-
-  // 创建 Blob 对象
-  let blob: Blob
-  if (response instanceof Blob) {
-    blob = response
-  } else if (response instanceof ArrayBuffer) {
-    blob = new Blob([response])
-  } else {
-    // 如果是其他类型，尝试转换为字符串
-    blob = new Blob([JSON.stringify(response)], { type: 'application/json' })
-  }
-
-  const downloadUrl = window.URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = downloadUrl
-  link.download = filename || 'download'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-  window.URL.revokeObjectURL(downloadUrl)
+// PATCH 请求
+export const patch = <T>(config?: httpRequestConfig): Promise<ApiResponse<T>> => {
+  const instance = getInstanceByApiType(config?.apiType)
+  return instance.patch<T>(config?.url as string, config)
 }
 
 /**
  * 批量请求
  * @param requests 请求数组
  */
-export const batch = <T = any>(requests: Array<() => Promise<ResponseData<T>>>) => {
+export const batch = <T>(
+  requests: Array<() => Promise<ApiResponse<T>>>
+): Promise<ApiResponse<T>[]> => {
   return Promise.all(requests.map(request => request()))
 }
 
@@ -258,8 +86,10 @@ export const batch = <T = any>(requests: Array<() => Promise<ResponseData<T>>>) 
  * 串行请求
  * @param requests 请求数组
  */
-export const serial = async <T = any>(requests: Array<() => Promise<ResponseData<T>>>) => {
-  const results: ResponseData<T>[] = []
+export const serial = async <T>(
+  requests: Array<() => Promise<ApiResponse<T>>>
+): Promise<ApiResponse<T>[]> => {
+  const results: ApiResponse<T>[] = []
   for (const request of requests) {
     const result = await request()
     results.push(result)
@@ -273,11 +103,11 @@ export const serial = async <T = any>(requests: Array<() => Promise<ResponseData
  * @param maxRetries 最大重试次数
  * @param delay 重试延迟（毫秒）
  */
-export const retry = async <T = any>(
-  requestFn: () => Promise<ResponseData<T>>,
+export const retry = async <T>(
+  requestFn: () => Promise<ApiResponse<T>>,
   maxRetries: number = 3,
   delay: number = 1000
-): Promise<ResponseData<T>> => {
+): Promise<ApiResponse<T>> => {
   let lastError: any
   for (let i = 0; i <= maxRetries; i++) {
     try {
@@ -300,11 +130,11 @@ export const retry = async <T = any>(
  */
 const cache = new Map<string, { data: any; timestamp: number; ttl: number }>()
 
-export const cached = async <T = any>(
+export const cached = async <T>(
   key: string,
-  requestFn: () => Promise<ResponseData<T>>,
+  requestFn: () => Promise<ApiResponse<T>>,
   ttl: number = 5 * 60 * 1000 // 默认5分钟
-): Promise<ResponseData<T>> => {
+): Promise<ApiResponse<T>> => {
   const now = Date.now()
   const cached = cache.get(key)
   if (cached && now - cached.timestamp < cached.ttl) {
@@ -328,20 +158,16 @@ export const clearCache = (key?: string) => {
 }
 
 // 导出默认实例
-export { alovaInstance }
+export { defaultInstance }
 export default {
   get,
   post,
   put,
   delete: del,
   patch,
-  getPage,
-  upload,
-  download,
   batch,
   serial,
   retry,
   cached,
-  clearCache,
-  instance: alovaInstance
+  clearCache
 }

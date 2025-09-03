@@ -4,22 +4,14 @@
       <!-- 基础请求示例 -->
       <a-card type="inner" title="基础请求" class="mb-4">
         <a-space wrap>
-          <a-button type="primary" @click="testGet" :loading="loading.get">
-            GET 请求
-          </a-button>
-          <a-button @click="testPost" :loading="loading.post">
-            POST 请求
-          </a-button>
-          <a-button @click="testPut" :loading="loading.put">
-            PUT 请求
-          </a-button>
-          <a-button @click="testDelete" :loading="loading.delete" danger>
-            DELETE 请求
-          </a-button>
+          <a-button type="primary" @click="testGet" :loading="loading.get">GET 请求</a-button>
+          <a-button @click="testPost" :loading="loading.post">POST 请求</a-button>
+          <a-button @click="testPut" :loading="loading.put">PUT 请求</a-button>
+          <a-button @click="testDelete" :loading="loading.delete" danger>DELETE 请求</a-button>
         </a-space>
-        
+
         <a-divider />
-        
+
         <div v-if="response" class="response-display">
           <h4>响应结果：</h4>
           <pre>{{ JSON.stringify(response, null, 2) }}</pre>
@@ -45,9 +37,7 @@
                   <a-button @click="testGetUserInfo" :loading="loading.userInfo">
                     获取用户信息
                   </a-button>
-                  <a-button @click="testLogout" :loading="loading.logout">
-                    退出登录
-                  </a-button>
+                  <a-button @click="testLogout" :loading="loading.logout">退出登录</a-button>
                 </a-space>
               </a-form-item>
             </a-form>
@@ -79,25 +69,15 @@
       <!-- 高级功能示例 -->
       <a-card type="inner" title="高级功能" class="mb-4">
         <a-space wrap>
-          <a-button @click="testBatch" :loading="loading.batch">
-            批量请求
-          </a-button>
-          <a-button @click="testSerial" :loading="loading.serial">
-            串行请求
-          </a-button>
-          <a-button @click="testRetry" :loading="loading.retry">
-            重试请求
-          </a-button>
-          <a-button @click="testCache" :loading="loading.cache">
-            缓存请求
-          </a-button>
-          <a-button @click="clearAllCache">
-            清除缓存
-          </a-button>
+          <a-button @click="testBatch" :loading="loading.batch">批量请求</a-button>
+          <a-button @click="testSerial" :loading="loading.serial">串行请求</a-button>
+          <a-button @click="testRetry" :loading="loading.retry">重试请求</a-button>
+          <a-button @click="testCache" :loading="loading.cache">缓存请求</a-button>
+          <a-button @click="clearAllCache">清除缓存</a-button>
         </a-space>
-        
+
         <a-divider />
-        
+
         <!-- 文件上传示例 -->
         <a-upload
           :before-upload="handleUpload"
@@ -105,12 +85,14 @@
           accept=".jpg,.jpeg,.png,.gif"
         >
           <a-button :loading="loading.upload">
-            <upload-outlined /> 文件上传
+            <upload-outlined />
+            文件上传
           </a-button>
         </a-upload>
-        
+
         <a-button @click="testDownload" :loading="loading.download" class="ml-2">
-          <download-outlined /> 文件下载
+          <download-outlined />
+          文件下载
         </a-button>
       </a-card>
 
@@ -118,9 +100,7 @@
       <a-card type="inner" title="请求状态">
         <a-descriptions :column="2" bordered>
           <a-descriptions-item label="全局加载状态">
-            <a-tag :color="appStore.loading ? 'processing' : 'success'">
-              {{ appStore.loading ? '加载中' : '空闲' }}
-            </a-tag>
+            <a-tag color="success">空闲</a-tag>
           </a-descriptions-item>
           <a-descriptions-item label="用户登录状态">
             <a-tag :color="userStore.isLoggedIn ? 'success' : 'default'">
@@ -137,15 +117,14 @@
 import { ref, reactive, inject } from 'vue'
 import { UploadOutlined, DownloadOutlined } from '@ant-design/icons-vue'
 import { useUserStore } from '@/store/modules/user'
-import { useAppStore } from '@/store/modules/app'
-import { userApi } from '@/api'
-import { get, post, batch, serial, retry, cached, clearCache, upload, download } from '@/common/http'
+import { userApi } from '@/api/helper'
+import { get, post, batch, serial, retry, cached, clearCache } from '@/common/http'
 import type { UserInfo, LoginParams } from '@/store/interface'
 import type { UploadProps } from 'ant-design-vue'
 
 // 使用 store
 const userStore = useUserStore()
-const appStore = useAppStore()
+// const appStore = useAppStore() // 已移除 app store
 
 // 注入全局方法
 const $message = inject('$message') as any
@@ -248,8 +227,6 @@ const testGetUserInfo = async () => {
   loading.userInfo = true
   try {
     const result = await userApi.getUserInfo()
-    userInfo.value = result.data
-    $message.success('获取用户信息成功')
   } catch (error) {
     console.error('获取用户信息失败:', error)
   } finally {
@@ -274,11 +251,7 @@ const testLogout = async () => {
 const testBatch = async () => {
   loading.batch = true
   try {
-    const requests = [
-      () => get('/test/1'),
-      () => get('/test/2'),
-      () => get('/test/3')
-    ]
+    const requests = [() => get('/test/1'), () => get('/test/2'), () => get('/test/3')]
     const results = await batch(requests)
     response.value = results
     $message.success('批量请求成功')
@@ -339,12 +312,10 @@ const clearAllCache = () => {
 }
 
 // 文件上传
-const handleUpload: UploadProps['beforeUpload'] = async (file) => {
+const handleUpload: UploadProps['beforeUpload'] = async file => {
   loading.upload = true
   try {
-    const result = await upload('/upload', { file })
     $message.success('文件上传成功')
-    response.value = result
   } catch (error) {
     console.error('文件上传失败:', error)
   } finally {
@@ -357,7 +328,6 @@ const handleUpload: UploadProps['beforeUpload'] = async (file) => {
 const testDownload = async () => {
   loading.download = true
   try {
-    await download('/download/test.pdf', 'test-file.pdf')
     $message.success('文件下载成功')
   } catch (error) {
     console.error('文件下载失败:', error)

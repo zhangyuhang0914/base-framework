@@ -169,10 +169,19 @@ export default defineConfig(({ command, mode }) => {
       cors: viteEnvConf.VITE_CORE as unknown as boolean, // 跨域
       // 设置 http 代理
       proxy: {
-        '/szxqyxyxx': {
-          target: 'https://jrb.hubei.gov.cn',
+        '/baseServer': {
+          // target: 'https://jrb.hubei.gov.cn',
+          target: 'http://172.16.50.193:8087/baseServer',
+          // target: 'http://172.20.10.4:8087',
           changeOrigin: true,
-          rewrite: path => path.replace(/^\/api/, '')
+          rewrite: path => path.replace(/^\/baseServer/, '')
+        },
+        '/fileServer': {
+          // target: 'https://jrb.hubei.gov.cn',
+          target: 'http://172.16.50.193:8087/fileServer',
+          // target: 'http://172.20.10.4:8087',
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/fileServer/, '')
         }
       }
     }

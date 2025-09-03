@@ -3,10 +3,10 @@
  * @Autor        : ZhangYuHang
  * @Date         : 2024-12-19 18:00:00
  * @LastEditors  : Please set LastEditors
- * @LastEditTime : 2025-08-07 16:39:59
+ * @LastEditTime : 2025-09-03 14:50:52
  */
 
-import { get, post, put, delete as del, getPage } from '@/common/http/index'
+import { get, post, put, delete as del } from '@/common/http/index'
 import type {
   UserInfo,
   LoginParams,
@@ -14,7 +14,6 @@ import type {
   UpdateUserInfoParams,
   ChangePasswordParams
 } from '@/store/interface'
-import type { PaginationParams } from '@/common/interface/http'
 
 /**
  * 用户登录
@@ -75,14 +74,6 @@ export function changePassword(params: ChangePasswordParams) {
     showSuccess: true,
     successMessage: '密码修改成功'
   })
-}
-
-/**
- * 获取用户列表（分页）
- * @param params 分页参数
- */
-export function getUserList(params: PaginationParams) {
-  return getPage<UserInfo>('/user/list', params)
 }
 
 /**

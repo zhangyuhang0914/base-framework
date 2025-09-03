@@ -5,28 +5,23 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "serve": "vite",
     "build": "vue-tsc -b && vite build",
     "build:test": "vue-tsc -b && vite build --mode test",
     "build:prod": "vue-tsc -b && vite build --mode production",
     "preview": "vite preview",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
-    "lint:check": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "type-check": "vue-tsc --noEmit",
-    "sass:watch": "sass --watch src/styles:dist/styles",
-    "sass:build": "sass src/styles:dist/styles --style=compressed",
-    "pug:compile": "pug src/templates --out dist/templates",
-    "style:check": "stylelint \"src/**/*.{css,scss,sass,vue}\"",
-    "style:fix": "stylelint \"src/**/*.{css,scss,sass,vue}\" --fix"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix"
   },
   "dependencies": {
+    "@ant-design/cssinjs": "^1.24.0",
     "@ant-design/icons-vue": "^7.0.1",
+    "@tailwindcss/postcss": "^4.1.11",
     "alova": "^3.3.4",
     "ant-design-vue": "^4.2.6",
     "nprogress": "^0.2.0",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.4.1",
+    "qs": "^6.14.0",
     "vue": "^3.5.17",
     "vue-i18n": "^9.14.5",
     "vue-router": "^4.5.1"

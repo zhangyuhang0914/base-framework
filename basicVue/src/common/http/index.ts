@@ -10,9 +10,6 @@ export {
   put,
   del as delete,
   patch,
-  getPage,
-  upload,
-  download,
   batch,
   serial,
   retry,
@@ -21,20 +18,15 @@ export {
 } from './api'
 
 // 导出配置
-export { alovaInstance as default } from './config'
+export { defaultInstance as AlovaInstance } from './config'
 
 // 导出类型定义
 export type {
   HttpMethod,
-  RequestConfig,
-  ResponseData,
-  PaginationParams,
-  PaginationResponse,
-  UploadParams,
-  UploadResponse,
+  httpRequestConfig,
+  ApiResponse,
   RequestInterceptor,
   ResponseInterceptor,
-  AlovaConfig,
   ApiError,
   RequestStatus,
   CacheStrategy

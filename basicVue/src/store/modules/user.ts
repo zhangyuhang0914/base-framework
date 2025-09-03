@@ -1,20 +1,14 @@
 /*
  * @Desc         : 用户状态管理
- * @Autor        : ZhangYuHang
- * @Date         : 2024-12-19 17:45:00
- * @LastEditors  : ZhangYuHang
- * @LastEditTime : 2024-12-19 17:50:00
+ * @Autor        : 超人
+ * @Date         : 2025-08-08 18:04:14
+ * @LastEditors  : Please set LastEditors
+ * @LastEditTime : 2025-09-03 14:49:28
  */
 
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type {
-  UserInfo,
-  LoginParams,
-  LoginResult,
-  UpdateUserInfoParams,
-  ChangePasswordParams
-} from '../interface'
+import type { UserInfo } from '../interface'
 
 // 使用组合式 API 风格定义 store
 export const useUserStore = defineStore(
@@ -44,7 +38,6 @@ export const useUserStore = defineStore(
       try {
         // 这里应该调用登录 API
         // const response = await loginApi(loginData)
-        
         // 模拟登录成功
         const mockUserInfo: UserInfo = {
           id: 1,
@@ -52,10 +45,10 @@ export const useUserStore = defineStore(
           email: `${loginData.username}@example.com`,
           roles: ['user']
         }
-        
+
         setUserInfo(mockUserInfo)
         setToken('mock-token-' + Date.now())
-        
+
         return { success: true, message: '登录成功' }
       } catch (error) {
         return { success: false, message: '登录失败' }

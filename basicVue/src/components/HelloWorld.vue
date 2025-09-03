@@ -2,14 +2,16 @@
 import { ref } from 'vue'
 import StoreExample from './StoreExample.vue'
 import HttpExample from './HttpExample.vue'
+import FileUploadDemo from './FileUploadDemo.vue'
 
-defineProps<{ msg: string }>()
+const props = defineProps<{ msg?: string }>()
 
 const count = ref(0)
+const displayMsg = props.msg || 'Vue 3 + TypeScript + Vite'
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
+  <h1>{{ displayMsg }}</h1>
 
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>
@@ -40,6 +42,9 @@ const count = ref(0)
     
     <!-- Alova.js HTTP 客户端示例 -->
     <HttpExample />
+    
+    <!-- 大文件切片上传示例 -->
+    <FileUploadDemo />
 </template>
 
 <style scoped>

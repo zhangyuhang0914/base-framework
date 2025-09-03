@@ -44,50 +44,41 @@
         <a-form layout="vertical">
           <a-row :gutter="16">
             <a-col :span="8">
-              <a-form-item label="主题模式">
+              <a-form-item label="算法主题">
                 <a-select 
-                  v-model:value="appStore.theme" 
-                  @change="appStore.setTheme"
+                  v-model:value="globalStore.algorithmTheme" 
+                  @change="globalStore.setAlgorithmTheme"
                 >
                   <a-select-option value="light">浅色</a-select-option>
                   <a-select-option value="dark">深色</a-select-option>
-                  <a-select-option value="auto">自动</a-select-option>
+                  <a-select-option value="compact">紧凑</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
             <a-col :span="8">
               <a-form-item label="语言设置">
                 <a-select 
-                  v-model:value="appStore.language" 
-                  @change="appStore.setLanguage"
+                  v-model:value="globalStore.language" 
+                  @change="globalStore.setLanguage"
                 >
                   <a-select-option value="zh">中文</a-select-option>
                   <a-select-option value="en">English</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
-            <a-col :span="8">
-              <a-form-item label="侧边栏">
-                <a-switch 
-                  v-model:checked="sidebarExpanded"
-                  @change="handleSidebarToggle"
-                  checked-children="展开"
-                  un-checked-children="收起"
-                />
-              </a-form-item>
-            </a-col>
+            <!-- 侧边栏功能已移除 -->
           </a-row>
         </a-form>
         
         <a-descriptions :column="2" bordered class="mt-4">
-          <a-descriptions-item label="设备类型">
-            <a-tag :color="getDeviceColor(appStore.deviceType)">
-              {{ getDeviceText(appStore.deviceType) }}
+          <a-descriptions-item label="当前语言">
+            <a-tag color="blue">
+              {{ globalStore.language === 'zh' ? '中文' : 'English' }}
             </a-tag>
           </a-descriptions-item>
-          <a-descriptions-item label="当前主题">
-            <a-tag :color="appStore.isDarkMode ? 'purple' : 'orange'">
-              {{ appStore.isDarkMode ? '深色模式' : '浅色模式' }}
+          <a-descriptions-item label="算法主题">
+            <a-tag :color="globalStore.algorithmTheme === 'dark' ? 'purple' : globalStore.algorithmTheme === 'compact' ? 'orange' : 'green'">
+              {{ globalStore.algorithmTheme === 'dark' ? '深色' : globalStore.algorithmTheme === 'compact' ? '紧凑' : '浅色' }}
             </a-tag>
           </a-descriptions-item>
         </a-descriptions>
@@ -120,12 +111,12 @@
 <script setup lang="ts">
 import { ref, computed, inject } from 'vue'
 import { useUserStore } from '@/store/modules/user'
-import { useAppStore } from '@/store/modules/app'
-import type { DeviceType } from '@/store/interface'
+import { useGlobalStore } from '@/store/modules/global'
+// import type { DeviceType } from '@/store/interface' // 已移除
 
 // 使用 store
 const userStore = useUserStore()
-const appStore = useAppStore()
+const globalStore = useGlobalStore()
 
 // 注入全局方法
 const $message = inject('$message') as any
@@ -135,11 +126,7 @@ const $confirm = inject('$confirm') as any
 // 响应式数据
 const loginLoading = ref(false)
 
-// 计算属性
-const sidebarExpanded = computed({
-  get: () => !appStore.sidebarCollapsed,
-  set: (value: boolean) => appStore.setSidebarCollapsed(!value)
-})
+// 计算属性已移除侧边栏相关功能
 
 // 方法
 const handleLogin = async () => {
@@ -160,27 +147,9 @@ const handleLogin = async () => {
   }
 }
 
-const handleSidebarToggle = (checked: boolean) => {
-  appStore.setSidebarCollapsed(!checked)
-}
+// 侧边栏切换功能已移除
 
-const getDeviceColor = (type: DeviceType) => {
-  const colors: Record<DeviceType, string> = {
-    desktop: 'green',
-    tablet: 'orange',
-    mobile: 'blue'
-  }
-  return colors[type] || 'default'
-}
-
-const getDeviceText = (type: DeviceType) => {
-  const texts: Record<DeviceType, string> = {
-    desktop: '桌面端',
-    tablet: '平板',
-    mobile: '移动端'
-  }
-  return texts[type] || type
-}
+// 设备类型相关函数已移除
 
 const testMessage = (type: 'success' | 'error' | 'warning') => {
   const messages = {
@@ -212,8 +181,7 @@ const testConfirm = () => {
   })
 }
 
-// 初始化应用设置
-appStore.initApp()
+// 应用初始化已移除
 </script>
 
 <style scoped>
