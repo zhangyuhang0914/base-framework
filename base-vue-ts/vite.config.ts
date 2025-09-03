@@ -64,12 +64,20 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          // 打包分割，拆分只打包代码模块
-          if (id.includes('node_modules')) {
-            return 'vendor'
-          }
+        manualChunks: {
+         vueChunk: ['vue', 'vue-router', 'pinia'],
+         elementPlusChunk: ['element-plus','@element-plus/icons-vue'],
+         customElementPlusChunk: ['@custom/icons-vue', '@custom/element-plus'],
+         echartsChunk: ['echarts'],
+         utilsChunk: ['crypto-js','nprogress', 'axios', 'vue-i18n', 'dayjs'],
+         statsChunk: ['@custom/stats-web']
         }
+        // manualChunks(id) {
+        //   // 打包分割，拆分只打包代码模块
+        //   if (id.includes('node_modules')) {
+        //     return 'vendor'
+        //   }
+        // }
       }
     }
   },
