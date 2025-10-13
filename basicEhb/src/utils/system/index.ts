@@ -29,7 +29,7 @@ const getConfig = (key?: string, valKey: string = 'value') => {
  */
 export const getConf = async (app: App): Promise<undefined> => {
   app.config.globalProperties.$config = getConfig()
-  return get({ url: `${BASE_URL}/statics/config/config.json?timeStap=${Date.now()}` }).then(config => {
+  return get({ url: `${BASE_URL}static/config/config.json?timeStap=${Date.now()}` }).then(config => {
     let $config = app.config.globalProperties.$config
     // 自动注入项目配置
     if (app && $config && typeof config === 'object') {

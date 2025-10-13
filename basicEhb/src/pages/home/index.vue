@@ -8,9 +8,15 @@
 </template>
 
 <script setup lang="ts">
+ehbAppJssdk.notice.showPreloader({
+    text: "使劲加载中.."
+})
+setTimeout(() => {
+  ehbAppJssdk.notice.hidePreloader()
+}, 3000)
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .home-container {
   padding: 20px;
 }
