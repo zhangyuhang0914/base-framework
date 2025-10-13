@@ -1,19 +1,23 @@
-<template>
-  <div class="home-container">
-    <h1>演示组件集合</h1>
-    <div class="demo-section">
-      <h2>HelloWorld 组件</h2>
-    </div>
-  </div>
+<template lang="pug">
+  .home-container
+    h1 演示组件集合
+    .demo-section
+      h2 HelloWorld 组件
+    vanButton(type="primary") 主要按钮
 </template>
 
 <script setup lang="ts">
+import { countDisplay } from '@/api/helper/common'
+
 ehbAppJssdk.notice.showPreloader({
     text: "使劲加载中.."
 })
 setTimeout(() => {
   ehbAppJssdk.notice.hidePreloader()
 }, 3000)
+countDisplay().then(res => {
+  console.log(res)
+})
 </script>
 
 <style lang="scss" scoped>

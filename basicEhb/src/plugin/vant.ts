@@ -1,7 +1,5 @@
 /*
- * @Desc         : Vant 配置
- * @Autor        : Trae Builder
- * @Date         : 2024-10-23
+ * Vant 配置
  */
 
 import type { App } from 'vue'

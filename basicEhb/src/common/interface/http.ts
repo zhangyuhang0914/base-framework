@@ -1,9 +1,5 @@
 /*
- * @Desc         : HTTP 客户端相关类型定义（兼容Alova）
- * @Autor        : ZhangYuHang
- * @Date         : 2024-12-19 18:00:00
- * @LastEditors  : Please set LastEditors
- * @LastEditTime : 2025-09-03 17:13:11
+ * HTTP 客户端相关类型定义
  */
 
 import type { AlovaGenerics, Method, RequestBody } from 'alova'
@@ -37,10 +33,6 @@ export interface httpRequestConfig extends Partial<Omit<Method, 'url'>> {
   isPostAndFormData?: boolean
   // 是否显示加载状态
   loading?: boolean
-  // 是否显示错误提示
-  showError?: boolean
-  // 是否显示成功提示
-  showSuccess?: boolean
   // 成功提示消息
   successMessage?: string
   // 错误提示消息

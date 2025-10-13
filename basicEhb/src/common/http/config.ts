@@ -1,9 +1,5 @@
 /*
- * @Desc         : HTTP 配置文件（兼容 Alova）
- * @Autor        : ZhangYuHang
- * @Date         : 2025-08-07 14:35:12
- * @LastEditors  : Please set LastEditors
- * @LastEditTime : 2025-10-13 10:27:01
+ * HTTP 配置文件
  */
 
 import { createAlova, type Method, type RequestBody } from 'alova'
@@ -144,13 +140,13 @@ export class Request {
       // 处理特殊错误码
       this.handleSpecialErrorCode(error)
       // 显示错误提示
-      if (config.showError !== false) {
+      if (config.errorMessage) {
         this.showErrorMessage(config.errorMessage || error.message)
       }
       throw error
     }
     // 显示成功提示
-    if (config.showSuccess && config.successMessage) {
+    if (config.successMessage) {
       this.showSuccessMessage(config.successMessage)
     }
     return data
@@ -171,7 +167,7 @@ export class Request {
     // 处理网络错误
     this.handleNetworkError(apiError)
     // 显示错误提示
-    if (config.showError !== false) {
+    if (config.errorMessage) {
       this.showErrorMessage(config.errorMessage || apiError.message)
     }
     throw apiError

@@ -1,9 +1,5 @@
 /*
- * @Desc         : Global 状态管理
- * @Autor        : ZhangYuHang
- * @Date         : 2025-08-08 18:04:14
- * @LastEditors  : Please set LastEditors
- * @LastEditTime : 2025-09-10 18:17:09
+ * Global 状态管理
  */
 
 import { defineStore } from 'pinia'

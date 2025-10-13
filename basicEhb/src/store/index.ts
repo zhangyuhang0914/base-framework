@@ -1,9 +1,5 @@
 /*
- * @Desc         : Pinia 状态管理配置
- * @Autor        : ZhangYuHang
- * @Date         : 2024-12-19 17:45:00
- * @LastEditors  : Please set LastEditors
- * @LastEditTime : 2025-09-10 18:11:06
+ * Pinia 状态管理配置
  */
 
 import type { App } from 'vue'

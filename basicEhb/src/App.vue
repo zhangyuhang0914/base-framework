@@ -1,9 +1,7 @@
-<template>
-  <div id="appContent">
-    <router-view v-slot="{ Component, route }">
-      <component :is="Component" :key="route.path" />
-    </router-view>
-  </div>
+<template lang="pug">
+  #appContent
+    router-view(v-slot="{ Component, route }")
+      component(:is="Component" :key="route.path")
 </template>
 
 <script setup lang="ts" name="App">

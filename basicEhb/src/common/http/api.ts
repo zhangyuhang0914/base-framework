@@ -1,9 +1,5 @@
 /*
- * @Desc         : HTTP API 封装
- * @Autor        : ZhangYuHang
- * @Date         : 2024-12-19 18:00:00
- * @LastEditors  : Please set LastEditors
- * @LastEditTime : 2025-09-10 14:43:02
+ * HTTP API 封装
  */
 
 import { defaultInstance, baseInstance, fileInstance, ApiServiceType } from './config'
