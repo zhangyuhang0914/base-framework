@@ -1,7 +1,5 @@
-<template>
-<div>
-  <a-button type="primary">点击我</a-button>
-</div>
+<template lang="pug">
+  vanButton(type="primary") 点击我
 </template>
 
 <script lang="ts">

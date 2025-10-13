@@ -3,20 +3,35 @@
     h1 演示组件集合
     .demo-section
       h2 HelloWorld 组件
-    vanButton(type="primary") 主要按钮
+    vanButton(type="primary" @click="toOtherPage") 跳转其他页面
 </template>
 
 <script setup lang="ts">
 import { countDisplay } from '@/api/helper/common'
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
-ehbAppJssdk.notice.showPreloader({
+const router = useRouter()
+// 获取统计数据
+const getCountDisplay = () => {
+  countDisplay().then(res => {
+    console.log(res)
+  })
+}
+// 跳转其他页面
+const toOtherPage = () => {
+  router.push('/dispatch')
+}
+onMounted(() => {
+  // 调用鄂汇办SDK组件
+  ehbAppJssdk.notice.showPreloader({
     text: "使劲加载中.."
-})
-setTimeout(() => {
-  ehbAppJssdk.notice.hidePreloader()
-}, 3000)
-countDisplay().then(res => {
-  console.log(res)
+  })
+  setTimeout(() => {
+    ehbAppJssdk.notice.hidePreloader()
+  }, 3000)
+  // 获取统计数据
+  getCountDisplay()
 })
 </script>
 
