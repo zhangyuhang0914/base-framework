@@ -7,34 +7,31 @@
  */
 
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
 import type { UserInfo } from '../interface'
+import { piniaStore as store } from '@/store'
 
-// 使用组合式 API 风格定义 store
-export const useUserStore = defineStore(
-  'user',
-  () => {
-    // 状态
-    const userInfo = ref<UserInfo | null>(null)
-    const token = ref<string>('')
-    const isLoggedIn = ref<boolean>(false)
-
-    // 计算属性
-    const userName = computed(() => userInfo.value?.username || '游客')
-    const userRoles = computed(() => userInfo.value?.roles || [])
-    const hasRole = computed(() => (role: string) => userRoles.value.includes(role))
-
-    // 方法
-    const setUserInfo = (info: UserInfo) => {
-      userInfo.value = info
-      isLoggedIn.value = true
+export const useUserStore = defineStore('user', {
+  state: () => ({
+    userInfo: null as UserInfo | null,
+    token: '',
+    isLoggedIn: false
+  }),
+  getters: {
+    userName: (state) => state.userInfo?.username || '游客',
+    userRoles: (state) => state.userInfo?.roles || [],
+    hasRole: (state) => {
+      return (role: string) => state.userInfo?.roles?.includes(role) || false
     }
-
-    const setToken = (newToken: string) => {
-      token.value = newToken
-    }
-
-    const login = async (loginData: { username: string; password: string }) => {
+  },
+  actions: {
+    setUserInfo(info: UserInfo) {
+      this.userInfo = info
+      this.isLoggedIn = true
+    },
+    setToken(newToken: string) {
+      this.token = newToken
+    },
+    async login(loginData: { username: string; password: string }) {
       try {
         // 这里应该调用登录 API
         // const response = await loginApi(loginData)
@@ -45,54 +42,32 @@ export const useUserStore = defineStore(
           email: `${loginData.username}@example.com`,
           roles: ['user']
         }
-
-        setUserInfo(mockUserInfo)
-        setToken('mock-token-' + Date.now())
-
+        this.setUserInfo(mockUserInfo)
+        this.setToken('mock-token-' + Date.now())
         return { success: true, message: '登录成功' }
       } catch (error) {
         return { success: false, message: '登录失败' }
       }
-    }
-
-    const logout = () => {
-      userInfo.value = null
-      token.value = ''
-      isLoggedIn.value = false
-    }
-
-    const updateUserInfo = (updates: Partial<UserInfo>) => {
-      if (userInfo.value) {
-        userInfo.value = { ...userInfo.value, ...updates }
+    },
+    logout() {
+      this.userInfo = null
+      this.token = ''
+      this.isLoggedIn = false
+    },
+    updateUserInfo(updates: Partial<UserInfo>) {
+      if (this.userInfo) {
+        this.userInfo = { ...this.userInfo, ...updates }
       }
     }
-
-    return {
-      // 状态
-      userInfo,
-      token,
-      isLoggedIn,
-      // 计算属性
-      userName,
-      userRoles,
-      hasRole,
-      // 方法
-      setUserInfo,
-      setToken,
-      login,
-      logout,
-      updateUserInfo
-    }
   },
-  {
-    // 持久化配置
-    persist: {
-      // 指定存储的 key
-      key: 'user-store',
-      // 指定要持久化的状态
-      pick: ['userInfo', 'token', 'isLoggedIn'],
-      // 可以指定不同的存储方式
-      storage: typeof window !== 'undefined' ? localStorage : undefined
-    }
+  // 持久化存储 开启数据缓存
+  persist: {
+    key: 'user-store', // 存储key
+    storage: localStorage, // 存储方式
+    pick: ['userInfo', 'token', 'isLoggedIn'] // 需要存储的字段
   }
-)
+})
+
+export function useUserStoreHook() {
+  return useUserStore(store)
+}

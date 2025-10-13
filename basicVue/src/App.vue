@@ -1,26 +1,32 @@
 <template>
-  <ConfigProvider
-    :locale="antdLocale"
-    :theme="{
-      algorithm: getAlgorithmTheme(),
-      ...antdThemeConfig
-    }"
-  >
-    <App>
+  <AntDesginApp>
+    <ConfigProvider
+      :theme="{
+        algorithm: getAlgorithmTheme(),
+        ...antdThemeConfig
+      }"
+      :locale="antdLocale"
+    >
       <NotificationProvider>
+        <!-- 样式转换器
+        hashPriority: :where 语法的兼容性在低版本浏览器比较差，如果需要支持旧版浏览器，你可以使用 @ant-design/cssinjs 取消默认的降权操作
+        legacyLogicalPropertiesTransformer: 兼容旧版浏览器，请根据实际需求使用 StyleProvider 降级处理
+        layer: 进行统一降权。经过降权后，antd 的样式将始终低于默认的 CSS 选择器优先级，以便于用户进行样式覆盖 -->
         <StyleProvider hash-priority="high" :transformers="transformers">
-          <router-view />
+          <router-view v-slot="{ Component, route }">
+            <component :is="Component" :key="route.path" />
+          </router-view>
         </StyleProvider>
       </NotificationProvider>
-    </App>
-  </ConfigProvider>
+    </ConfigProvider>
+  </AntDesginApp>
 </template>
 
 <script setup lang="ts" name="App">
 import { ref, computed, watchEffect, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useGlobalStore } from '@/store/modules/global'
-import { ConfigProvider, App, theme, StyleProvider } from 'ant-design-vue'
+import { ConfigProvider, App as AntDesginApp, theme, StyleProvider } from 'ant-design-vue'
 import { legacyLogicalPropertiesTransformer } from 'ant-design-vue/es/_util/cssinjs'
 import zhCN_WEB from 'ant-design-vue/es/locale/zh_CN'
 import enUS_WEB from 'ant-design-vue/es/locale/en_US'

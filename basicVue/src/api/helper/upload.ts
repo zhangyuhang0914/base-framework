@@ -46,10 +46,8 @@ export function uploadChunk(params: UploadChunkParams, chunk: Blob) {
   const param: httpRequestConfig = {
     apiType: 'FILE',
     url: '/upload/chunk',
+    formUpload: true,
     data: formData,
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    },
     // 支持上传进度监听
     onUploadProgress: (progressEvent: ProgressEvent) => {
       const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)

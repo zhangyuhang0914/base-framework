@@ -3,7 +3,6 @@ import { loadEnvConf } from './src/utils/system/env'
 import vue from '@vitejs/plugin-vue'
 import VueSetupSettingExtend from 'vite-plugin-vue-setup-extend'
 import pug from 'vite-plugin-pug'
-import tailwindcss from '@tailwindcss/vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
@@ -13,6 +12,8 @@ import legacy from '@vitejs/plugin-legacy'
 // 静态资源压缩
 import VitePluginCompression from 'vite-plugin-compression'
 import path from 'path'
+// 引入unocss
+import UnoCSS from '@unocss/vite'
 
 // @ts-ignore
 export default defineConfig(({ command, mode }) => {
@@ -26,8 +27,8 @@ export default defineConfig(({ command, mode }) => {
       VueSetupSettingExtend(),
       // pug 插件
       pug(),
-      // 引入 tailwindcss
-      tailwindcss(),
+      // 引入unocss
+      UnoCSS(),
       // html 模板
       createHtmlPlugin({
         inject: {

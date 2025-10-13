@@ -6,6 +6,8 @@ import setupStore from '@/store'
 import setupAntDesignVue from '@/plugin/antDesign'
 import '@/assets/css/app.scss'
 import { getConf } from '@/utils/system'
+// 导入unocss样式
+import 'virtual:uno.css'
 
 const app = createApp(App)
 

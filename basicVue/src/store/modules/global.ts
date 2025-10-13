@@ -3,55 +3,50 @@
  * @Autor        : ZhangYuHang
  * @Date         : 2025-08-08 18:04:14
  * @LastEditors  : Please set LastEditors
- * @LastEditTime : 2025-08-08 18:04:14
+ * @LastEditTime : 2025-09-10 18:17:09
  */
 
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
 import type { LanguageKey } from '@/language/interface'
 import { preferencesManager } from '@/config/preferencesManager'
+import type { GlobalState } from '@/store/interface'
+import { piniaStore as store } from '@/store'
+import type { AlgorithmTheme } from '@/store/interface/global'
 
-// 使用组合式 API 风格定义 global store
-export const useGlobalStore = defineStore(
-  'global',
-  () => {
-    // 状态
-    const language = ref<LanguageKey>(preferencesManager.getLanguage() as LanguageKey)
-    const algorithmTheme = ref<'light' | 'dark' | 'compact'>(preferencesManager.getAlgorithmTheme())
-
-    // 方法
-    const setLanguage = (newLanguage: LanguageKey) => {
-      language.value = newLanguage
-      // 同步更新到配置管理器
-      preferencesManager.setLanguage(newLanguage)
-    }
-    const setAlgorithmTheme = (newTheme: 'light' | 'dark' | 'compact') => {
-      algorithmTheme.value = newTheme
-      // 同步更新到配置管理器
-      preferencesManager.setAlgorithmTheme(newTheme)
-    }
-    // 从配置管理器同步状态到 Pinia
-    const syncFromPreferences = () => {
-      language.value = preferencesManager.getLanguage() as LanguageKey
-      algorithmTheme.value = preferencesManager.getAlgorithmTheme()
-    }
-
-    return {
-      // 状态
-      language,
-      algorithmTheme,
-      // 方法
-      setLanguage,
-      setAlgorithmTheme,
-      syncFromPreferences
+export const useGlobalStore = defineStore('global', {
+  state: (): GlobalState => ({
+    cachedRoute: [],
+    language: preferencesManager.getLanguage() as LanguageKey,
+    algorithmTheme: preferencesManager.getAlgorithmTheme()
+  }),
+  actions: {
+    // 设置缓存路由
+    setCached(str: string, type?: string) {
+      if (type === 'del') {
+        this.cachedRoute = this.cachedRoute.filter((item: string) => item !== str)
+        return false
+      }
+      if (!this.cachedRoute.some(item => item === str)) {
+        this.cachedRoute.push(str)
+      }
+    },
+    setLanguage(language: string) {
+      preferencesManager.setLanguage(language)
+      this.language = preferencesManager.getLanguage() as LanguageKey
+    },
+    setAlgorithmTheme(algorithmTheme: AlgorithmTheme) {
+      preferencesManager.setAlgorithmTheme(algorithmTheme)
     }
   },
-  {
-    // 持久化配置
-    persist: {
-      key: 'global-store',
-      pick: ['language', 'algorithmTheme'],
-      storage: typeof window !== 'undefined' ? localStorage : undefined
-    }
+  getters: {},
+  // 持久化存储 开启数据缓存
+  persist: {
+    key: 'global', // 存储key
+    storage: localStorage, // 存储方式，默认是sessionStorage
+    pick: ['cachedRoute', 'language', 'algorithmTheme'] // 需要存储的字段，在新版插件中使用pick替代paths
   }
-)
+})
+
+export function useGlobalStoreHook() {
+  return useGlobalStore(store)
+}

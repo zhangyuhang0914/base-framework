@@ -1,0 +1,9 @@
+@use '../components/theme.scss' as *;
+
+// 边框
+.border-l {
+  border-left-width: $borderWidth;
+}
+.border-border {
+  border-color: $borderColorDefault;
+}

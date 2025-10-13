@@ -3,10 +3,10 @@
  * @Autor        : ZhangYuHang
  * @Date         : 2025-08-07 14:35:12
  * @LastEditors  : Please set LastEditors
- * @LastEditTime : 2025-09-03 18:12:58
+ * @LastEditTime : 2025-09-10 14:41:55
  */
 
-import { createAlova, type Method } from 'alova'
+import { createAlova, type Method, type RequestBody } from 'alova'
 import adapterFetch from 'alova/fetch'
 import vueHook from 'alova/vue'
 import qs from 'qs'
@@ -101,6 +101,7 @@ export class Request {
     if (config.formUpload) {
       headers['Content-Type'] = 'multipart/form-data; charset=UTF-8'
     }
+    console.log('beforeRequest', method, config, config.url)
     // 校验post数据格式
     const contentType = headers['Content-Type']
     if (
@@ -272,18 +273,18 @@ export class Request {
     }
   }
   // 定义请求方法
-  public request<T>(method: string, url: string, config?: httpRequestConfig) {
+  public request<T>(method: string, url: string, data?: RequestBody, config?: httpRequestConfig) {
     switch (method.toUpperCase()) {
       case 'GET':
         return this.get<T>(url, config)
       case 'POST':
-        return this.post<T>(url, config)
+        return this.post<T>(url, data, config)
       case 'PUT':
-        return this.put<T>(url, config)
+        return this.put<T>(url, data, config)
       case 'DELETE':
-        return this.delete<T>(url, config)
+        return this.delete<T>(url, data as RequestBody, config)
       case 'PATCH':
-        return this.patch<T>(url, config)
+        return this.patch<T>(url, data as RequestBody, config)
       default:
         throw new Error(`Unsupported HTTP method: ${method}`)
     }
@@ -291,17 +292,17 @@ export class Request {
   public get<T>(url: string, config?: httpRequestConfig) {
     return this.instance.Get<ApiResponse<T>>(url, config)
   }
-  public post<T>(url: string, config?: httpRequestConfig) {
-    return this.instance.Post<ApiResponse<T>>(url, config)
+  public post<T>(url: string, data?: RequestBody, config?: httpRequestConfig) {
+    return this.instance.Post<ApiResponse<T>>(url, data, config)
   }
-  public put<T>(url: string, config?: httpRequestConfig) {
-    return this.instance.Put<ApiResponse<T>>(url, config)
+  public put<T>(url: string, data?: RequestBody, config?: httpRequestConfig) {
+    return this.instance.Put<ApiResponse<T>>(url, data, config)
   }
-  public delete<T>(url: string, config?: httpRequestConfig) {
-    return this.instance.Delete<ApiResponse<T>>(url, config)
+  public delete<T>(url: string, data: RequestBody, config?: httpRequestConfig) {
+    return this.instance.Delete<ApiResponse<T>>(url, data, config)
   }
-  public patch<T>(url: string, config?: httpRequestConfig) {
-    return this.instance.Patch<ApiResponse<T>>(url, config)
+  public patch<T>(url: string, data: RequestBody, config?: httpRequestConfig) {
+    return this.instance.Patch<ApiResponse<T>>(url, data, config)
   }
 }
 

@@ -121,6 +121,7 @@ import { userApi } from '@/api/helper'
 import { get, post, batch, serial, retry, cached, clearCache } from '@/common/http'
 import type { UserInfo, LoginParams } from '@/store/interface'
 import type { UploadProps } from 'ant-design-vue'
+import { cancelUpload, getFileList } from '@/api/helper/upload'
 
 // 使用 store
 const userStore = useUserStore()
@@ -265,11 +266,7 @@ const testBatch = async () => {
 const testSerial = async () => {
   loading.serial = true
   try {
-    const requests = [
-      () => get('/test/serial/1'),
-      () => get('/test/serial/2'),
-      () => get('/test/serial/3')
-    ]
+    const requests = [getFileList, cancelUpload('123'), getFileList]
     const results = await serial(requests)
     response.value = results
     $message.success('串行请求成功')
