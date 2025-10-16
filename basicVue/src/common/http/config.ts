@@ -8,12 +8,7 @@ import vueHook from 'alova/vue'
 import qs from 'qs'
 import type { httpRequestConfig, ApiResponse, ApiError } from '../interface/http'
 import { getToken } from '@/utils/storage/cookie'
-import {
-  getBaseUrlByService,
-  ApiServiceType,
-  CURRENT_ENV,
-  CURRENT_API_CONFIG
-} from '@/config/apiConfig'
+import { getBaseUrlByService, ApiServiceType, CURRENT_ENV, CURRENT_API_CONFIG } from '@/config/apiConfig'
 
 // 默认配置
 const defaultConfig: httpRequestConfig = {
@@ -66,10 +61,7 @@ export class Request {
    * @param serviceType 服务类型
    * @param config 请求配置
    */
-  static getInstance(
-    serviceType: ApiServiceType = ApiServiceType.DEFAULT,
-    config: httpRequestConfig
-  ): Request {
+  static getInstance(serviceType: ApiServiceType = ApiServiceType.DEFAULT, config: httpRequestConfig): Request {
     if (!serviceInstances.has(serviceType)) {
       serviceInstances.set(serviceType, new Request(config, serviceType))
     }
@@ -95,12 +87,7 @@ export class Request {
     // console.log('beforeRequest', method, config, config.url)
     // 校验post数据格式
     const contentType = headers['Content-Type']
-    if (
-      method.type.toUpperCase() === 'POST' &&
-      typeof method.data === 'object' &&
-      contentType &&
-      String(contentType).indexOf('application/x-www-form-urlencoded') > -1
-    ) {
+    if (method.type.toUpperCase() === 'POST' && typeof method.data === 'object' && contentType && String(contentType).indexOf('application/x-www-form-urlencoded') > -1) {
       method.data = qs.stringify(method.data)
     }
     // post数据格式为form-data
@@ -258,6 +245,27 @@ export class Request {
       console.error('[Error]', message)
     }
   }
+  /**
+   * 将自定义配置转换为 Alova 配置
+   */
+  private transformConfig(config?: httpRequestConfig): any {
+    if (!config) return {}
+    const alovaConfig: any = {
+      ...config,
+      // 处理缓存配置
+      ...(config.cacheFor && {
+        localCache: config.cacheFor
+      })
+    }
+    // 移除自定义属性，避免冲突
+    delete alovaConfig.cacheFor
+    delete alovaConfig.isForm
+    delete alovaConfig.formUpload
+    delete alovaConfig.isPostAndFormData
+    delete alovaConfig.successMessage
+    delete alovaConfig.errorMessage
+    return alovaConfig
+  }
   // 定义请求方法
   public request<T>(method: string, url: string, data?: RequestBody, config?: httpRequestConfig) {
     switch (method.toUpperCase()) {
@@ -276,19 +284,24 @@ export class Request {
     }
   }
   public get<T>(url: string, config?: httpRequestConfig) {
-    return this.instance.Get<ApiResponse<T>>(url, config)
+    const alovaConfig = this.transformConfig(config)
+    return this.instance.Get<ApiResponse<T>>(url, alovaConfig)
   }
   public post<T>(url: string, data?: RequestBody, config?: httpRequestConfig) {
-    return this.instance.Post<ApiResponse<T>>(url, data, config)
+    const alovaConfig = this.transformConfig(config)
+    return this.instance.Post<ApiResponse<T>>(url, data, alovaConfig)
   }
   public put<T>(url: string, data?: RequestBody, config?: httpRequestConfig) {
-    return this.instance.Put<ApiResponse<T>>(url, data, config)
+    const alovaConfig = this.transformConfig(config)
+    return this.instance.Put<ApiResponse<T>>(url, data, alovaConfig)
   }
-  public delete<T>(url: string, data: RequestBody, config?: httpRequestConfig) {
-    return this.instance.Delete<ApiResponse<T>>(url, data, config)
+  public delete<T>(url: string, data?: RequestBody, config?: httpRequestConfig) {
+    const alovaConfig = this.transformConfig(config)
+    return this.instance.Delete<ApiResponse<T>>(url, data, alovaConfig)
   }
-  public patch<T>(url: string, data: RequestBody, config?: httpRequestConfig) {
-    return this.instance.Patch<ApiResponse<T>>(url, data, config)
+  public patch<T>(url: string, data?: RequestBody, config?: httpRequestConfig) {
+    const alovaConfig = this.transformConfig(config)
+    return this.instance.Patch<ApiResponse<T>>(url, data, alovaConfig)
   }
 }
 

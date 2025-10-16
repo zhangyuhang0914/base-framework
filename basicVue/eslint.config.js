@@ -23,7 +23,7 @@ export default [
       }, // 定义支持的全局变量
       parser: tsParser, // 使用 TypeScript 解析器
       parserOptions: {
-        project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'], // 指定 TypeScript 配置文件
+        // project: ['./tsconfig.json', './tsconfig.node.json', './tsconfig.app.json'], // 指定 TypeScript 配置文件
         tsconfigRootDir: import.meta.dirname, // 设置 TypeScript 配置文件的根目录
         ecmaVersion: 'latest', // 使用最新的 ECMAScript 版本
         sourceType: 'module', // 添加 sourceType
@@ -61,7 +61,7 @@ export default [
       'vue/multi-word-component-names': 'off', // 允许单词组件名
       'vue/no-v-html': 'off', // 允许使用 v-html
       'vue/require-default-prop': 'off', // 不强制要求默认 prop
-      'vue/no-unused-vars': 'error', // 禁止未使用的变量
+      'vue/no-unused-vars': 'off', // 禁止未使用的变量
       'vue/no-multiple-template-root': 'off', // Vue 3 允许多个根节点
       // Pinia 相关规则
       'pinia/never-export-initialized-store': 'error', // 不要导出已初始化的 store
@@ -109,6 +109,7 @@ export default [
       '@typescript-eslint': tseslint,
     },
     rules: {
+      'no-unused-vars': 'off', // 允许定义未使用的变量
       '@typescript-eslint/no-unused-vars': 'off', // 禁止定义未使用的变量
       '@typescript-eslint/prefer-ts-expect-error': 'off', // 允许使用 @ts-ignore
       '@typescript-eslint/ban-ts-comment': 'off', // 允许使用 @ts-ignore

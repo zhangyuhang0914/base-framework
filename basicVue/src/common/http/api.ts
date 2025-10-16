@@ -73,9 +73,7 @@ export const patch = <T>(config?: httpRequestConfig): Promise<ApiResponse<T>> =>
  * 批量请求（异步请求）
  * @param requests 请求数组（支持函数或Promise）
  */
-export const batch = <T>(
-  requests: Array<(() => Promise<ApiResponse<T>>) | Promise<ApiResponse<T>>>
-): Promise<ApiResponse<T>[]> => {
+export const batch = <T>(requests: Array<(() => Promise<ApiResponse<T>>) | Promise<ApiResponse<T>>>): Promise<ApiResponse<T>[]> => {
   return Promise.all(requests.map(request => (typeof request === 'function' ? request() : request)))
 }
 
@@ -83,9 +81,7 @@ export const batch = <T>(
  * 串行请求（同步请求）
  * @param requests 请求数组（支持函数或Promise）
  */
-export const serial = async <T>(
-  requests: Array<(() => Promise<ApiResponse<T>>) | Promise<ApiResponse<T>>>
-): Promise<ApiResponse<T>[]> => {
+export const serial = async <T>(requests: Array<(() => Promise<ApiResponse<T>>) | Promise<ApiResponse<T>>>): Promise<ApiResponse<T>[]> => {
   const results: ApiResponse<T>[] = []
   for (const request of requests) {
     const result = typeof request === 'function' ? await request() : await request
@@ -100,11 +96,7 @@ export const serial = async <T>(
  * @param maxRetries 最大重试次数
  * @param delay 重试延迟（毫秒）
  */
-export const retry = async <T>(
-  requestFn: () => Promise<ApiResponse<T>>,
-  maxRetries: number = 3,
-  delay: number = 1000
-): Promise<ApiResponse<T>> => {
+export const retry = async <T>(requestFn: () => Promise<ApiResponse<T>>, maxRetries: number = 3, delay: number = 1000): Promise<ApiResponse<T>> => {
   let lastError: any
   for (let i = 0; i <= maxRetries; i++) {
     try {

@@ -45,7 +45,6 @@ const { locale } = useI18n()
 const antdThemeConfig = ref(getAntdThemeConfig())
 const unsubscribe = ref<(() => void) | null>(null)
 const transformers = ref([legacyLogicalPropertiesTransformer])
-console.log('111');
 
 // 计算属性
 const antdLocale = computed((): Locale => {
