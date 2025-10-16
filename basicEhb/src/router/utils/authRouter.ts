@@ -7,11 +7,7 @@ import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
  * 在 Vue 中，路由守卫通常直接在 router/index.ts 中定义
  * 这个工具函数提供了权限验证的核心逻辑
  */
-export const authGuard = (
-  to: RouteLocationNormalized,
-  from: RouteLocationNormalized,
-  next: NavigationGuardNext
-): boolean => {
+export const authGuard = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext): boolean => {
   // 进度条
   if (to.name !== from.name) {
     nprogressStart()

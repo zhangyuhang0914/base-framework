@@ -3,14 +3,12 @@
   "semi": false,
   "tabWidth": 2,
   "singleQuote": true,
-  "printWidth": 100,
+  "printWidth": 200,
   "bracketSpacing": true,
   "arrowParens": "avoid",
-  "endOfLine": "auto",
+  "endOfLine": "LF",
   "trailingComma": "none",
   "embeddedLanguageFormatting": "auto",
   "useTabs": false,
-  "htmlWhitespaceSensitivity": "ignore",
-  "plugins": ["prettier-plugin-tailwindcss"],
-  "tailwindConfig": "./tailwind.config.js"
+  "htmlWhitespaceSensitivity": "ignore"
 }

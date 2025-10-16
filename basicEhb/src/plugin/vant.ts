@@ -7,35 +7,34 @@ import { showToast, showLoadingToast, closeToast, showDialog } from 'vant'
 
 // 全局消息提示
 export const $message = {
-  success: (content: string, duration = 2000) => showToast({
-    message: content,
-    type: 'success',
-    duration
-  }),
-  error: (content: string, duration = 2000) => showToast({
-    message: content,
-    type: 'fail',
-    duration
-  }),
-  info: (content: string, duration = 2000) => showToast({
-    message: content,
-    type: 'text',
-    duration
-  }),
-  warning: (content: string, duration = 2000) => showToast({
-    message: content,
-    type: 'warning',
-    duration
-  }),
-  loading: (content: string) => showLoadingToast({
-    message: content,
-    forbidClick: true
-  }),
+  success: (content: string, duration = 2000) =>
+    showToast({
+      message: content,
+      type: 'success',
+      duration
+    }),
+  error: (content: string, duration = 2000) =>
+    showToast({
+      message: content,
+      type: 'fail',
+      duration
+    }),
+  info: (content: string, duration = 2000) =>
+    showToast({
+      message: content,
+      type: 'text',
+      duration
+    }),
+  loading: (content: string) =>
+    showLoadingToast({
+      message: content,
+      forbidClick: true
+    }),
   closeAll: () => closeToast()
 }
 
 // 全局确认框
-export const $confirm = (config: { title?: string, content: string, confirmButtonText?: string, cancelButtonText?: string }) => {
+export const $confirm = (config: { title?: string; content: string; confirmButtonText?: string; cancelButtonText?: string }) => {
   return showDialog({
     title: config.title || '确认',
     message: config.content,

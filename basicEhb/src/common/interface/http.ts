@@ -23,6 +23,15 @@ export interface httpRequestConfig extends Partial<Omit<Method, 'url'>> {
   apiType?: string
   // 是否需要认证
   auth?: boolean
+  /**
+   * 缓存
+   * mode: 'memory' | 'restore' // 内存模式 | 持久化模式
+   * expire: number // 缓存过期时间，单位秒，0表示关闭默认的响应缓存；Infinity表示永不过期
+   */
+  cacheFor?: {
+    mode: 'memory' | 'restore'
+    expire: number | string
+  }
   // 表单上传
   isForm?: boolean
   // 附件上传
@@ -124,27 +133,3 @@ export interface ApiError {
 
 // HTTP 请求方法类型
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
-
-// 请求状态类型
-export const RequestStatus = {
-  IDLE: 'idle',
-  LOADING: 'loading',
-  SUCCESS: 'success',
-  ERROR: 'error'
-} as const
-
-export type RequestStatus = (typeof RequestStatus)[keyof typeof RequestStatus]
-
-// 缓存策略类型
-export const CacheStrategy = {
-  // 不缓存
-  NO_CACHE: 'no-cache',
-  // 内存缓存
-  MEMORY: 'memory',
-  // 本地存储缓存
-  LOCAL_STORAGE: 'localStorage',
-  // 会话存储缓存
-  SESSION_STORAGE: 'sessionStorage'
-} as const
-
-export type CacheStrategy = (typeof CacheStrategy)[keyof typeof CacheStrategy]

@@ -27,7 +27,5 @@ export type {
   ApiResponse,
   RequestInterceptor,
   ResponseInterceptor,
-  ApiError,
-  RequestStatus,
-  CacheStrategy
+  ApiError
 } from '../interface/http'

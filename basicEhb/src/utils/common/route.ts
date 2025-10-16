@@ -6,10 +6,7 @@ import type { AppRouteModule } from '@/router/interface'
  * @param {Array} routes 路由列表
  * @returns array
  */
-export const searchRoute = (
-  path: string,
-  routes: AppRouteModule[] = []
-): AppRouteModule => {
+export const searchRoute = (path: string, routes: AppRouteModule[] = []): AppRouteModule => {
   let result: AppRouteModule = {}
   for (let item of routes) {
     if (item.path === path) return item

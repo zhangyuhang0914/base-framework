@@ -5,9 +5,7 @@ import mainRouter from './main'
  * 统一导出所有路由模块
  * 这个文件可以被直接导入使用，也可以被router/index.ts中的动态导入逻辑自动加载
  */
-const modulesRoutes: AppRouteModule[] = [
-  ...mainRouter
-]
+const modulesRoutes: AppRouteModule[] = [...mainRouter]
 
 /**
  * 动态获取目录下的所有路由文件，支持过滤不需要的文件

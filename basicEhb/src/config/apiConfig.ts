@@ -67,9 +67,7 @@ export const getCurrentApiConfig = () => {
  * 根据服务类型获取基础URL
  * @param serviceType 服务类型
  */
-export const getBaseUrlByService = (
-  serviceType: ApiServiceType = ApiServiceType.DEFAULT
-): string => {
+export const getBaseUrlByService = (serviceType: ApiServiceType = ApiServiceType.DEFAULT): string => {
   const config = getCurrentApiConfig()
   return config[serviceType] || config[ApiServiceType.DEFAULT]
 }

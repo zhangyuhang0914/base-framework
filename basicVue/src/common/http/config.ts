@@ -1,16 +1,11 @@
 /*
- * @Desc         : HTTP 配置文件（兼容 Alova）
- * @Autor        : ZhangYuHang
- * @Date         : 2025-08-07 14:35:12
- * @LastEditors  : Please set LastEditors
- * @LastEditTime : 2025-09-10 14:41:55
+ * HTTP 配置文件
  */
 
 import { createAlova, type Method, type RequestBody } from 'alova'
 import adapterFetch from 'alova/fetch'
 import vueHook from 'alova/vue'
 import qs from 'qs'
-import { useUserStore } from '@/store/modules/user'
 import type { httpRequestConfig, ApiResponse, ApiError } from '../interface/http'
 import { getToken } from '@/utils/storage/cookie'
 import {
@@ -19,7 +14,6 @@ import {
   CURRENT_ENV,
   CURRENT_API_CONFIG
 } from '@/config/apiConfig'
-import { $t } from '@/language'
 
 // 默认配置
 const defaultConfig: httpRequestConfig = {
@@ -47,10 +41,7 @@ export class Request {
    * @param options 请求配置
    * @param serviceType 服务类型
    */
-  constructor(
-    options: httpRequestConfig = {},
-    serviceType: ApiServiceType = ApiServiceType.DEFAULT
-  ) {
+  constructor(options: httpRequestConfig, serviceType: ApiServiceType = ApiServiceType.DEFAULT) {
     this.serviceType = serviceType
     const baseURL = getBaseUrlByService(serviceType)
     // 创建alova实例
@@ -77,7 +68,7 @@ export class Request {
    */
   static getInstance(
     serviceType: ApiServiceType = ApiServiceType.DEFAULT,
-    config: httpRequestConfig = {}
+    config: httpRequestConfig
   ): Request {
     if (!serviceInstances.has(serviceType)) {
       serviceInstances.set(serviceType, new Request(config, serviceType))
@@ -101,7 +92,7 @@ export class Request {
     if (config.formUpload) {
       headers['Content-Type'] = 'multipart/form-data; charset=UTF-8'
     }
-    console.log('beforeRequest', method, config, config.url)
+    // console.log('beforeRequest', method, config, config.url)
     // 校验post数据格式
     const contentType = headers['Content-Type']
     if (
@@ -119,10 +110,7 @@ export class Request {
     }
     // 添加请求ID
     headers['X-Request-ID'] = this.generateRequestId()
-    // console.log(`[HTTP Request] ${method.type.toUpperCase()} ${method.url}`, {
-    //   headers,
-    //   method
-    // })
+    console.log(`[HTTP Request] ${method.type.toUpperCase()} ${method.url}`, config)
   }
   // 响应成功拦截
   private async onSuccess<T>(response: Response, method: Method) {
@@ -138,7 +126,7 @@ export class Request {
     if (data.code !== undefined && data.code !== 200 && data.code !== 0) {
       const error: ApiError = {
         code: data.code,
-        message: data.message || $t('请求失败，请联系管理员'),
+        message: data.message || '请求失败，请联系管理员',
         url: method.url,
         method: method.type.toUpperCase() as any,
         timestamp: Date.now()
@@ -146,13 +134,13 @@ export class Request {
       // 处理特殊错误码
       this.handleSpecialErrorCode(error)
       // 显示错误提示
-      if (config.showError !== false) {
+      if (config.errorMessage) {
         this.showErrorMessage(config.errorMessage || error.message)
       }
       throw error
     }
     // 显示成功提示
-    if (config.showSuccess && config.successMessage) {
+    if (config.successMessage) {
       this.showSuccessMessage(config.successMessage)
     }
     return data
@@ -173,7 +161,7 @@ export class Request {
     // 处理网络错误
     this.handleNetworkError(apiError)
     // 显示错误提示
-    if (config.showError !== false) {
+    if (config.errorMessage) {
       this.showErrorMessage(config.errorMessage || apiError.message)
     }
     throw apiError
@@ -185,21 +173,19 @@ export class Request {
   // 处理特殊错误码
   private handleSpecialErrorCode(error: ApiError) {
     try {
-      const userStore = useUserStore()
       switch (error.code) {
         case 401:
         case 500:
           // token失效，处理退出登录逻辑
-          $t('登录已失效，请重新登录！')
-          userStore.logout()
+          '登录已失效，请重新登录！'
           break
         case 403:
           // 无访问权限
-          console.warn($t('无访问权限:'), error.message)
+          console.warn('无访问权限:', error.message)
           break
         case 404:
           // 资源不存在
-          console.warn($t('资源不存在:'), error.message)
+          console.warn('资源不存在:', error.message)
           break
       }
     } catch (storeError) {
@@ -208,10 +194,10 @@ export class Request {
       // 仍然处理非 store 相关的错误码
       switch (error.code) {
         case 403:
-          console.warn($t('无访问权限:'), error.message)
+          console.warn('无访问权限:', error.message)
           break
         case 404:
-          console.warn($t('资源不存在:'), error.message)
+          console.warn('资源不存在:', error.message)
           break
       }
     }
@@ -219,11 +205,11 @@ export class Request {
   // 处理网络错误
   private handleNetworkError(error: ApiError) {
     if (error.code === 0 || !navigator.onLine) {
-      error.message = $t('网络连接失败，请检查网络设置')
+      error.message = '网络连接失败，请检查网络设置'
     } else if (error.code >= 500) {
-      error.message = $t('服务器错误，请稍后重试')
+      error.message = '服务器错误，请稍后重试'
     } else if (error.code >= 400) {
-      error.message = error.message || $t('请求错误')
+      error.message = error.message || '请求错误'
     }
   }
   // 获取错误消息
@@ -233,25 +219,25 @@ export class Request {
     }
     switch (error.status) {
       case 400:
-        return $t('请求参数错误')
+        return '请求参数错误'
       case 401:
-        return $t('未授权，请重新登录')
+        return '未授权，请重新登录'
       case 403:
-        return $t('权限不足')
+        return '权限不足'
       case 404:
-        return $t('请求的资源不存在')
+        return '请求的资源不存在'
       case 408:
-        return $t('请求超时')
+        return '请求超时'
       case 500:
-        return $t('服务器内部错误')
+        return '服务器内部错误'
       case 502:
-        return $t('网关错误')
+        return '网关错误'
       case 503:
-        return $t('服务不可用')
+        return '服务不可用'
       case 504:
-        return $t('网关超时')
+        return '网关超时'
       default:
-        return $t('网络错误')
+        return '网络错误'
     }
   }
   // 显示成功消息

@@ -7,28 +7,28 @@ import type { ActionSheetOptions, ActionSheetMultiColumnsOptions, DatePickerOpti
 // Alert弹窗选项类型
 export interface AlertOptions {
   // 弹窗标题
-  title: string        
+  title: string
   // 弹窗内容
-  message: string      
+  message: string
   // 弹窗按钮
-  buttonName: string   
+  buttonName: string
   // 成功的回调，无返回值
-  success: () => void  
+  success: () => void
 }
 // Confirm弹窗选项类型
 export interface ConfirmOptions {
   // 弹窗标题
-  title: string           
+  title: string
   // 弹窗内容
-  message: string         
+  message: string
   // 确认按钮名称
-  confirmButtonName: string 
+  confirmButtonName: string
   // 取消按钮名称
-  cancelButtonName: string  
+  cancelButtonName: string
   // 成功的回调
-  success: () => void     
+  success: () => void
   // 失败的回调
-  fail: () => void        
+  fail: () => void
 }
 // prompt输入框选项类型
 export interface PromptOptions {
@@ -41,15 +41,12 @@ export interface PromptOptions {
   // 弹窗按钮，按钮数量为2
   buttonLabels: string[]
   // 成功的回调
-  success: (res: {
-    buttonIndex: string
-    value: string
-  }) => void
+  success: (res: { buttonIndex: string; value: string }) => void
 }
 // 加载弹窗选项类型
 export interface PreloaderOptions {
   // 加载提示文本
-  text?: string 
+  text?: string
 }
 // 内容弹框选项类型
 export interface ContentPopupOptions {
@@ -66,10 +63,7 @@ export interface ContentPopupOptions {
   // 弹框按钮
   buttonName: string
   // 成功的回调
-  success: (res: {
-    msg: string
-    code: string
-  }) => void
+  success: (res: { msg: string; code: string }) => void
 }
 // 网页半屏弹框选项类型
 export interface WebPagePopupOptions {
@@ -78,10 +72,7 @@ export interface WebPagePopupOptions {
   // 弹框链接
   url: string
   // 成功的回调
-  success: (res: {
-    msg: string
-    code: string
-  }) => void
+  success: (res: { msg: string; code: string }) => void
 }
 // 示列弹框选项类型
 export interface ExamplePopupOptions {

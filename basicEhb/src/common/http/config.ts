@@ -41,10 +41,7 @@ export class Request {
    * @param options 请求配置
    * @param serviceType 服务类型
    */
-  constructor(
-    options: httpRequestConfig = {},
-    serviceType: ApiServiceType = ApiServiceType.DEFAULT
-  ) {
+  constructor(options: httpRequestConfig, serviceType: ApiServiceType = ApiServiceType.DEFAULT) {
     this.serviceType = serviceType
     const baseURL = getBaseUrlByService(serviceType)
     // 创建alova实例
@@ -71,7 +68,7 @@ export class Request {
    */
   static getInstance(
     serviceType: ApiServiceType = ApiServiceType.DEFAULT,
-    config: httpRequestConfig = {}
+    config: httpRequestConfig
   ): Request {
     if (!serviceInstances.has(serviceType)) {
       serviceInstances.set(serviceType, new Request(config, serviceType))
@@ -95,7 +92,7 @@ export class Request {
     if (config.formUpload) {
       headers['Content-Type'] = 'multipart/form-data; charset=UTF-8'
     }
-    console.log('beforeRequest', method, config, config.url)
+    // console.log('beforeRequest', method, config, config.url)
     // 校验post数据格式
     const contentType = headers['Content-Type']
     if (
@@ -113,10 +110,7 @@ export class Request {
     }
     // 添加请求ID
     headers['X-Request-ID'] = this.generateRequestId()
-    // console.log(`[HTTP Request] ${method.type.toUpperCase()} ${method.url}`, {
-    //   headers,
-    //   method
-    // })
+    console.log(`[HTTP Request] ${method.type.toUpperCase()} ${method.url}`, config)
   }
   // 响应成功拦截
   private async onSuccess<T>(response: Response, method: Method) {
@@ -215,7 +209,7 @@ export class Request {
     } else if (error.code >= 500) {
       error.message = '服务器错误，请稍后重试'
     } else if (error.code >= 400) {
-      error.message = error.message || '请求错误' 
+      error.message = error.message || '请求错误'
     }
   }
   // 获取错误消息

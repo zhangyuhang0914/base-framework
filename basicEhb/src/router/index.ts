@@ -10,7 +10,7 @@ const { BASE_URL } = import.meta.env
 // 获取所有路由
 const routes: any = [...routesConfig]
 
-console.log('routes', routes);
+console.log('routes', routes)
 // 创建路由实例
 const router = createRouter({
   history: createWebHistory(BASE_URL),
@@ -35,7 +35,7 @@ router.beforeEach((to, from, next) => {
 /**
  * 全局后置守卫
  */
-router.afterEach((to) => {
+router.afterEach(to => {
   // 设置页面标题
   setPageTitle(to)
   // 结束进度条

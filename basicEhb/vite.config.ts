@@ -40,10 +40,7 @@ export default defineConfig(({ command, mode }) => {
       }),
       // 自动导入相关函数
       AutoImport({
-        imports: [
-          'vue',
-          'vue-router'
-        ],
+        imports: ['vue', 'vue-router'],
         // TS 类型声明文件
         dts: true,
         // 自动导入相关函数的 eslint 配置
@@ -53,9 +50,7 @@ export default defineConfig(({ command, mode }) => {
       }),
       // 自动导入组件
       Components({
-        resolvers: [
-          VantResolver()
-        ],
+        resolvers: [VantResolver()],
         // TS 类型声明文件
         dts: true
       }),

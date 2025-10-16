@@ -126,7 +126,13 @@ export default [
   },
   {
     // 忽略特定目录
-    ignores: ['node_modules/', 'dist/', 'eslint.config.js', 'tailwind.config.js']
+    ignores: [
+      'node_modules/',
+      'dist/',
+      '*.config.js',
+      'auto-imports.d.ts',
+      'components.d.ts'
+    ]
   },
   // 先放 eslintConfigPrettier 关闭冲突规则
   eslintConfigPrettier,

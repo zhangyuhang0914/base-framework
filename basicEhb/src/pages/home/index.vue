@@ -1,6 +1,6 @@
 <template lang="pug">
   .home-container
-    h1 演示组件集合
+    h1(class='w-96 bg-gray-400') 演示组件集合
     .demo-section
       h2 HelloWorld 组件
     vanButton(type="primary" @click="toOtherPage") 跳转其他页面
@@ -15,7 +15,7 @@ const router = useRouter()
 // 获取统计数据
 const getCountDisplay = () => {
   countDisplay().then(res => {
-    console.log(res)
+    console.log('getCountDisplay', res)
   })
 }
 // 跳转其他页面
@@ -25,7 +25,7 @@ const toOtherPage = () => {
 onMounted(() => {
   // 调用鄂汇办SDK组件
   ehbAppJssdk.notice.showPreloader({
-    text: "使劲加载中.."
+    text: '使劲加载中..'
   })
   setTimeout(() => {
     ehbAppJssdk.notice.hidePreloader()

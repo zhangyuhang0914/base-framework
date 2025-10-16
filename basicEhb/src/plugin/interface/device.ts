@@ -5,7 +5,7 @@
 // 系统信息返回结果类型
 export interface SystemInfoResult {
   // 系统信息字段，根据实际返回结果补充
-  [key: string]: any;
+  [key: string]: any
 }
 // 获取网络类型选项类型
 export interface GetNetworkTypeOptions {
