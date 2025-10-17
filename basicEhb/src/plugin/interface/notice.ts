@@ -2,7 +2,12 @@
  * 鄂汇办通知组件类型定义
  */
 
-import type { ActionSheetOptions, ActionSheetMultiColumnsOptions, DatePickerOptions, LinkagePickerOptions } from './selector'
+import type {
+  ActionSheetOptions,
+  ActionSheetMultiColumnsOptions,
+  DatePickerOptions,
+  LinkagePickerOptions
+} from './selector'
 
 // Alert弹窗选项类型
 export interface AlertOptions {

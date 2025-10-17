@@ -1,6 +1,6 @@
 <template lang="pug">
   .home-container
-    h1(class='w-96 bg-gray-400') 演示组件集合
+    h1 演示组件集合
     .demo-section
       h2 HelloWorld 组件
     vanButton(type="primary" @click="toOtherPage") 跳转其他页面

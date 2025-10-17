@@ -57,7 +57,13 @@ export interface DatePickerOptions {
   // 最大范围
   maxDate: string
   // 成功的回调
-  success: (res: { year?: string; month?: string; day?: string; hour?: string; minute?: string }) => void
+  success: (res: {
+    year?: string
+    month?: string
+    day?: string
+    hour?: string
+    minute?: string
+  }) => void
 }
 // 三级联动选择器选项类型
 export interface LinkagePickerOptions {

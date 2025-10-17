@@ -34,7 +34,8 @@
       "@/store/*": ["src/store/*"],
       "@/pages/*": ["src/pages/*"],
       "@/utils/*": ["src/utils/*"]
-    }
+    },
+    "types": ["vue"]
   },
-  "include": ["src"]
+  "include": ["vite-env.d.ts", "src/**/*.vue", "src/**/*.ts", "src/**/*.tsx", "src/typings/*.d.ts"]
 }

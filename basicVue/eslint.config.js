@@ -19,7 +19,9 @@ export default [
         ...globals.es2022,
         ...globals.node,
         ...globals.jest,
-        ...globals.commonjs
+        ...globals.commonjs,
+        ehbAppJssdk: 'readonly',
+        AnyObject: 'readonly'
       }, // 定义支持的全局变量
       parser: tsParser, // 使用 TypeScript 解析器
       parserOptions: {
@@ -51,7 +53,7 @@ export default [
           semi: false,
           tabWidth: 2,
           singleQuote: true,
-          printWidth: 80,
+          printWidth: 100,
           bracketSpacing: true,
           arrowParens: 'avoid',
           endOfLine: 'lf',
@@ -78,9 +80,9 @@ export default [
     },
     plugins: {
       // Vue 推荐规则
-      'vue': vueEslint,
+      vue: vueEslint,
       // Pinia 状态管理
-      'pinia': piniaEslint,
+      pinia: piniaEslint,
     },
     rules: {
       // Vue 3 推荐规则
@@ -127,7 +129,7 @@ export default [
   {
     // 配置 TypeScript 相关的插件和规则
     plugins: {
-      files: ['**/*.ts', '**/*.tsx', '**/*.vue'],
+      files: ['**/*.ts', '**/*.tsx'],
       '@typescript-eslint': tseslint,
     },
     rules: {

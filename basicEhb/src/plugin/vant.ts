@@ -34,7 +34,12 @@ export const $message = {
 }
 
 // 全局确认框
-export const $confirm = (config: { title?: string; content: string; confirmButtonText?: string; cancelButtonText?: string }) => {
+export const $confirm = (config: {
+  title?: string
+  content: string
+  confirmButtonText?: string
+  cancelButtonText?: string
+}) => {
   return showDialog({
     title: config.title || '确认',
     message: config.content,

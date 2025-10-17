@@ -3,7 +3,8 @@
 const REGEXP = {
   CELLPHONE: /^0?(1[3-9][0-9]|0?85[23])[0-9]{8}$/, // 手机号码
   PHONE: /^([0-9]{3,4}(-\|)?)?[0-9]{7,8}$/, // 电话号
-  EMAIL: /^[a-z0-9A-Z]+([._\\-]*[a-z0-9A-Z])*@([a-z0-9A-Z]+[-a-z0-9A-Z]*[a-z0-9A-Z]+.){1,63}[a-z0-9A-Z]+$/, // 邮箱
+  EMAIL:
+    /^[a-z0-9A-Z]+([._\\-]*[a-z0-9A-Z])*@([a-z0-9A-Z]+[-a-z0-9A-Z]*[a-z0-9A-Z]+.){1,63}[a-z0-9A-Z]+$/, // 邮箱
   NUMBER: /^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/,
   PASSWORD: /^(?!.*\s)(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[,.#?!@$%^&*-]).{8,18}$/,
   INTEGER: /^\d+$/,
@@ -41,7 +42,8 @@ const _self = {
 
   isIntegerThree: (text: string, isTrim: boolean) => validate(text, REGEXP.INTEGER_THREE, isTrim),
 
-  isEmpty: (text: string) => (text === null || typeof text === 'undefined' ? true : !(text + '').trim()),
+  isEmpty: (text: string) =>
+    text === null || typeof text === 'undefined' ? true : !(text + '').trim(),
 
   isUrl: (text: string, isTrim: boolean) => validate(text, REGEXP.URL, isTrim),
 

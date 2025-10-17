@@ -19,7 +19,9 @@ export default [
         ...globals.es2022,
         ...globals.node,
         ...globals.jest,
-        ...globals.commonjs
+        ...globals.commonjs,
+        ehbAppJssdk: 'readonly',
+        AnyObject: 'readonly'
       }, // 定义支持的全局变量
       parser: tsParser, // 使用 TypeScript 解析器
       parserOptions: {
@@ -35,8 +37,35 @@ export default [
   },
   // 引入 JavaScript
   pluginJs.configs.recommended, // JavaScript 推荐规则
-  // Vue 3 相关配置
   ...vueEslint.configs['flat/recommended'],
+  {
+    // 作用于所有需要格式化的文件
+    files: ['**/*.vue', '**/*.js', '**/*.ts'],
+    plugins: {
+      // Prettier 插件
+      prettier: prettierPlugin
+    },
+    rules: {
+      'prettier/prettier': [
+        'error',
+        {
+          // 复制原 .prettierrc 的所有配置，确保规则统一
+          semi: false,
+          tabWidth: 2,
+          singleQuote: true,
+          printWidth: 100,
+          bracketSpacing: true,
+          arrowParens: 'avoid',
+          endOfLine: 'lf',
+          trailingComma: 'none',
+          useTabs: false,
+          htmlWhitespaceSensitivity: 'ignore',
+          embeddedLanguageFormatting: 'auto'
+        }
+      ]
+    }
+  },
+  // Vue 3 相关配置
   {
     // 配置 Vue.js 相关的插件和规则
     files: ['**/*.vue'],
@@ -51,11 +80,9 @@ export default [
     },
     plugins: {
       // Vue 推荐规则
-      'vue': vueEslint,
+      vue: vueEslint,
       // Pinia 状态管理
-      'pinia': piniaEslint,
-      // Prettier 插件
-      prettier: prettierPlugin,
+      pinia: piniaEslint,
     },
     rules: {
       // Vue 3 推荐规则
@@ -66,24 +93,20 @@ export default [
       'vue/no-multiple-template-root': 'off', // Vue 3 允许多个根节点
       // Pinia 相关规则
       'pinia/never-export-initialized-store': 'error', // 不要导出已初始化的 store
-      'pinia/prefer-single-store-per-file': 'warn', // 每个文件只有一个 store
-      'prettier/prettier': 'error' // 使用 Prettier 的规则，将格式问题报告为错误
+      'pinia/prefer-single-store-per-file': 'warn' // 每个文件只有一个 store
     }
   },
   {
     // 配置 JS/TS 文件的 Vue 相关规则
-    files: ['**/*.js', '**/*.ts'],
+    files: ['**/*.js', '**/*.ts', '**/*.vue'],
     plugins: {
       // Pinia 状态管理
-      'pinia': piniaEslint,
-      // Prettier 插件
-      prettier: prettierPlugin,
+      'pinia': piniaEslint
     },
     rules: {
       // Pinia 相关规则
       'pinia/never-export-initialized-store': 'error',
-      'pinia/prefer-single-store-per-file': 'warn',
-      'prettier/prettier': 'error'
+      'pinia/prefer-single-store-per-file': 'warn'
     }
   },
   {
@@ -106,7 +129,7 @@ export default [
   {
     // 配置 TypeScript 相关的插件和规则
     plugins: {
-      files: ['**/*.ts', '**/*.tsx', '**/*.vue'],
+      files: ['**/*.ts', '**/*.tsx'],
       '@typescript-eslint': tseslint,
     },
     rules: {
@@ -133,7 +156,8 @@ export default [
       'dist/',
       '*.config.js',
       'auto-imports.d.ts',
-      'components.d.ts'
+      'components.d.ts',
+      'public/static/privateEncrypt/*'
     ]
   },
   // 先放 eslintConfigPrettier 关闭冲突规则

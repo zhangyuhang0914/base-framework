@@ -6,14 +6,13 @@ import pug from 'vite-plugin-pug'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
+import { VantResolver } from 'unplugin-vue-components/resolvers'
+import basicSsl from '@vitejs/plugin-basic-ssl'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import legacy from '@vitejs/plugin-legacy'
 // 静态资源压缩
 import VitePluginCompression from 'vite-plugin-compression'
 import path from 'path'
-// 引入unocss
-import UnoCSS from '@unocss/vite'
 
 // @ts-ignore
 export default defineConfig(({ command, mode }) => {
@@ -27,8 +26,6 @@ export default defineConfig(({ command, mode }) => {
       VueSetupSettingExtend(),
       // pug 插件
       pug(),
-      // 引入unocss
-      UnoCSS(),
       // html 模板
       createHtmlPlugin({
         inject: {
@@ -43,13 +40,7 @@ export default defineConfig(({ command, mode }) => {
       }),
       // 自动导入相关函数
       AutoImport({
-        imports: [
-          'vue',
-          'vue-router',
-          {
-            'ant-design-vue': ['message', 'notification', 'Modal']
-          }
-        ],
+        imports: ['vue', 'vue-router'],
         // TS 类型声明文件
         dts: true,
         // 自动导入相关函数的 eslint 配置
@@ -59,11 +50,7 @@ export default defineConfig(({ command, mode }) => {
       }),
       // 自动导入组件
       Components({
-        resolvers: [
-          AntDesignVueResolver({
-            importStyle: false
-          })
-        ],
+        resolvers: [VantResolver()],
         // TS 类型声明文件
         dts: true
       }),
@@ -90,7 +77,9 @@ export default defineConfig(({ command, mode }) => {
         algorithm: 'gzip',
         // 压缩算法
         ext: '.gz'
-      })
+      }),
+      // 开启 HTTPS
+      basicSsl()
     ],
     // CSS 配置
     css: {
@@ -160,7 +149,7 @@ export default defineConfig(({ command, mode }) => {
     },
     // 优化配置
     optimizeDeps: {
-      include: ['vue', 'vue-router', 'ant-design-vue']
+      include: ['vue', 'vue-router', 'vant']
     },
     // 服务器配置
     server: {
@@ -168,21 +157,14 @@ export default defineConfig(({ command, mode }) => {
       port: viteEnvConf.VITE_PORT as unknown as number,
       open: viteEnvConf.VITE_OPEN, // 启动服务是否自动打开浏览器
       cors: viteEnvConf.VITE_CORE as unknown as boolean, // 跨域
+      // 启用 HTTPS
+      https: true,
       // 设置 http 代理
       proxy: {
-        '/baseServer': {
-          // target: 'https://jrb.hubei.gov.cn',
-          target: 'http://172.16.50.193:8087/baseServer',
-          // target: 'http://172.20.10.4:8087',
+        '/api': {
+          target: 'https://jrb.hubei.gov.cn/szxqyxyxx',
           changeOrigin: true,
           rewrite: path => path.replace(/^\/baseServer/, '')
-        },
-        '/fileServer': {
-          // target: 'https://jrb.hubei.gov.cn',
-          target: 'http://172.16.50.193:8087/fileServer',
-          // target: 'http://172.20.10.4:8087',
-          changeOrigin: true,
-          rewrite: path => path.replace(/^\/fileServer/, '')
         }
       }
     }
