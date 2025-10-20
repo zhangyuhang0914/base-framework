@@ -1,5 +1,5 @@
 import { type App } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import { nprogressDone } from '@/utils/nprogress'
 import { authGuard, setPageTitle } from '@/router/utils/authRouter'
 import routesConfig from './routes'
@@ -13,7 +13,7 @@ const routes: any = [...routesConfig]
 console.log('routes', routes)
 // 创建路由实例
 const router = createRouter({
-  history: createWebHistory(BASE_URL),
+  history: createWebHashHistory(BASE_URL),
   routes,
   scrollBehavior(to, from, savedPosition) {
     // 路由切换时的滚动行为

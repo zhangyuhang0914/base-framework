@@ -1,14 +1,16 @@
 <template lang="pug">
-  router-view(v-slot="{ Component }")
-    transition(name="fade" mode="out-in")
-      keep-alive(:include="cachedRoute")
-        component(:is="Component")
+  VanConfigProvider(:theme-vars="themeVars" theme-vars-scope="global")
+    router-view(v-slot="{ Component }")
+      transition(name="fade" mode="out-in")
+        keep-alive(:include="cachedRoute")
+          component(:is="Component")
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import { computed } from 'vue'
 import { useGlobalStoreHook } from '@/store/modules/global'
+import type { ConfigProviderThemeVars } from 'vant'
 export default defineComponent({
   name: 'Layout',
   setup() {
@@ -16,8 +18,11 @@ export default defineComponent({
     const cachedRoute = computed(() => {
       return globalStore?.cachedRoute ?? []
     })
+    // 配置vant主题
+    const themeVars: ConfigProviderThemeVars = reactive({})
     return {
-      cachedRoute
+      cachedRoute,
+      themeVars
     }
   }
 })

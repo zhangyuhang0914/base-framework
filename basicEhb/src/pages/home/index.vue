@@ -1,37 +1,37 @@
 <template lang="pug">
-  .home-container
-    h1 演示组件集合
-    .demo-section
-      h2 HelloWorld 组件
-    vanButton(type="primary" @click="toOtherPage") 跳转其他页面
+  .templatePage
+    vanImage(width="100%" height="308" :src="getImage('home.headerBoolean')")
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import { countDisplay } from '@/api/helper/common'
-import { onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { getImage } from '@/constants/images'
+import { defineComponent, onMounted } from 'vue'
 
-const router = useRouter()
-// 获取统计数据
-const getCountDisplay = () => {
-  countDisplay().then(res => {
-    console.log('getCountDisplay', res)
-  })
-}
-// 跳转其他页面
-const toOtherPage = () => {
-  router.push('/dispatch')
-}
-onMounted(() => {
-  // 调用鄂汇办SDK组件
-  ehbAppJssdk.notice.showPreloader({
-    text: '使劲加载中..'
-  })
-  setTimeout(() => {
-    ehbAppJssdk.notice.hidePreloader()
-  }, 3000)
-  // 获取统计数据
-  getCountDisplay()
+export default defineComponent({
+  name: 'Home',
+  setup() {
+    // 获取统计数据
+    const getCountDisplay = () => {
+      countDisplay().then(res => {
+        console.log('getCountDisplay', res)
+      })
+    }
+    onMounted(() => {
+      // 调用鄂汇办SDK组件
+      ehbAppJssdk.notice.showPreloader({
+        text: '使劲加载中..'
+      })
+      setTimeout(() => {
+        ehbAppJssdk.notice.hidePreloader()
+      }, 3000)
+      // 获取统计数据
+      getCountDisplay()
+    })
+    return {
+      getImage
+    }
+  }
 })
 </script>
 
