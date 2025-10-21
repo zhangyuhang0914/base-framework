@@ -1,7 +1,6 @@
 @use './reset.scss';
 @use './transition.scss';
 @use './global.scss';
-@use './globalMixins.scss';
 :root {
   font-weight: 400;
   font-synthesis: none;
@@ -59,19 +58,23 @@
   background: #ccc;
 }
 /* 修改placeholder默认样式 */
-::-webkit-input-placeholder { /* WebKit browsers */
-  color: #C4C6CF;
+::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: #c4c6cf;
   line-height: 40px;
 }
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-  color: #C4C6CF;
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #c4c6cf;
   line-height: 40px;
 }
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-  color: #C4C6CF;
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #c4c6cf;
   line-height: 40px;
 }
-:-ms-input-placeholder { /* Internet Explorer 10+ */
-  color: #C4C6CF;
+:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: #c4c6cf;
   line-height: 40px;
 }

@@ -91,7 +91,10 @@ export default defineConfig(({ command, mode }) => {
           // 启用现代API
           api: 'modern-compiler',
           // 每个引入scss文件时，自动引入公共样式（导出全局变量和 mixin）
-          additionalData: `@use "@/assets/css/components/theme.scss" as *;`,
+          additionalData: `
+            @use "@/assets/css/components/theme.scss" as *;
+            @use "@/assets/css/common/globalMixins.scss" as *;
+          `,
           // 静默特定弃用警告
           silenceDeprecations: ['legacy-js-api']
         }

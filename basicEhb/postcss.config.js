@@ -12,7 +12,7 @@ export default {
       grid: true,
     },
     'postcss-pxtorem': {
-      rootValue: 37.5,
+      rootValue: 75,
       // rootValue({ file }) {
       //   return file.indexOf('vant') !== -1 ? 37.5 : 75;
       // },

@@ -1,27 +1,14 @@
 :root {
   // 颜色
-  --color-default: #323639;
-  --color-primary: hsl(227.18deg 56.22% 54.31%);
-  --color-success: #4ac497;
-  --color-warning: #f1ac3b;
-  --color-error: #cf4444;
+  --color-default: #222222;
+  // 背景
+  --background-default: #fafafa;
   // 字体
-  --font-size-xs: 12px;
-  --font-size-small: 14px;
-  --font-size-base: 16px;
-  --font-size-large: 18px;
-  // 边框
-  --border-width: 1px;
-  --border-setting-width: 1px;
-  --border-setting-active-width: 2px;
-  --border-color-default: #e4e4e7;
+  --font-size-36: 36px;
   // 圆角
-  --border-radius-none: 0px;
-  --border-radius-xs: 2px;
-  --border-radius-sm: 6px;
-  --border-radius-md: 10px;
-  --border-radius-lg: 14px;
-  --border-radius-default: 6px;
+  --border-radius-none: 0;
+  --border-radius-20: 20px;
+  --border-radius-24: 24px;
   // gap间距
   --gap-small: 8px;
   --gap-base: 16px;
@@ -31,31 +18,14 @@
 
 // 颜色
 $colorDefault: var(--color-default);
-$colorPrimary: var(--color-primary);
-$colorSuccess: var(--color-success);
-$colorWarning: var(--color-warning);
-$colorError: var(--color-error);
-
+// 背景
+$backgroundDefault: var(--background-default);
 // 字体
-$xsFontSize: var(--font-size-xs);
-$smallFontSize: var(--font-size-small);
-$baseFontSize: var(--font-size-base);
-$largeFontSize: var(--font-size-large);
-
-// 边框
-$borderWidth: var(--border-width);
-$borderSettingWidth: var(--border-setting-width);
-$borderSettingActiveWidth: var(--border-setting-active-width);
-$borderColorDefault: var(--border-color-default);
-
+$FontSize36: var(--font-size-36);
 // 圆角
 $borderRadiusNone: var(--border-radius-none);
-$borderRadiusXS: var(--border-radius-xs);
-$borderRadiusSM: var(--border-radius-sm);
-$borderRadiusMD: var(--border-radius-md);
-$borderRadiusLG: var(--border-radius-lg);
-$borderRadiusDefault: var(--border-radius-default);
-
+$borderRadius20: var(--border-radius-20);
+$borderRadius24: var(--border-radius-24);
 // gap间距
 $gapXS: var(--gap-small);
 $gapSM: var(--gap-base);
