@@ -4,6 +4,7 @@
   // 背景
   --background-default: #fafafa;
   // 字体
+  --font-size-28: 28px;
   --font-size-36: 36px;
   // 圆角
   --border-radius-none: 0;
@@ -21,6 +22,7 @@ $colorDefault: var(--color-default);
 // 背景
 $backgroundDefault: var(--background-default);
 // 字体
+$FontSize28: var(--font-size-28);
 $FontSize36: var(--font-size-36);
 // 圆角
 $borderRadiusNone: var(--border-radius-none);
