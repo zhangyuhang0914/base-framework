@@ -1,15 +1,25 @@
 <template lang="pug">
-  .templatePage
-    vanImage(width="100%" height="308" :src="getImage('home.headerBoolean')")
+.pageWrapper
+  vanImage(width="100%" height="auto" :src="getImage('home.headerBoolean')" fit="contain")
+  .container
+    ItemCard(title="政务服务")
+    ItemCard(title="公共服务")
+    ItemCard(title="便民查询" showMore)
+    ItemCard(title="办事服务" showMore)
+    ItemCard(title="办事网点" showMore)
 </template>
 
 <script lang="ts">
+import { defineComponent, onMounted } from 'vue'
 import { countDisplay } from '@/api/helper/common'
 import { getImage } from '@/constants/images'
-import { defineComponent, onMounted } from 'vue'
+import ItemCard from '@/pages/home/components/itemCard/index.vue'
 
 export default defineComponent({
   name: 'Home',
+  components: {
+    ItemCard
+  },
   setup() {
     // 获取统计数据
     const getCountDisplay = () => {
@@ -24,7 +34,7 @@ export default defineComponent({
       })
       setTimeout(() => {
         ehbAppJssdk.notice.hidePreloader()
-      }, 3000)
+      }, 1500)
       // 获取统计数据
       getCountDisplay()
     })
@@ -36,27 +46,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.home-container {
-  padding: 20px;
-}
-
-h1 {
-  margin-bottom: 30px;
-  color: #1890ff;
-}
-
-demo-section {
-  margin-bottom: 40px;
-  padding: 20px;
-  border: 1px solid #e8e8e8;
-  border-radius: 4px;
-  background-color: #fff;
-}
-
-demo-section h2 {
-  margin-bottom: 16px;
-  color: #262626;
-  font-size: 18px;
-  font-weight: 500;
+.pageWrapper {
+  background: #eef5ff;
+  .container {
+    padding: 0 12px;
+  }
 }
 </style>

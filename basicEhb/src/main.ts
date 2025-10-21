@@ -6,6 +6,7 @@ import setupVant from '@/plugin/vant'
 import '@/assets/css/app.scss'
 import { getConf } from '@/utils/system'
 import 'vant/lib/index.css'
+import '@/utils/screenAdaptive/flexible'
 
 const app = createApp(App)
 
