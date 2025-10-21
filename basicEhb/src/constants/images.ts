@@ -4,7 +4,10 @@ const BASE_URL = getBaseUrlByService()
 
 const images = {
   home: {
-    headerBoolean: `${BASE_URL}static/images/home/headerBanner.png`
+    headerBoolean: `${BASE_URL}static/images/home/headerBanner.png`,
+    iconConvenientQuery: `${BASE_URL}static/images/home/iconConvenientQuery.png`,
+    iconService: `${BASE_URL}static/images/home/iconService.png`,
+    iconQuestion: `${BASE_URL}static/images/home/iconQuestion.png`
   },
   common: {
     defaultAvatar: `${BASE_URL}images/common/defaultAvatar.png`,

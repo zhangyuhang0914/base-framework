@@ -15,17 +15,6 @@ const mainRouter: AppRouteModule[] = [
       ignoreAuth: true,
       key: 'Home'
     }
-  },
-  {
-    path: '/dispatch',
-    name: 'Dispatch',
-    component: () => import('@/pages/dispatch/index.vue'),
-    meta: {
-      title: '调度页面',
-      keepAlive: true,
-      ignoreAuth: true,
-      key: 'Dispatch'
-    }
   }
 ]
 

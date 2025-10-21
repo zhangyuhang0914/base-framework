@@ -9,20 +9,35 @@ VanConfigProvider(:theme-vars="themeVars" theme-vars-scope="global")
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from 'vue'
+import { defineComponent, reactive, computed, watch } from 'vue'
 import CommonFooter from '@/pages/layout/components/footer.vue'
 import { useGlobalStoreHook } from '@/store/modules/global'
 import type { ConfigProviderThemeVars } from 'vant'
+import { useRoute } from 'vue-router'
 export default defineComponent({
   name: 'Layout',
   components: {
     CommonFooter
   },
   setup() {
+    const route = useRoute()
     const globalStore = useGlobalStoreHook()
     const cachedRoute = computed(() => {
       return globalStore?.cachedRoute ?? []
     })
+    watch(
+      () => route.fullPath,
+      () => {
+        const routeName: any = route.name ?? ''
+        // 缓存的路由
+        if (route.meta.keepAlive) {
+          globalStore.setCached(routeName)
+        }
+      },
+      {
+        immediate: true
+      }
+    )
     // 配置vant主题
     const themeVars: ConfigProviderThemeVars = reactive({})
     return {
