@@ -7,11 +7,11 @@ export interface NetworkRequestOptions {
   // 请求地址
   url: string
   // 请求方法
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
+  method: 'get' | 'post' | 'put' | 'delete' | 'patch'
   // 请求数据
   data: any
   // 请求头
-  header: Record<string, string>
+  headers: Record<string, string>
   // 是否需要token
   needToken: 'yes' | 'no'
   // 成功的回调

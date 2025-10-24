@@ -133,3 +133,10 @@ export interface ApiError {
 
 // HTTP 请求方法类型
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
+
+// 前端分页
+export interface PageType {
+  currentPage: number
+  pageSize: number
+  total: number
+}

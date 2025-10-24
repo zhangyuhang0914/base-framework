@@ -42,9 +42,9 @@ export default defineComponent({
     padding: 0 21px 0 30px;
     background: linear-gradient(90deg, #3d96e9, #5a75d0);
     border-radius: $borderRadius24 $borderRadius24 0 0;
-    @include flex-between;
+    @include flexBetween;
     .cardLeftMenu {
-      @include flex-align-center;
+      @include flexAlignCenter;
       .cardIcon {
         width: 8px;
         height: 24px;
@@ -53,14 +53,14 @@ export default defineComponent({
       }
       .cardTitle {
         padding-left: 20px;
-        font-size: $FontSize36;
+        font-size: $fontSize36;
         font-weight: 700;
         color: $colorWhite;
       }
     }
     .cardRightMore {
-      @include flex-align-center;
-      font-size: $FontSize28;
+      @include flexAlignCenter;
+      font-size: $fontSize28;
       color: $colorWhite;
     }
   }

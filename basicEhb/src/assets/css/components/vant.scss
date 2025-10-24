@@ -1,0 +1,32 @@
+// 步骤条组件
+.van-steps {
+  .van-steps__items {
+    .van-step::after {
+      border: none;
+    }
+  }
+}
+// 下拉刷新组件
+.van-pull-refresh {
+  .van-pull-refresh__track {
+    .van-pull-refresh__head {
+      .van-loading {
+        color: #0833b4;
+        .van-loading__text {
+          color: #0833b4;
+        }
+      }
+    }
+  }
+}
+// 列表组件
+.van-list {
+  .van-list__loading {
+    .van-loading {
+      color: #0833b4;
+      .van-loading__text {
+        color: #0833b4;
+      }
+    }
+  }
+}

@@ -2,32 +2,104 @@
   // 颜色
   --color-default: #222222;
   --color-white: #ffffff;
+  --color-black: #000000;
+  --color-link: #1759b5;
+  --color-info: #7b7b7b;
+  --color-empty: #5e9bff;
   // 背景
   --background-default: #fafafa;
+  --background-primary: #0833b4;
+  --background-info: #eef5ff;
   // 字体
+  --font-size-24: 24px;
+  --font-size-26: 26px;
   --font-size-28: 28px;
+  --font-size-30: 30px;
+  --font-size-32: 32px;
+  --font-size-34: 34px;
   --font-size-36: 36px;
+  // 行高
+  --line-height-36: 36px;
+  --line-height-38: 38px;
+  --line-height-40: 40px;
+  --line-height-42: 42px;
+  --line-height-46: 46px;
+  --line-height-60: 60px;
+  --line-height-72: 72px;
+  // 边框
+  --border-none: none;
+  --border-list-color: #eaeefa;
+  --border-list-divider-color: rgba(204, 204, 204, 0.3);
   // 圆角
   --border-radius-none: 0;
   --border-radius-4: 4px;
+  --border-radius-6: 6px;
+  --border-radius-8: 8px;
+  --border-radius-10: 10px;
+  --border-radius-16: 16px;
   --border-radius-20: 20px;
   --border-radius-24: 24px;
+  --border-radius-30: 30px;
+  --border-radius-36: 36px;
+  --border-radius-46: 46px;
+  --border-radius-circle: 50%;
   // gap间距
+  --gap-10: 10px;
+  --gap-16: 16px;
+  --gap-20: 20px;
+  --gap-28: 28px;
   --gap-30: 30px;
+  --gap-36: 36px;
 }
 
 // 颜色
 $colorDefault: var(--color-default);
 $colorWhite: var(--color-white);
+$colorBlack: var(--color-black);
+$colorLink: var(--color-link);
+$colorInfo: var(--color-info);
+$colorEmpty: var(--color-empty);
 // 背景
 $backgroundDefault: var(--background-default);
+$backgroundPrimary: var(--background-primary);
+$backgroundInfo: var(--background-info);
 // 字体
-$FontSize28: var(--font-size-28);
-$FontSize36: var(--font-size-36);
+$fontSize24: var(--font-size-24);
+$fontSize26: var(--font-size-26);
+$fontSize28: var(--font-size-28);
+$fontSize30: var(--font-size-30);
+$fontSize32: var(--font-size-32);
+$fontSize34: var(--font-size-34);
+$fontSize36: var(--font-size-36);
+// 行高
+$lineHeight36: var(--line-height-36);
+$lineHeight38: var(--line-height-38);
+$lineHeight40: var(--line-height-40);
+$lineHeight42: var(--line-height-42);
+$lineHeight46: var(--line-height-46);
+$lineHeight60: var(--line-height-60);
+$lineHeight72: var(--line-height-72);
+// 边框
+$borderNone: var(--border-none);
+$borderListColor: var(--border-list-color);
+$borderListDividerColor: var(--border-list-divider-color);
 // 圆角
 $borderRadiusNone: var(--border-radius-none);
 $borderRadius4: var(--border-radius-4);
+$borderRadius6: var(--border-radius-6);
+$borderRadius8: var(--border-radius-8);
+$borderRadius10: var(--border-radius-10);
+$borderRadius16: var(--border-radius-16);
 $borderRadius20: var(--border-radius-20);
 $borderRadius24: var(--border-radius-24);
+$borderRadius30: var(--border-radius-30);
+$borderRadius36: var(--border-radius-36);
+$borderRadius46: var(--border-radius-46);
+$borderRadiusCircle: var(--border-radius-circle);
 // gap间距
+$gap10: var(--gap-10);
+$gap16: var(--gap-16);
+$gap20: var(--gap-20);
+$gap28: var(--gap-28);
 $gap30: var(--gap-30);
+$gap36: var(--gap-36);

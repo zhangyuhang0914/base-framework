@@ -8,6 +8,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.noData {
+  padding: 50px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .ellipsis {
   width: 100%;
   overflow: hidden;

@@ -3,16 +3,37 @@ import { getBaseUrlByService } from '@/config/apiConfig'
 const BASE_URL = getBaseUrlByService()
 
 const images = {
+  common: {
+    iconMatter: `${BASE_URL}static/images/common/iconMatter.png`,
+    iconService: `${BASE_URL}static/images/common/iconService.png`,
+    iconFaults: `${BASE_URL}static/images/common/iconFaults.png`,
+    noData: `${BASE_URL}static/images/common/noData.png`,
+    nSearchData: `${BASE_URL}static/images/common/nSearchData.png`
+  },
   home: {
     headerBoolean: `${BASE_URL}static/images/home/headerBanner.png`,
     iconConvenientQuery: `${BASE_URL}static/images/home/iconConvenientQuery.png`,
     iconService: `${BASE_URL}static/images/home/iconService.png`,
-    iconQuestion: `${BASE_URL}static/images/home/iconQuestion.png`
+    iconQuestion: `${BASE_URL}static/images/home/iconQuestion.png`,
+    iconStandardization: `${BASE_URL}static/images/home/iconStandardization.png`,
+    iconGovernmentService: `${BASE_URL}static/images/home/iconGovernmentService.png`,
+    iconOutlets: `${BASE_URL}static/images/home/iconOutlets.png`,
+    iconFaults: `${BASE_URL}static/images/home/iconFaults.png`,
+    iconMaintenance: `${BASE_URL}static/images/home/iconMaintenance.png`
   },
-  common: {
-    defaultAvatar: `${BASE_URL}images/common/defaultAvatar.png`,
-    placeholder: `${BASE_URL}images/common/placeholder.png`,
-    errorImage: `${BASE_URL}images/common/errorImage.png`
+  governmentService: {
+    matterBanner: `${BASE_URL}static/images/governmentService/matterBanner.png`,
+    iconProgramProductionLicenseQuery: `${BASE_URL}static/images/governmentService/iconProgramProductionLicenseQuery.png`,
+    iconSatelliteProgramsLicenseQuery: `${BASE_URL}static/images/governmentService/iconSatelliteProgramsLicenseQuery.png`,
+    faultsLogo: `${BASE_URL}static/images/governmentService/faultsLogo.png`,
+    iconFaultsLine: `${BASE_URL}static/images/governmentService/iconFaultsLine.png`
+  },
+  commonService: {
+    iconOutletsRecommendation: `${BASE_URL}static/images/commonService/iconOutletsRecommendation.png`,
+    iconOutletsRoad: `${BASE_URL}static/images/commonService/iconOutletsRoad.png`
+  },
+  default: {
+    placeholder: `${BASE_URL}static/images/common/noData.png`
   }
 }
 
@@ -31,11 +52,11 @@ export const getImage = (name: ImageKeys): string => {
   for (const key of keys) {
     if (result[key] === undefined) {
       console.warn(`Image path not found: ${name}`)
-      return images.common.placeholder
+      return images.default.placeholder
     }
     result = result[key]
   }
-  return typeof result === 'string' ? result : images.common.placeholder
+  return typeof result === 'string' ? result : images.default.placeholder
 }
 
 // 直接导出图片对象

@@ -2,6 +2,18 @@
  * 鄂汇办窗口相关API类型定义
  */
 
+// 打便民服务选项类型
+export interface OpenServiceOptions {
+  // 业务办理项编码
+  id: string
+}
+
+// 打开办事事项选项类型
+export interface OpenMatterOptions {
+  // 业务办理项编码
+  transactCode: string
+}
+
 // 打开新页面选项类型
 export interface OpenOptions {
   // 标题
@@ -70,6 +82,10 @@ export interface JumpRootPageOptions {
 
 // 鄂汇办窗口接口类型定义
 export interface EhbAppOperateWindow {
+  // 打开便民服务
+  openService: (options: OpenServiceOptions) => void
+  // 打开办事事项
+  openMatter: (options: OpenMatterOptions) => void
   // 打开新页面
   open: (options: OpenOptions) => void
   // 获取上一个页面传递的参数

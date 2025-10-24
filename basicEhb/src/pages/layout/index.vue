@@ -5,20 +5,15 @@ VanConfigProvider(:theme-vars="themeVars" theme-vars-scope="global")
       transition(name="fade" mode="out-in")
         keep-alive(:include="cachedRoute")
           component(:is="Component")
-    CommonFooter
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, computed, watch } from 'vue'
-import CommonFooter from '@/pages/layout/components/footer.vue'
 import { useGlobalStoreHook } from '@/store/modules/global'
 import type { ConfigProviderThemeVars } from 'vant'
 import { useRoute } from 'vue-router'
 export default defineComponent({
   name: 'Layout',
-  components: {
-    CommonFooter
-  },
   setup() {
     const route = useRoute()
     const globalStore = useGlobalStoreHook()
@@ -39,7 +34,15 @@ export default defineComponent({
       }
     )
     // 配置vant主题
-    const themeVars: ConfigProviderThemeVars = reactive({})
+    const themeVars: ConfigProviderThemeVars = reactive({
+      // 搜索组件
+      searchInputHeight: '40px',
+      searchContentBackground: '#FFFFFF',
+      // 下拉刷新组件
+      pullRefreshHeadTextColor: '#0833B4',
+      // 列表组件
+      listTextColor: '#0833B4'
+    })
     return {
       cachedRoute,
       themeVars
@@ -51,15 +54,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 .van-config-provider {
   width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   .templatePage {
-    min-height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    // 如果希望子页面自动撑开，可以去掉这个flex布局
-    // 或者保持这样，让footer始终在底部
   }
 }
 </style>

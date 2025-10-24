@@ -12,6 +12,8 @@ declare global {
   // 扩展Window接口
   interface Window {
     ehbAppJssdk: EhbAppJssdk
+    // 天地图全局变量
+    T: any
   }
 }
 

@@ -11,7 +11,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 50px 0;
+  padding: 30px 0;
   .container {
     color: #9e9e9e;
   }
