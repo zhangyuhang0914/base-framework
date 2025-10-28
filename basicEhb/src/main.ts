@@ -5,6 +5,7 @@ import setupStore from '@/store'
 import setupVant from '@/plugin/vant'
 import '@/assets/css/app.scss'
 import { getConf } from '@/utils/system'
+import _ from 'lodash'
 import 'vant/lib/index.css'
 import '@/utils/screenAdaptive/flexible'
 
@@ -19,4 +20,6 @@ getConf(app).then(async () => {
   // Vant 配置
   setupVant(app)
   app.mount('#app')
+  // lodash全局配置
+  app.config.globalProperties.$lodash = _
 })

@@ -5,6 +5,7 @@ vanSearch.customSearch(
   :placeholder="placeholder"
   :shape="shape"
   autocomplete="off"
+  @keydown="handleKeydown"
 )
   template(#right-icon)
     .divider
@@ -12,7 +13,8 @@ vanSearch.customSearch(
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, onUnmounted, ref } from 'vue'
+import { debounce } from 'lodash'
 
 export default defineComponent({
   name: 'SearchInput',
@@ -44,13 +46,25 @@ export default defineComponent({
         mapSearch: props.isMap
       }
     })
+    const debouncedSearch = debounce((value: string) => {
+      emit('select', value)
+    }, 300)
     const handleSelect = () => {
-      emit('select', wordKey.value)
+      debouncedSearch(wordKey.value)
     }
+    const handleKeydown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        debouncedSearch(wordKey.value)
+      }
+    }
+    onUnmounted(() => {
+      debouncedSearch.cancel()
+    })
     return {
       wordKey,
       searchClass,
-      handleSelect
+      handleSelect,
+      handleKeydown
     }
   }
 })

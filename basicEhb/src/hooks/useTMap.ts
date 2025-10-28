@@ -1,18 +1,24 @@
 import type { TMapOptions } from '@/hooks/interface/useTMap'
+import { MapSearch } from '@/hooks/mapModules/mapSearch'
 import { ref, onMounted, onUnmounted } from 'vue'
 
 export function useTMap(options: TMapOptions = {}) {
+  // 地图核心状态
   // 地图实例
   const mapInstance = ref<any>(null)
   // 容器
   const mapContainer = ref<HTMLElement | null>(null)
   const isLoaded = ref(false)
   const isInitializing = ref(false)
+  // 记录所有标记
+  const markers = ref<any[]>([])
   // 默认坐标：湖北省广播电视管理局
   const defaultCenter = {
     lng: 114.354542,
     lat: 30.569506
   }
+  // 功能类实例
+  const searchModule = ref<MapSearch | null>(null)
   // 初始化地图
   const initMap = () => {
     if (isInitializing.value) return
@@ -26,25 +32,19 @@ export function useTMap(options: TMapOptions = {}) {
     }
     isInitializing.value = true
     try {
-      if (mapContainer.value) {
-        mapContainer.value.innerHTML = ''
-      }
-      // 使用传入的坐标或默认坐标
+      mapContainer.value.innerHTML = ''
       const centerLng = options.lng || defaultCenter.lng
       const centerLat = options.lat || defaultCenter.lat
       // 创建地图实例
       mapInstance.value = new window.T.Map(mapContainer.value, {
-        // 使用经纬度坐标系
         projection: 'EPSG:4326',
-        // 空数组，不显示任何默认工具控件
         controls: [],
-        // 默认缩放级别
         zoom: 16
       })
-      // 设置地图中心点和缩放级别
       mapInstance.value.centerAndZoom(new window.T.LngLat(centerLng, centerLat), 16)
-      // 去除水印版权信息
       removeCopyright()
+      // 初始化功能类
+      searchModule.value = new MapSearch(mapInstance.value)
       isLoaded.value = true
       isInitializing.value = false
     } catch (error) {
@@ -55,15 +55,23 @@ export function useTMap(options: TMapOptions = {}) {
   }
   // 添加标记点
   const addMarker = (lng: number, lat: number, title: string = '') => {
-    if (!mapInstance.value || !window.T) return
+    if (!mapInstance.value || !window.T) return null
     const marker = new window.T.Marker(new window.T.LngLat(lng, lat))
     mapInstance.value.addOverLay(marker)
+    markers.value.push(marker) // 记录标记
     if (title) {
       const infoWindow = new window.T.InfoWindow()
       infoWindow.setContent(title)
       marker.openInfoWindow(infoWindow)
     }
     return marker
+  }
+  // 清除所有标记
+  const clearMarkers = () => {
+    markers.value.forEach(marker => {
+      mapInstance.value?.removeOverLay(marker)
+    })
+    markers.value = []
   }
   // 添加地图控件
   const addControls = () => {
@@ -103,7 +111,8 @@ export function useTMap(options: TMapOptions = {}) {
         return
       }
       let checkCount = 0
-      const maxCheckCount = 50 // 最多检查5秒
+      // 最多检查5秒
+      const maxCheckCount = 50
       const checkInterval = setInterval(() => {
         checkCount++
         if (window.T) {
@@ -119,6 +128,7 @@ export function useTMap(options: TMapOptions = {}) {
   }
   // 安全销毁地图
   const safeDestroyMap = () => {
+    clearMarkers() // 先清除标记
     if (mapInstance.value) {
       try {
         // 检查是否存在 destroy 方法
@@ -154,11 +164,13 @@ export function useTMap(options: TMapOptions = {}) {
     mapInstance,
     mapContainer,
     isLoaded,
-    initMap,
-    reloadMap,
-    safeDestroyMap,
+    // 核心方法
     addMarker,
     addControls,
-    updateCenter
+    clearMarkers,
+    updateCenter,
+    reloadMap,
+    // 功能模块
+    searchModule
   }
 }

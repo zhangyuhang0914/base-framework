@@ -120,7 +120,7 @@ export interface EhbAppNotice {
   // 隐藏加载弹窗
   hidePreloader: () => void
   // 弱提示
-  toast: (text: string) => void
+  toast: (options?: { text: string }) => void
   // 内容弹框
   contentPopup: (options: ContentPopupOptions) => void
   // 检查新版本

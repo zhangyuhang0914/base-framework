@@ -14,13 +14,9 @@
           .outletsRecommendation(v-if="outletsList.length")
             VanImage(width="18" height="auto" :src="getImage('commonService.iconOutletsRecommendation')" fit="contain")
             span {{ '推荐' }}
-          .filterItem(@click="showFilter('area')")
+          .filterItem(@click="showFilter")
             .filterText {{ '全部区域' }}
             ChevronUp(v-if="showAreaFilter" size="20" color="#222222")
-            ChevronDown(v-else size="20" color="#222222")
-          .filterItem(@click="showFilter('sort')")
-            .filterText {{ '默认排序' }}
-            ChevronUp(v-if="showSortFilter" size="20" color="#222222")
             ChevronDown(v-else size="20" color="#222222")
       .listContainer(:style="{ height: containerHeight + 'px' }")
         ScrollList(
@@ -33,14 +29,14 @@
         )
           template(#list)
             VanCellGroup.listContentWrapper(v-if="outletsList.length")
-              VanCell.listItemCard(v-for="(item, index) in outletsList" :key="item.id + '_' + index" insert center @click="handleGoAddress")
+              VanCell.listItemCard(v-for="(item, index) in outletsList" :key="item.id + '_' + index" insert center @click="handleGoAddress(item)")
                 template(#title)
-                  .titleText {{ item.name || '' }}
+                  .titleText {{ item.name }}
                 template(#label)
                   .locationInfo
-                    .cardDistance {{ item.distance || '' }}
+                    .cardDistance {{ item.distance || '未知距离' }}
                     .divider {{ '|'  }}
-                    .cardAddress {{ item.address || '' }}
+                    .cardAddress {{ item.address }}
                 template(#right-icon)
                   .cardRoadSign
                     VanImage(width="28" height="auto" :src="getImage('commonService.iconOutletsRoad')" fit="contain")
@@ -68,8 +64,9 @@ import type { PageType } from '@/common/interface/http'
 import type { ActionSheetOptions } from '@/plugin/interface/selector'
 import { getBase64AreaCode } from '@/api/helper/common'
 import type { Base64AreaCodeParams } from '@/api/interface/common'
+import type { PoiItem } from '@/hooks/interface/useTMap'
+import { useTMap } from '@/hooks/useTMap'
 
-type FilterType = 'area' | 'sort'
 export default defineComponent({
   name: 'ServiceOutlets',
   components: {
@@ -106,11 +103,19 @@ export default defineComponent({
     })
     // 筛选弹窗
     const showAreaFilter = ref(false)
-    const showSortFilter = ref(false)
     // 区域列表
     const areaList = ref<any[]>([])
     // 网点列表
     const outletsList = ref<any[]>([])
+    const {
+      mapContainer,
+      isLoaded,
+      searchModule,
+      addMarker,
+      clearMarkers,
+      updateCenter,
+      reloadMap
+    } = useTMap()
     // 监听窗口 resize，适配设备高度变化
     const handleResize = () => {
       pageHeight.value = window.innerHeight
@@ -143,41 +148,26 @@ export default defineComponent({
         containerHeight.value = maxHeight
       }
     }
-    // 根元素触摸移动
-    const handleRootTouchMove = (e: TouchEvent) => {
-      // 仅允许列表和拖拽区域的滚动/伸缩事件，阻止其他区域触发页面滚动
-      const target = e.target as HTMLElement
-      // 判断目标元素是否为可交互区域（列表或拖拽指示器）
-      const isAllowScroll = target.closest('.van-scroll__wrap') || target.closest('.dragIndicator')
-      if (!isAllowScroll) {
-        e.preventDefault()
-        e.stopPropagation()
-      }
-    }
     // 筛选弹窗显示
-    const showFilter = (type: FilterType) => {
-      if (type === 'area') {
-        showAreaFilter.value = !showAreaFilter.value
-        if (showAreaFilter.value) {
-          const params: ActionSheetOptions = {
-            title: '区域选择',
-            cancelButton: '取消',
-            otherButtons: areaList.value.map(item => item.name),
-            success: res => {
-              if (res.buttonIndex === '-1') {
-                // 取消
-              } else {
-                // 筛选该区域数据
-              }
-              showAreaFilter.value = !showAreaFilter.value
+    const showFilter = () => {
+      showAreaFilter.value = !showAreaFilter.value
+      if (showAreaFilter.value) {
+        const params: ActionSheetOptions = {
+          title: '区域选择',
+          cancelButton: '取消',
+          otherButtons: areaList.value.map(item => item.name),
+          success: res => {
+            if (res.buttonIndex === '-1') {
+              // 取消
+            } else {
+              // 筛选该区域数据
             }
           }
-          ehbAppJssdk.notice.actionSheet(params)
         }
-      } else {
-        showSortFilter.value = !showSortFilter.value
+        ehbAppJssdk.notice.actionSheet(params)
       }
     }
+    // 获取区域列表
     const getAreaList = async () => {
       window.ehbAppJssdk.notice.showPreloader({
         text: '使劲加载中..'
@@ -201,44 +191,37 @@ export default defineComponent({
         window.ehbAppJssdk.notice.hidePreloader()
       }
     }
-    // 模拟数据初始化（确保无数据时也能测试滑动）
-    const initMockData = () => {
-      const data = []
-      for (let i = 0; i < page.total; i++) {
-        data.push({
-          id: i + 1,
-          name: `中北路营业厅 ${i + 1}`,
-          address: `胜利街 ${i + 100} 号`,
-          distance: (Math.random() * 5).toFixed(1) + 'km'
-        })
-      }
-      return data
-    }
     // 获取列表数据
     const getList = () => {
-      pullUp.value = pullDown.value ? false : true
-      setTimeout(() => {
-        try {
-          const allData = initMockData()
-          const startIndex = (page.currentPage - 1) * page.pageSize
-          const endIndex = startIndex + page.pageSize
-          const currentPageData = allData.slice(startIndex, endIndex)
-          if (pullDown.value) {
-            outletsList.value = currentPageData
-            pullDown.value = false
-            nextTick(() => {
-              scrollerRef.value && scrollerRef.value.checkPosition()
-            })
-          } else {
-            outletsList.value = [...outletsList.value, ...currentPageData]
-            pullUp.value = false
-          }
-          pullUpFinish.value = endIndex >= allData.length
-        } catch (error) {
+      console.log('11111111111', searchModule.value?.hasResults(), searchModule.value?.getResults())
+      if (searchModule.value && searchModule.value.hasResults()) {
+        pullUp.value = !pullDown.value
+        const searchResults = searchModule.value.getResults()
+        if (pullDown.value) {
+          // 下拉刷新：回到第一页
+          const firstPageData = searchModule.value.getResults(1)
+          outletsList.value = firstPageData.pois
           pullDown.value = false
+          nextTick(() => {
+            scrollerRef.value && scrollerRef.value.checkPosition()
+          })
+        } else if (pullUp.value) {
+          // 上拉加载：获取下一页
+          const nextPage = searchResults.currentPage + 1
+          if (nextPage <= searchResults.totalPage) {
+            const success = searchModule.value.switchPage(nextPage)
+            if (success) {
+              const nextPageData = searchModule.value.getResults(nextPage)
+              outletsList.value = [...outletsList.value, ...nextPageData.pois]
+            }
+          }
           pullUp.value = false
+          pullUpFinish.value = searchResults.currentPage >= searchResults.totalPage
         }
-      }, 1000)
+      } else {
+        pullDown.value = false
+        pullUp.value = false
+      }
     }
     // 下拉刷新
     const handleRefresh = () => {
@@ -254,16 +237,25 @@ export default defineComponent({
       page.currentPage++
       getList()
     }
-    const handleGoAddress = () => {
-      ehbAppJssdk.map.getLocation({
-        success: res => {
-          ehbAppJssdk.map.openMap({
-            destination: '湖北省广播电视管理局',
-            longitude: 114.354542,
-            latitude: 30.569506
-          })
-        }
+    const handleGoAddress = (item: PoiItem) => {
+      // 解析坐标
+      const [lngStr, latStr] = item.lonlat.split(',')
+      const longitude = Number(lngStr)
+      const latitude = Number(latStr)
+      ehbAppJssdk.map.openMap({
+        destination: item.name,
+        longitude: longitude,
+        latitude: latitude
       })
+      // ehbAppJssdk.map.getLocation({
+      //   success: res => {
+      //     ehbAppJssdk.map.openMap({
+      //       destination: '湖北省广播电视管理局',
+      //       longitude: 114.354542,
+      //       latitude: 30.569506
+      //     })
+      //   }
+      // })
     }
     onMounted(() => {
       // 获取区域列表
@@ -276,11 +268,9 @@ export default defineComponent({
         containerHeight.value = minHeight
       })
       window.addEventListener('resize', handleResize)
-      // window.addEventListener('touchmove', handleRootTouchMove, { passive: false })
     })
     onUnmounted(() => {
       window.removeEventListener('resize', handleResize)
-      // window.removeEventListener('touchmove', handleRootTouchMove)
     })
     return {
       pageWrapperRef,
@@ -291,7 +281,6 @@ export default defineComponent({
       pullUpFinish,
       outletsList,
       showAreaFilter,
-      showSortFilter,
       getImage,
       handleTouchStart,
       handleTouchMove,
@@ -307,13 +296,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .pageWrapper {
-  position: relative;
   height: 100vh;
   width: 100%;
-  overflow: hidden !important;
+  overflow: hidden;
   @include flexColumn;
-  // 根元素彻底禁用滚动溢出
-  overscroll-behavior: none;
+  position: relative;
   .mapT {
     height: 60%;
     position: relative;
@@ -377,10 +364,6 @@ export default defineComponent({
       .listContainer {
         overflow: hidden;
         transition: height 0.1s ease-out;
-        :deep(.van-scroll__wrap) {
-          height: 100%;
-          overflow-y: auto;
-        }
         .scrollList {
           padding: 0 0 24px 0;
         }

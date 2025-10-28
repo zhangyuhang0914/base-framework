@@ -5,20 +5,24 @@
 // 获取位置信息选项类型
 export interface GetLocationOptions {
   // 成功的回调，返回值string类型
-  success: (res: {
-    // 定位信息
-    address: string
-    // 省份
-    province: string
-    // 市
-    city: string
-    // 区
-    district: string
-    // 经度
-    longitude: number
-    // 纬度
-    latitude: number
-  }) => void
+  success: (res: string) => void
+}
+// 获取位置信息成功结果类型
+export interface GetLocationSuccessResult {
+  // 定位信息
+  address: string
+  // 区划编码
+  areaCode: string
+  // 省份
+  province: string
+  // 市
+  city: string
+  // 区
+  district: string
+  // 经度
+  longitude: number
+  // 纬度
+  latitude: number
 }
 // 地图/导航选项类型
 export interface OpenMapOptions {
