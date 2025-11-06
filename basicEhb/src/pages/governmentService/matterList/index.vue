@@ -18,7 +18,7 @@
           )
             .topCard
               VanImage.iconWrapper(width="42" height="auto" :src="item.icon" fit="contain")
-              .cardTitle {{ `${item.title}_${index}` }}
+              .cardTitle {{ item.name }}
             .bottomCard
               .scopeApplication {{ '服务适用范围：湖北省' }}
               .cardRightMore(@click="handleItemClick(item)")
@@ -64,17 +64,22 @@ export default defineComponent({
     const allMockData = ref<any[]>([])
     // 初始化模拟数据
     const initMockData = () => {
-      const data = []
-      for (let i = 0; i < page.total; i++) {
-        data.push({
-          id: i + 1,
-          title: '广播节目制作经营许可证查询',
+      allMockData.value = [
+        {
+          id: 1,
+          name: '广播电视节目制作经营许可证查询',
           icon: getImage('governmentService.iconProgramProductionLicenseQuery'),
           type: 'service',
-          serviceId: '122619'
-        })
-      }
-      allMockData.value = data
+          serviceId: '102780'
+        },
+        {
+          id: 2,
+          name: '接收卫星传送的境外电视节目许可证查询',
+          icon: getImage('governmentService.iconSatelliteProgramsLicenseQuery'),
+          type: 'service',
+          serviceId: '102800'
+        }
+      ]
     }
     // 初始化数据
     const initData = () => {
@@ -99,12 +104,12 @@ export default defineComponent({
           const endIndex = startIndex + page.pageSize
           // 获取当前页的数据
           const currentPageData = allMockData.value.slice(startIndex, endIndex)
-          console.log(`第${page.currentPage}页数据:`, {
-            startIndex,
-            endIndex,
-            dataLength: currentPageData.length,
-            totalData: allMockData.value.length
-          })
+          // console.log(`第${page.currentPage}页数据:`, {
+          //   startIndex,
+          //   endIndex,
+          //   dataLength: currentPageData.length,
+          //   totalData: allMockData.value.length
+          // })
           if (pullDown.value) {
             // 下拉刷新：重置数据
             matterList.value = currentPageData
@@ -120,14 +125,14 @@ export default defineComponent({
           nextTick(() => {
             scrollerRef.value && scrollerRef.value.checkPosition()
           })
-          console.log('分页状态:', {
-            currentPage: page.currentPage,
-            pageSize: page.pageSize,
-            currentDataLength: matterList.value.length,
-            totalData: allMockData.value.length,
-            hasMoreData,
-            pullUpFinish: pullUpFinish.value
-          })
+          // console.log('分页状态:', {
+          //   currentPage: page.currentPage,
+          //   pageSize: page.pageSize,
+          //   currentDataLength: matterList.value.length,
+          //   totalData: allMockData.value.length,
+          //   hasMoreData,
+          //   pullUpFinish: pullUpFinish.value
+          // })
         } catch (error) {
           pullDown.value = false
           pullUp.value = false

@@ -126,7 +126,7 @@ export class Request {
     if (data.code !== undefined && data.code !== 200 && data.code !== 0) {
       const error: ApiError = {
         code: data.code,
-        message: data.message || '请求失败，请联系管理员',
+        message: data.msg || data.bz || '请求失败，请联系管理员',
         url: method.url,
         method: method.type.toUpperCase() as any,
         timestamp: Date.now()

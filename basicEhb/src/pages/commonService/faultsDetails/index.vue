@@ -2,35 +2,42 @@
 .pageWrapper
   .faultsInfo
     VanImage.imageLogo(width="63" height="auto" :src="getImage('governmentService.faultsLogo')" fit="contain")
-    .title {{ faultsInfo.title }}
-    .describe {{ faultsInfo.describe }}
+    .iHeader
+      VanImage.iconQuestion(width="40" height="40" :src="getImage('common.iconQuestion')" fit="contain")
+      .title {{ faultsInfo.title }}
     .connectLine
       VanImage.leftIcon(width="20" height="50" :src="getImage('governmentService.iconFaultsLine')" fit="contain")
       VanImage.rightIcon(width="20" height="50" :src="getImage('governmentService.iconFaultsLine')" fit="contain")
   .faultsSteps
-    .stepTitle {{ '解决步骤' }}
-    VanSteps.steps(direction="vertical")
-      VanStep(v-for="(item, index) in faultsInfo.steps" :key="index")
-        template(#active-icon)
-          .iconCircle
-        template(#inactive-icon)
-          .iconCircle
-        template(#default)
-          .stepIndex {{ getStepText(index) }}
-          .stepName {{ item.describe }}
+    .stepTitle
+      VanImage.leftIcon(width="12" height="20" :src="getImage('common.iconFaults')" fit="contain")
+      .title {{ '自助排障' }}
+    .stepsContent
+      .describe(v-html="faultsInfo.describe")
+      .tips {{ '*如仍无法解决问题，请及时进行故障报修。' }}
+    //- VanSteps.steps(direction="vertical")
+    //-   VanStep(v-for="(item, index) in faultsInfo.steps" :key="index")
+    //-     template(#active-icon)
+    //-       .iconCircle
+    //-     template(#inactive-icon)
+    //-       .iconCircle
+    //-     template(#default)
+    //-       .stepIndex {{ getStepText(index) }}
+    //-       .stepName {{ item.describe }}
     .contactCustomerService
-      VanButton.oBtn(@click="callPhone") {{ '未解决，联系客服' }}
+      VanButton.oBtn(@click="handleMaintain") {{ '未解决，我要报修' }}
 </template>
 
 <script lang="ts">
 import { getImage } from '@/constants/images'
 import { defineComponent, onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'FaultsDetails',
   setup() {
     const route = useRoute()
+    const router = useRouter()
     const id = ref(route.query.id)
     const faultsInfo = ref({})
     const chineseNumbers = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
@@ -38,8 +45,8 @@ export default defineComponent({
     const getDetailInfo = () => {
       faultsInfo.value = {
         id: id.value,
-        title: '若出现“没有授权”或“未购买此节目”提示',
-        describe: '电视画面提示“没有授权”或“未购买此节目”电视画面提示“没有授权”或“未购买此节目”。',
+        title: '无线对讲系统设备中继台在安装调试过程中容易出现的问题以及解决方法?',
+        describe: `<div data-v-9cd345ad="" style="padding-bottom: 20px;">1、重新规划天线位置：检查中继台的天线安装位置，确保其位置合适，能够最大程度地覆盖到需要的区域。</div><div data-v-9cd345ad="" style="padding-bottom: 20px;">2、增加天线增益：如条件允许，可考虑更换天线或增加天线的增益，以提高信号覆盖范围。</div><div data-v-9cd345ad="" style="padding-bottom: 20px;">3、调整频率和功率：对中继台进行频率和功率的调整，使其能够更好地覆盖到需要的区域。</div>`,
         steps: [
           {
             describe:
@@ -63,12 +70,26 @@ export default defineComponent({
       }
       return `第${chineseNumbers[index]}步`
     }
+    // 我要报修
+    const handleMaintain = () => {
+      router.push({
+        name: 'MaintenanceApply'
+      })
+    }
     // 打电话
     const callPhone = () => {
-      ehbAppJssdk.device.call({
-        phone: '17607158394',
-        success: () => {
-          console.log('callPhone')
+      ehbAppJssdk.notice.confirm({
+        title: '提示',
+        message: '是否拨打客服热线？',
+        buttonLabels: ['取消', '拨打'],
+        success: result => {
+          const resultData = JSON.parse(result)
+          if (resultData.buttonIndex === 1) {
+            ehbAppJssdk.device.call({
+              phone: '17607158394',
+              success: () => {}
+            })
+          }
         }
       })
     }
@@ -79,7 +100,8 @@ export default defineComponent({
       faultsInfo,
       getImage,
       getStepText,
-      callPhone
+      callPhone,
+      handleMaintain
     }
   }
 })
@@ -90,7 +112,7 @@ export default defineComponent({
   flex: 1;
   height: 100%;
   padding: 30px;
-  background: $backgroundInfo;
+  background: $backgroundDefault;
   @include flexColumn;
   gap: $gap20;
   .faultsInfo {
@@ -100,32 +122,14 @@ export default defineComponent({
     border-radius: $borderRadius24;
     @include flexColumnCenter;
     gap: $gap10;
-    .title {
-      padding: 12px 0;
-      font-size: $fontSize32;
-      font-weight: 700;
-      line-height: $lineHeight40;
-    }
-    .describe {
-      position: relative;
-      padding: 20px;
-      font-size: $fontSize26;
-      font-weight: 700;
-      line-height: $lineHeight38;
-      background: #deebfb;
-      border-radius: $borderRadius10;
-      color: #4c5f99;
-      text-align: justify;
-    }
-    .describe::before {
-      content: '';
-      position: absolute;
-      top: -16px;
-      left: 6.5%;
-      border-width: 0 12px 20px 12px;
-      border-style: solid;
-      border-color: transparent transparent #deebfb transparent;
-      transform: translate(0, -1px);
+    .iHeader {
+      @include flexAlignStart;
+      .title {
+        padding: 12px 24px;
+        font-size: $fontSize30;
+        font-weight: 700;
+        line-height: $lineHeight40;
+      }
     }
     .connectLine {
       position: absolute;
@@ -142,9 +146,29 @@ export default defineComponent({
     background: $colorWhite;
     border-radius: $borderRadius24;
     .stepTitle {
-      font-size: $fontSize36;
+      @include flexJustifyStart;
+      .title {
+        padding: 0 12px;
+        font-size: $fontSize36;
+        font-weight: 700;
+        color: $colorDefault;
+      }
+    }
+    .stepsContent {
+      position: relative;
+      margin: 24px 0;
+      padding: 30px;
+      font-size: $fontSize26;
       font-weight: 700;
-      color: $colorDefault;
+      line-height: $lineHeight38;
+      background: #f0f7ff;
+      border-radius: $borderRadius10;
+      text-align: justify;
+      .tips {
+        padding-top: 12px;
+        font-size: $fontSize24;
+        color: #248efe;
+      }
     }
     .steps {
       :deep(.van-steps__items) {

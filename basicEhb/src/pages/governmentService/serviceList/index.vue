@@ -1,7 +1,7 @@
 <template lang="pug">
 .pageWrapper
   .pageHeader
-    SearchInput(showSearchIcon)
+    SearchInput(showSearchIcon @select="onSelect")
     HotSearch
   .pageContent
     ScrollList(
@@ -20,7 +20,7 @@
           )
             VanCell(inset center)
               template(#title)
-                span.cardTitle {{ item.name }}
+                span.cardTitle {{ item.ITEM_NAME }}
               template(#right-icon)
                 VanTag.cardTag(
                   color="linear-gradient(95deg, #FEAD7D, #FE8947)" 
@@ -39,6 +39,8 @@ import ScrollList from '@/components/scrollList/index.vue'
 import NoData from '@/components/noData/index.vue'
 import RegionSelect from '@/components/regionSelect/index.vue'
 import type { PageType } from '@/common/interface/http'
+import { itemInfosEhbList } from '@/api/helper/commonService'
+import type { ItemInfosEhbItem } from '@/api/interface/commonService'
 
 export default defineComponent({
   name: 'ServiceList',
@@ -50,6 +52,7 @@ export default defineComponent({
     RegionSelect
   },
   setup() {
+    const keyword = ref('')
     const scrollerRef = ref()
     // 下拉加载状态
     const pullDown = ref(false)
@@ -57,46 +60,17 @@ export default defineComponent({
     const pullUp = ref(false)
     // 是否已加载完成，加载完成后不再触发 load 事件
     const pullUpFinish = ref(false)
-    const serviceList = ref<any[]>([])
+    const serviceList = ref<ItemInfosEhbItem[]>([])
     const page = reactive<PageType>({
       currentPage: 1,
       pageSize: 5,
       total: 20
     })
     const regionSelectRef = ref()
-    // 模拟数据源
-    const allMockData = ref<any[]>([])
-    const initMockData = () => {
-      const baseData: any[] = [
-        { id: 1, name: '机关事业单位', type: 'service', serviceId: '122619' },
-        {
-          id: 2,
-          name: '【省集中企保系统】灵活就业养老保险暂停',
-          type: 'matter',
-          serviceId: 'F9DE4A9799E'
-        },
-        {
-          id: 3,
-          name: '【省集中企保系统】灵活就业养老保险新增/续保',
-          type: 'matter',
-          serviceId: 'CDB71CCDE5FD'
-        }
-      ]
-      // 模拟分页数据（动态生成更多数据）
-      const startIndex = (page.currentPage - 1) * page.pageSize
-      const dynamicData: any[] = Array.from({ length: 15 }, (_, i) => ({
-        id: startIndex + i + 4,
-        name: `服务项目 ${startIndex + i + 4}`,
-        type: i % 2 === 0 ? 'service' : 'matter',
-        serviceId: `SERVICE_${startIndex + i + 4}`
-      }))
-      allMockData.value = [...baseData, ...dynamicData]
-    }
     // 初始化数据
     const initData = () => {
       page.currentPage = 1
       pullUpFinish.value = false
-      initMockData()
       getList()
       nextTick(() => {
         if (scrollerRef.value && scrollerRef.value.vanScrollBox) {
@@ -104,51 +78,49 @@ export default defineComponent({
         }
       })
     }
-    // 获取列表（
+    // 获取列表
     const getList = () => {
       // 下拉刷新时，根据下拉状态判断是否开启上拉加载状态
       pullUp.value = pullDown.value ? false : true
-      setTimeout(() => {
-        try {
-          // 计算当前页的数据范围
-          const startIndex = (page.currentPage - 1) * page.pageSize
-          const endIndex = startIndex + page.pageSize
-          // 获取当前页的数据
-          const currentPageData = allMockData.value.slice(startIndex, endIndex)
-          console.log(`第${page.currentPage}页数据:`, {
-            startIndex,
-            endIndex,
-            dataLength: currentPageData.length,
-            totalData: allMockData.value.length
-          })
-          if (pullDown.value) {
-            // 下拉刷新：重置数据
-            serviceList.value = currentPageData
-            pullDown.value = false
-          } else {
-            // 上拉加载：追加数据
-            serviceList.value = [...serviceList.value, ...currentPageData]
-            pullUp.value = false
-          }
-          // 判断是否还有更多数据
-          const hasMoreData = endIndex < allMockData.value.length
-          pullUpFinish.value = !hasMoreData
-          nextTick(() => {
-            scrollerRef.value && scrollerRef.value.checkPosition()
-          })
-          console.log('分页状态:', {
-            currentPage: page.currentPage,
-            pageSize: page.pageSize,
-            currentDataLength: serviceList.value.length,
-            totalData: allMockData.value.length,
-            hasMoreData,
-            pullUpFinish: pullUpFinish.value
-          })
-        } catch (error) {
-          pullDown.value = false
-          pullUp.value = false
+      const params = {
+        page: page.currentPage,
+        limit: page.pageSize,
+        sidx: '',
+        order: 'desc',
+        param: {
+          itemName: keyword.value
         }
-      }, 1000)
+      }
+      try {
+        itemInfosEhbList(params)
+          .then(result => {
+            const resultData = result.data.list || []
+            if (pullDown.value) {
+              // 下拉刷新：重置数据
+              serviceList.value = resultData
+              pullDown.value = false
+            } else {
+              // 上拉加载：追加数据
+              serviceList.value = [...serviceList.value, ...resultData]
+              pullUp.value = false
+            }
+            // 判断是否还有更多数据
+            const hasMoreData = result.data.limit < result.data.totalCount
+            pullUpFinish.value = !hasMoreData
+            nextTick(() => {
+              scrollerRef.value && scrollerRef.value.checkPosition()
+            })
+          })
+          .catch(error => {
+            pullUpFinish.value = true
+            pullDown.value = false
+            pullUp.value = false
+          })
+      } catch (error) {
+        pullUpFinish.value = true
+        pullDown.value = false
+        pullUp.value = false
+      }
     }
     // 刷新
     const handleRefresh = () => {
@@ -164,13 +136,18 @@ export default defineComponent({
       page.currentPage++
       getList()
     }
+    // 搜索
+    const onSelect = (key: string) => {
+      keyword.value = key
+      handleRefresh()
+    }
     // 处理事项/服务
     const handleItemClick = (item: any) => {
       if (item.type === 'service') {
         const params = {
-          id: item.serviceId
+          transactCode: item.ITEM_CODE
         }
-        ehbAppJssdk.operateWindow.openService(params)
+        ehbAppJssdk.operateWindow.openMatter(params)
       } else {
         regionSelectRef.value && regionSelectRef.value?.openActiveSheet(item)
       }
@@ -187,6 +164,7 @@ export default defineComponent({
       serviceList,
       handleRefresh,
       handleLoadMore,
+      onSelect,
       handleItemClick
     }
   }

@@ -4,33 +4,37 @@
   .container
     ItemCard.governmentServiceCard(title="政务服务")
       template(#content)
-        .matterItem(v-for="(item, index) in governmentServiceList" :key="index" @click="handleRouter(item.link)")
+        .matterItem(v-for="(item, index) in governmentServiceList" :key="index" @click="handleRouterLink(item.link)")
           VanImage(width="72" height="auto" :src="item.icon" fit="contain")
           span {{ item.label }}
     ItemCard.commonServiceCard(title="公共服务")
       template(#content)
         .otherContent
-          .otherItem.w-100(v-for="(item, index) in otherServiceList" :key="index" :style="{ color: item.textColor }" @click="handleRouter(item.link)")
+          .otherItem.w-100(v-for="(item, index) in otherServiceList" :key="index" :style="{ color: item.textColor }" @click="handleRouterLink(item.link)")
             VanImage(width="100%" height="auto" :src="item.icon" fit="contain")
             span.text {{ item.label }}
         .commonContent
-          .commonItem(v-for="(item, index) in commonServiceList" :key="index" @click="handleRouter(item.link)")
+          .commonItem(v-for="(item, index) in commonServiceList" :key="index" @click="handleRouterLink(item.link)")
             VanImage(width="45" height="45" :src="item.icon" fit="contain")
             span.text {{ item.label }}
     ItemCard.transactServiceCard(title="便民查询" showMore @more="handleMore('matter')")
       template(#content)
+        .content(v-if="matterList.length")
           VanCell(v-for="(item, index) in matterList" :key="index" inset center @click="handleItemClick(item)")
             template(#icon)
               VanImage(width="36" height="auto" :src="getImage('common.iconMatter')" fit="contain")
             template(#title)
               span.text {{ item.name }}
+        NoData(v-else showText) 
     ItemCard.transactServiceCard(title="办事服务" showMore @more="handleMore('service')")
       template(#content)
+        .content(v-if="serviceList.length")
           VanCell(v-for="(item, index) in serviceList" :key="index" inset center @click="handleItemClick(item)")
             template(#icon)
               VanImage(width="36" height="auto" :src="getImage('common.iconService')" fit="contain")
             template(#title)
               span.text {{ item.name }}
+        NoData(v-else showText) 
     ItemCard.tMapCard(title="办事网点" showMore @more="handleMore('outlets')")
       template(#content)
         TMap(height="286px" showSearch shape="round")
@@ -43,14 +47,17 @@ import { defineComponent, onMounted, reactive, ref } from 'vue'
 import { getImage } from '@/constants/images'
 import ItemCard from '@/pages/home/components/itemCard/index.vue'
 import TMap from '@/components/map/index.vue'
+import NoData from '@/components/noData/index.vue'
 import CommonFooter from '@/pages/layout/components/footer.vue'
 import RegionSelect from '@/components/regionSelect/index.vue'
 import { useRouter } from 'vue-router'
+import { itemInfosEhbList } from '@/api/helper/commonService'
 
 type ModulesType = 'matter' | 'service'
 export default defineComponent({
   name: 'Home',
   components: {
+    NoData,
     ItemCard,
     TMap,
     CommonFooter,
@@ -89,7 +96,7 @@ export default defineComponent({
         textColor: '#5b43ac',
         label: '智慧广电乡村工程',
         icon: getImage('home.iconGovernmentService'),
-        link: '/commonService/governmentService'
+        link: '/commonService/governmentServicePage'
       }
     ])
     const commonServiceList = reactive([
@@ -104,7 +111,7 @@ export default defineComponent({
         link: '/commonService/faultsList'
       },
       {
-        label: '我要报装',
+        label: '我要报修',
         icon: getImage('home.iconMaintenance'),
         link: '/commonService/maintenanceApply'
       }
@@ -120,38 +127,28 @@ export default defineComponent({
           id: 1,
           name: '广播电视节目制作经营许可证查询',
           type: 'service',
-          serviceId: '122619'
+          serviceId: '102780'
         },
         {
           id: 2,
           name: '接收卫星传送的境外电视节目许可证查询',
-          type: 'matter',
-          serviceId: 'F9DE4A9799E9F26FB210FD3D43D65E84'
+          type: 'service',
+          serviceId: '102800'
         }
       ]
     }
     // 获取便民查询数据
     const getServiceList = () => {
-      serviceList.value = [
-        {
-          id: 1,
-          name: '《广播电视节目制作经营许可证》变更',
-          type: 'service',
-          matterId: '122619'
-        },
-        {
-          id: 2,
-          name: '《广播电视节目制作经营许可证》变更',
-          type: 'matter',
-          matterId: 'F9DE4A9799E9F26FB210FD3D43D65E84'
-        },
-        {
-          id: 3,
-          name: '《广播电视节目制作经营许可证》变更',
-          type: 'matter',
-          matterId: 'CDB71CCDE5FD2D6D90DF04F1B5BF045F'
-        }
-      ]
+      const params = {
+        page: 1,
+        limit: 3,
+        sidx: 'NUM',
+        order: 'desc'
+      }
+      itemInfosEhbList(params).then(result => {
+        const resultData = result.data.list || []
+        serviceList.value = resultData
+      })
     }
     const handleMore = (type: ModulesType) => {
       const modulesMap = {
@@ -164,7 +161,7 @@ export default defineComponent({
         path: modulesMap[type]
       })
     }
-    const handleRouter = (link: string) => {
+    const handleRouterLink = (link: string) => {
       router.push({
         path: link
       })
@@ -177,7 +174,6 @@ export default defineComponent({
         }
         ehbAppJssdk.operateWindow.openService(params)
       } else {
-        console.log('regionSelectRef', regionSelectRef.value, item)
         regionSelectRef.value && regionSelectRef.value?.openActiveSheet(item)
       }
       // console.log('handleItemClick:', item)
@@ -197,7 +193,7 @@ export default defineComponent({
       serviceList,
       getImage,
       handleMore,
-      handleRouter,
+      handleRouterLink,
       handleItemClick
     }
   }

@@ -1,12 +1,8 @@
 <template lang="pug">
 .pageWrapper
   .mapT
-    TMap(showSearch showSearchIcon)
-  .slideUpWrapper(
-    @touchstart="handleTouchStart"
-    @touchmove="handleTouchMove"
-    @touchend="handleTouchEnd"
-  )
+    TMap(ref="tMapRef" showSearch showSearchIcon @onSearch="onSearch" @searchComplete="handleSearchComplete")
+  .slideUpWrapper
     VanSticky(:container="pageWrapperRef" :offset-top="0")
       .stickyHeader
         .dragIndicator
@@ -24,6 +20,7 @@
           :pullDown="pullDown"
           :pullUp="pullUp"
           :pullUpFinish="pullUpFinish"
+          :immediateCheck="false"
           @refresh="handleRefresh"
           @onLoad="handleLoadMore"
         )
@@ -34,38 +31,30 @@
                   .titleText {{ item.name }}
                 template(#label)
                   .locationInfo
-                    .cardDistance {{ item.distance || '未知距离' }}
+                    .cardDistance {{ formatDistance(item) }}
                     .divider {{ '|'  }}
                     .cardAddress {{ item.address }}
                 template(#right-icon)
                   .cardRoadSign
                     VanImage(width="28" height="auto" :src="getImage('commonService.iconOutletsRoad')" fit="contain")
                     span {{ '到这去' }}
-            NoData(v-if="outletsList.length === 0 && !pullUp")
+            NoData(v-if="outletsList.length === 0 && !pullUp" showText text="暂无数据，请根据网点名称搜索")
               VanImage(width="50%" height="auto" :src="getImage('common.noData')" fit="contain")
+              span {{ '暂无数据' }}
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-  reactive,
-  onMounted,
-  nextTick,
-  onUnmounted,
-  getCurrentInstance
-} from 'vue'
+import { defineComponent, getCurrentInstance, nextTick, onMounted, reactive, ref } from 'vue'
 import TMap from '@/components/map/index.vue'
 import ScrollList from '@/components/scrollList/index.vue'
 import NoData from '@/components/noData/index.vue'
 import { ChevronDown, ChevronUp } from 'lucide-vue-next'
 import { getImage } from '@/constants/images'
-import type { PageType } from '@/common/interface/http'
 import type { ActionSheetOptions } from '@/plugin/interface/selector'
-import { getBase64AreaCode } from '@/api/helper/common'
 import type { Base64AreaCodeParams } from '@/api/interface/common'
-import type { PoiItem } from '@/hooks/interface/useTMap'
-import { useTMap } from '@/hooks/useTMap'
+import { getBase64AreaCode } from '@/api/helper/common'
+import type { PoiItem, SearchResult } from '@/hooks/interface/useTMap'
+import { CoordinateConverter } from '@/utils/map/coordinateConverter'
 
 export default defineComponent({
   name: 'ServiceOutlets',
@@ -78,6 +67,7 @@ export default defineComponent({
   },
   setup() {
     const instance = getCurrentInstance()
+    const tMapRef = ref()
     // 获取页面根元素
     const pageWrapperRef = ref(instance?.vnode.el)
     const pageHeight = ref(window.innerHeight)
@@ -87,8 +77,6 @@ export default defineComponent({
     const maxHeight = pageHeight.value * 0.75
     // 初始高度设为最小高度
     const containerHeight = ref(minHeight)
-    // 触摸开始位置
-    const startY = ref(0)
     const scrollerRef = ref()
     // 下拉加载状态
     const pullDown = ref(false)
@@ -96,57 +84,47 @@ export default defineComponent({
     const pullUp = ref(false)
     // 是否已加载完成，加载完成后不再触发 load 事件
     const pullUpFinish = ref(false)
-    const page = reactive<PageType>({
+    const outletsList = ref<PoiItem[]>([])
+    const page = reactive({
       currentPage: 1,
-      pageSize: 10,
-      total: 30
+      totalPage: 1,
+      totalCount: 0
     })
     // 筛选弹窗
     const showAreaFilter = ref(false)
     // 区域列表
     const areaList = ref<any[]>([])
-    // 网点列表
-    const outletsList = ref<any[]>([])
-    const {
-      mapContainer,
-      isLoaded,
-      searchModule,
-      addMarker,
-      clearMarkers,
-      updateCenter,
-      reloadMap
-    } = useTMap()
-    // 监听窗口 resize，适配设备高度变化
-    const handleResize = () => {
-      pageHeight.value = window.innerHeight
-      const newMinHeight = pageHeight.value * 0.4
-      const newMaxHeight = pageHeight.value * 0.75
-      // 调整容器高度在新的最小/最大范围内
-      containerHeight.value = Math.max(newMinHeight, Math.min(containerHeight.value, newMaxHeight))
-    }
-    // 触摸开始：记录初始位置（增加事件阻止冒泡，避免冲突）
-    const handleTouchStart = (e: TouchEvent) => {
-      e.stopPropagation()
-      startY.value = e.touches[0].clientY
-    }
-    // 触摸移动：核心调整逻辑（优化滑动灵敏度，确保流畅）
-    const handleTouchMove = (e: TouchEvent) => {
-      e.stopPropagation()
-      const currentY = e.touches[0].clientY
-      // 滑动距离系数调整为 0.6，平衡灵敏度与稳定性
-      const diff = (startY.value - currentY) * 0.6
-      // 严格限制高度范围
-      containerHeight.value = Math.max(minHeight, Math.min(containerHeight.value + diff, maxHeight))
-      startY.value = currentY
-    }
-    // 触摸结束：惯性回弹优化
-    const handleTouchEnd = () => {
-      // 距离边界 30px 内自动吸附
-      if (containerHeight.value < minHeight + 30) {
-        containerHeight.value = minHeight
-      } else if (containerHeight.value > maxHeight - 30) {
-        containerHeight.value = maxHeight
-      }
+    // 格式化距离显示
+    const formatDistance = (item: PoiItem): string => {
+      const lonlat = item.lonlat
+      if (!lonlat) return item.distance || '未知距离'
+      // 定位信息
+      const location = tMapRef.value?.location
+      // 经纬度实例
+      const lonlatInstance = tMapRef.value?.lonLatModule
+      const point2Lng = Number(lonlat.split(',')[0])
+      const point2Lat = Number(lonlat.split(',')[1])
+      // 计算两点距离
+      const point1 = { lng: location.longitude, lat: location.latitude }
+      const point2 = { lng: point2Lng, lat: point2Lat }
+      const convertedPoint1 = CoordinateConverter.cgcs2000ToGcj02(point1.lng, point1.lat)
+      const convertedPoint2 = CoordinateConverter.cgcs2000ToGcj02(point2.lng, point2.lat)
+      // const convertedPoint1 = CoordinateConverter.wgs84togcj02(point1.lng, point1.lat)
+      // const convertedPoint2 = CoordinateConverter.wgs84togcj02(point2.lng, point2.lat)
+      console.log('坐标转换结果', convertedPoint1, convertedPoint2)
+      // 计算两点距离
+      // const distance = lonlatInstance.getDistanceBetweenTwoPoints(
+      //   { lng: convertedPoint1[0], lat: convertedPoint1[1] },
+      //   { lng: convertedPoint2[0], lat: convertedPoint2[1] }
+      // )
+      const distance = lonlatInstance.getDistanceBetweenTwoPoints(
+        { lng: convertedPoint1.lng, lat: convertedPoint1.lat },
+        { lng: convertedPoint2.lng, lat: convertedPoint2.lat }
+      )
+      const totalFormatted = lonlatInstance.formatDistance(distance)
+      console.log('当前定位信息', location)
+      console.log(`总距离: ${totalFormatted}`)
+      return totalFormatted
     }
     // 筛选弹窗显示
     const showFilter = () => {
@@ -157,11 +135,10 @@ export default defineComponent({
           cancelButton: '取消',
           otherButtons: areaList.value.map(item => item.name),
           success: res => {
-            if (res.buttonIndex === '-1') {
-              // 取消
-            } else {
-              // 筛选该区域数据
-            }
+            const resultData = JSON.parse(res)
+            if (resultData.buttonIndex === '-1') return
+            // 筛选该区域数据
+            console.log('选择了区域:', areaList.value[resultData.buttonIndex])
           }
         }
         ehbAppJssdk.notice.actionSheet(params)
@@ -191,104 +168,113 @@ export default defineComponent({
         window.ehbAppJssdk.notice.hidePreloader()
       }
     }
-    // 获取列表数据
-    const getList = () => {
-      console.log('11111111111', searchModule.value?.hasResults(), searchModule.value?.getResults())
-      if (searchModule.value && searchModule.value.hasResults()) {
-        pullUp.value = !pullDown.value
-        const searchResults = searchModule.value.getResults()
-        if (pullDown.value) {
-          // 下拉刷新：回到第一页
-          const firstPageData = searchModule.value.getResults(1)
-          outletsList.value = firstPageData.pois
-          pullDown.value = false
-          nextTick(() => {
-            scrollerRef.value && scrollerRef.value.checkPosition()
-          })
-        } else if (pullUp.value) {
-          // 上拉加载：获取下一页
-          const nextPage = searchResults.currentPage + 1
-          if (nextPage <= searchResults.totalPage) {
-            const success = searchModule.value.switchPage(nextPage)
-            if (success) {
-              const nextPageData = searchModule.value.getResults(nextPage)
-              outletsList.value = [...outletsList.value, ...nextPageData.pois]
-            }
-          }
-          pullUp.value = false
-          pullUpFinish.value = searchResults.currentPage >= searchResults.totalPage
-        }
+    // 搜索
+    const onSearch = () => {
+      outletsList.value = []
+    }
+    // 搜索结果处理
+    const handleSearchComplete = (result: SearchResult) => {
+      // console.log('handleSearchComplete', result)
+      if (result.currentPage === 1) {
+        outletsList.value = result.pois
       } else {
-        pullDown.value = false
-        pullUp.value = false
+        outletsList.value = [...outletsList.value, ...result.pois]
       }
+      page.currentPage = result.currentPage
+      page.totalPage = result.totalPage
+      page.totalCount = result.totalCount
+      pullDown.value = false
+      pullUp.value = false
+      pullUpFinish.value = !result.hasMore
+      nextTick(() => {
+        if (scrollerRef.value && scrollerRef.value.vanScrollBox) {
+          scrollerRef.value.vanScrollBox.checkPosition?.()
+        }
+      })
     }
     // 下拉刷新
     const handleRefresh = () => {
       if (pullDown.value) return
       pullDown.value = true
       pullUpFinish.value = false
-      page.currentPage = 1
-      getList()
+      const searchInstance = tMapRef.value?.searchModule
+      if (searchInstance) {
+        searchInstance.goToPage(1)
+      } else {
+        pullDown.value = false
+      }
     }
-    // 加载更多
+    // 上拉加载更多
     const handleLoadMore = () => {
       if (pullUp.value || pullUpFinish.value) return
-      page.currentPage++
-      getList()
+      pullUp.value = true
+      const searchInstance = tMapRef.value?.searchModule
+      if (searchInstance && page.currentPage < page.totalPage) {
+        searchInstance.goToPage(page.currentPage + 1)
+      } else {
+        pullUpFinish.value = true
+        pullUp.value = false
+      }
     }
+    // 导航
     const handleGoAddress = (item: PoiItem) => {
       // 解析坐标
       const [lngStr, latStr] = item.lonlat.split(',')
       const longitude = Number(lngStr)
       const latitude = Number(latStr)
-      ehbAppJssdk.map.openMap({
-        destination: item.name,
-        longitude: longitude,
-        latitude: latitude
+      const point = { lng: longitude, lat: latitude }
+      // const convertedPoint = CoordinateConverter.cgcs2000ToGcj02(point.lng, point.lat)
+      ehbAppJssdk.map.coordinateConvert({
+        convertType: '2',
+        longitude: point.lng,
+        latitude: point.lat,
+        success: result => {
+          console.log('导航:handleGoAddress', item, result)
+          ehbAppJssdk.map.openMap({
+            // 目标名称
+            destination: item.name,
+            // // 目标经度
+            // longitude: convertedPoint[0],
+            // // 目标纬度
+            // latitude: convertedPoint[1]
+            // 目标经度
+            longitude: result.longitude,
+            // 目标纬度
+            latitude: result.latitude
+          })
+        }
       })
-      // ehbAppJssdk.map.getLocation({
-      //   success: res => {
-      //     ehbAppJssdk.map.openMap({
-      //       destination: '湖北省广播电视管理局',
-      //       longitude: 114.354542,
-      //       latitude: 30.569506
-      //     })
-      //   }
-      // })
     }
     onMounted(() => {
       // 获取区域列表
       getAreaList()
-      // 获取网点数据
-      getList()
       // 确保页面渲染完成后获取根元素
       nextTick(() => {
         pageWrapperRef.value = instance?.vnode.el
-        containerHeight.value = minHeight
       })
-      window.addEventListener('resize', handleResize)
     })
-    onUnmounted(() => {
-      window.removeEventListener('resize', handleResize)
-    })
+
     return {
+      tMapRef,
       pageWrapperRef,
-      containerHeight,
       scrollerRef,
+      containerHeight,
       pullDown,
       pullUp,
       pullUpFinish,
       outletsList,
       showAreaFilter,
+      currentPage: page.currentPage,
+      totalPage: page.totalPage,
+      totalCount: page.totalCount,
       getImage,
-      handleTouchStart,
-      handleTouchMove,
-      handleTouchEnd,
       showFilter,
+      onSearch,
+      handleSearchComplete,
       handleRefresh,
       handleLoadMore,
-      handleGoAddress
+      handleGoAddress,
+      formatDistance
     }
   }
 })
@@ -388,8 +374,14 @@ export default defineComponent({
               font-size: $fontSize26;
               font-weight: 500;
               line-height: $lineHeight46;
+              .cardDistance {
+                flex: none;
+              }
               .divider {
                 padding: 0 10px;
+              }
+              .cardAddress {
+                padding: 0 12px;
               }
             }
             .cardRoadSign {

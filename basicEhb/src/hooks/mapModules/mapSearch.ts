@@ -1,231 +1,157 @@
-// hooks/mapModules/MapSearch.ts
 import {
   type TMapInstance,
   type IMapSearch,
   type LocalSearchResult,
-  SearchResultType,
-  type PoiItem
+  type PoiItem,
+  type SearchResult,
+  SearchType
 } from '@/hooks/interface/useTMap'
+import { CoordinateConverter } from '@/utils/map/coordinateConverter'
 
 export class MapSearch implements IMapSearch {
   private map: TMapInstance
-  // LocalSearch实例
-  private searchInstance: any
-  private isLoading = false
-  // 搜索结果
-  private results = {
-    pois: [] as PoiItem[],
-    // 存储全部50条数据
-    allPois: [] as PoiItem[],
-    // 总数
-    totalCount: 0,
-    // 当前页码
-    currentPage: 1,
-    // 每页显示条数
-    pageSize: 10,
-    // 计算的总页数
-    totalPage: 0
-  }
-  constructor(map: TMapInstance) {
-    if (!window.T || !window.T.LocalSearch) {
-      throw new Error('天地图LocalSearch模块未加载')
-    }
-    if (!map) {
-      throw new Error('必须传入地图实例')
-    }
+  public searchInstance: any
+  // 搜索完成回调
+  private searchCallback?: (result: SearchResult) => void
+  // 缓存当前搜索结果
+  public currentResults?: any
+  constructor(map: TMapInstance, searchCallback?: (result: SearchResult) => void) {
     this.map = map
-    // 初始化LocalSearch实例（与传入的地图实例绑定）
-    this.searchInstance = new window.T.LocalSearch(map, {
-      pageCapacity: 50,
-      onSearchComplete: (result: any) => this.handleResult(result)
-    })
+    this.searchCallback = searchCallback
+    this.init()
   }
-  // 显示加载状态
-  private showLoading() {
-    if (!this.isLoading) {
-      this.isLoading = true
-      ehbAppJssdk.notice.showPreloader({
-        text: '使劲加载中..'
-      })
-    }
-  }
-  // 隐藏加载状态
-  private hideLoading() {
-    if (this.isLoading) {
-      this.isLoading = false
-      ehbAppJssdk.notice.hidePreloader()
-    }
-  }
-  // 处理搜索结果
-  private handleResult(result: LocalSearchResult) {
-    try {
-      const resultData = result.result
-      const { infocode } = resultData.status
-      // 状态码处理
-      if (infocode !== 1000) {
-        this.handleError(`搜索失败（状态码：${infocode}）`)
-        return
-      }
-      const resultType = resultData.resultType as SearchResultType
-      const totalCount = Number(resultData.count) || 0
-      if (totalCount === 0) {
-        ehbAppJssdk.notice.toast({ text: '未找到相关网点' })
-        this.setEmptyResults()
-        return
-      }
-      // 只处理POI相关的搜索结果
-      if (resultType === SearchResultType.NORMAL_POI) {
-        this.handlePoiResult(result)
-      } else {
-        console.warn(`暂不支持的结果类型：${resultType}`)
-        this.handleError('暂不支持该类型的搜索')
-      }
-    } catch (error) {
-      console.error('处理搜索结果异常：', error)
-      this.handleError('搜索结果处理失败，请重试')
-    } finally {
-      this.hideLoading()
-    }
-  }
-  // 处理POI搜索结果
-  private handlePoiResult(result: LocalSearchResult) {
-    const allPois = (result.getPois() as PoiItem[]) || []
-    if (allPois.length === 0) {
-      this.handleError('未获取到有效网点信息')
+  // 初始化搜索实例
+  private init() {
+    if (!window.T || !window.T.LocalSearch) {
+      console.error('天地图 LocalSearch 模块未加载')
       return
     }
-    // 限制最多50条数据
-    const limitedPois = allPois.slice(0, 50)
-    // 计算分页
-    const totalCount = limitedPois.length
-    const totalPage = Math.ceil(totalCount / this.results.pageSize)
-    // 获取第一页数据
-    const firstPagePois = this.getPoisByPage(limitedPois, 1)
-    // 更新结果
-    this.results = {
-      pois: firstPagePois,
-      allPois: limitedPois,
-      totalCount,
-      currentPage: 1,
-      pageSize: this.results.pageSize,
-      totalPage
-    }
-    console.log('搜索结果：', {
-      总条数: totalCount,
-      总页数: totalPage,
-      当前页条数: this.results.pois.length,
-      全部数据: this.results.allPois,
-      第一页: this.results.pois
-    })
-    ehbAppJssdk.notice.toast({
-      text: `共找到${totalCount}个网点，已加载50个`
+    this.searchInstance = new window.T.LocalSearch(this.map, {
+      // 每页容量
+      pageCapacity: 10,
+      onSearchComplete: (result: LocalSearchResult) => {
+        console.log('onSearchComplete', result)
+        // 缓存当前搜索结果
+        this.currentResults = result
+        // 格式化为统一 SearchResult
+        const standardizedResult = this.formatSearchResult(result)
+        this.searchCallback?.(standardizedResult)
+      }
     })
   }
-  // 解析坐标字符串 "lng,lat" 为数值
-  private parseLonlat(lonlat: string): { lng: number; lat: number } {
-    const [lngStr, latStr] = lonlat.split(',')
+  // 格式化天地图原生结果为统一 SearchResult 类型
+  private formatSearchResult(result: LocalSearchResult): SearchResult {
+    // 获取总条数
+    const totalCount = this.searchInstance.getCountNumber()
+    // 当前页码
+    const currentPage = this.searchInstance.getPageIndex()
+    // 总页数
+    const totalPage = this.searchInstance.getCountPage()
+    console.log('搜索结果格式化处理：', result)
+    // 获取当前页 POI 数据
+    let pois: PoiItem[] = []
+    if (result.pois && Array.isArray(result.pois)) {
+      // 过滤无效数据
+      pois = result.pois.filter((poi: any) => poi && poi.name)
+    }
     return {
-      lng: Number(lngStr) || 0,
-      lat: Number(latStr) || 0
+      // 当前页 POI 列表
+      pois,
+      // 全部数据
+      allPois: pois,
+      // 总条数
+      totalCount: totalCount ?? 0,
+      // 当前页码
+      currentPage: currentPage,
+      // 固定每页 10 条
+      pageSize: pois.length || 0,
+      // 总页数
+      totalPage: totalPage,
+      // 是否还有更多页
+      hasMore: currentPage < totalPage
     }
-  }
-  // 获取分页数据
-  private getPoisByPage(allData: PoiItem[], page: number): PoiItem[] {
-    const startIndex = (page - 1) * this.results.pageSize
-    const endIndex = Math.min(startIndex + this.results.pageSize, allData.length)
-    return allData.slice(startIndex, endIndex)
-  }
-  // 设置空结果
-  private setEmptyResults() {
-    this.results = {
-      pois: [],
-      allPois: [],
-      totalCount: 0,
-      currentPage: 1,
-      pageSize: this.results.pageSize,
-      totalPage: 0
-    }
-  }
-  // 错误处理
-  private handleError(msg: string) {
-    ehbAppJssdk.notice.toast({ text: msg })
-    this.setEmptyResults()
-    this.hideLoading()
   }
   // 关键词搜索
-  searchByKeyword(keyword: string, type: number = 1) {
+  searchByKeyword(keyword: string, type: SearchType = SearchType.NORMAL): void {
     if (!keyword.trim()) {
       ehbAppJssdk.notice.toast({ text: '请输入搜索关键词' })
       return
     }
-    this.showLoading()
+    // 清除上一次搜索结果
+    this.clear()
     this.searchInstance.setQueryType(type)
     this.searchInstance.search(keyword, type)
   }
-  // 周边搜索
-  public searchNearby(
-    keyword: string,
-    center: { lng: number; lat: number },
-    radius: number = 1000
-  ) {
+  // 根据范围和检索词发起范围检索
+  searchByBounds(keyword: string, bounds: any): void {
     if (!keyword.trim()) {
       ehbAppJssdk.notice.toast({ text: '请输入搜索关键词' })
       return
     }
-    this.showLoading()
-    this.searchInstance.searchNearby(keyword, new window.T.LngLat(center.lng, center.lat), radius)
+    // 清除上一次搜索结果
+    this.clear()
+    this.searchInstance.searchInBounds(keyword, bounds)
   }
-  // 获取搜索结果
-  public getResults(page?: number) {
-    if (page && page >= 1 && page <= this.results.totalPage) {
-      const pageData = this.getPoisByPage(this.results.allPois, page)
-      return {
-        ...this.results,
-        pois: pageData,
-        currentPage: page
-      }
-    }
-    return this.results
-  }
-  // 检查是否有搜索结果
-  public hasResults(): boolean {
-    return this.results.totalCount > 0
-  }
-  // 切换分页
-  public switchPage(page: number) {
-    if (page < 1 || page > this.results.totalPage) {
-      ehbAppJssdk.notice.toast({ text: '页码无效' })
-      return false
-    }
-    const pageData = this.getPoisByPage(this.results.allPois, page)
-    this.results.pois = pageData
-    this.results.currentPage = page
-    return true
-  }
-  // 获取坐标信息
-  public getCoordinates(poi: PoiItem): { lng: number; lat: number } {
-    return this.parseLonlat(poi.lonlat)
-  }
-  // 设置每页显示条数
-  public setPageSize(pageSize: number) {
-    if (pageSize < 5 || pageSize > 20) {
-      ehbAppJssdk.notice.toast({ text: '每页显示条数需在5-20之间' })
+  // 根据中心点、半径与检索词发起周边检索
+  searchNearby(keyword: string, center: { lng: number; lat: number }, radius: number = 1000): void {
+    if (!keyword.trim()) {
+      ehbAppJssdk.notice.toast({ text: '请输入搜索关键词' })
       return
     }
-    this.results.pageSize = pageSize
-    this.results.totalPage = Math.ceil(this.results.totalCount / pageSize)
-    // 重新计算当前页数据
-    this.switchPage(1)
-  }
-  // 清除搜索结果
-  public clear() {
-    this.searchInstance.clearResults()
-    this.setEmptyResults()
-    this.hideLoading()
-  }
-  // 销毁搜索实例
-  public destroy() {
+    // 清除上一次搜索结果
     this.clear()
-    this.searchInstance = null
+    this.searchInstance.searchNearby(keyword, new window.T.LngLat(center.lng, center.lat), radius)
+  }
+  // 获取当前页标准化搜索结果
+  getResults(): SearchResult {
+    return this.formatSearchResult(this.currentResults)
+  }
+  // 清除搜索结果（重置状态）
+  clear(): void {
+    if (this.searchInstance) {
+      // 清除天地图原生结果
+      this.searchInstance.clearResults()
+    }
+    this.currentResults = {}
+  }
+  // 切换分页
+  goToPage(page: number) {
+    if (!this.currentResults) return
+    // 总页树
+    const totalPage = this.currentResults.obj.countPage
+    console.log('goToPage:切换分页', page, totalPage)
+    if (page < 1 || page > totalPage) {
+      ehbAppJssdk.notice.toast({ text: '暂无更多数据' })
+      return false
+    }
+    this.searchInstance.gotoPage(page)
+  }
+  // 坐标转换
+  private standardizePoiItem(poi: any): PoiItem {
+    // 处理坐标信息
+    let lng = 0
+    let lat = 0
+    if (poi.lng && poi.lat) {
+      lng = poi.lng
+      lat = poi.lat
+    } else if (poi.lon && poi.lat) {
+      lng = poi.lon
+      lat = poi.lat
+    } else if (poi.point && poi.point.lng && poi.point.lat) {
+      lng = poi.point.lng
+      lat = poi.point.lat
+    } else if (poi.lonlat) {
+      // 处理 "116.313488 39.979416" 格式的坐标
+      const [lngStr, latStr] = poi.lonlat.split(' ')
+      lng = parseFloat(lngStr)
+      lat = parseFloat(latStr)
+    }
+    // 坐标转换：将天地图坐标转换为高德地图坐标
+    const convertedCoord = CoordinateConverter.cgcs2000ToGcj02(lng, lat)
+    lng = convertedCoord.lng
+    lat = convertedCoord.lat
+    poi['lng'] = lng
+    poi['lat'] = lat
+    return poi
   }
 }

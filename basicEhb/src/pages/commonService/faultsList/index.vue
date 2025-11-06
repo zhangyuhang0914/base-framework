@@ -23,8 +23,8 @@
             VanCell(inset center)
               template(#title)
                 span.cardTitle {{ item.title }}
-              template(#label)
-                span.cardDescribe {{ item.describe }}
+              //- template(#label)
+              //-   span.cardDescribe {{ item.describe }}
               template(#right-icon)
                 .cardIcon
                   ChevronRight(:size="20")
@@ -127,12 +127,12 @@ export default defineComponent({
           const endIndex = startIndex + page.pageSize
           // 获取当前页数据
           const currentPageData = allMockData.value.slice(startIndex, endIndex)
-          console.log(`第${page.currentPage}页数据:`, {
-            startIndex,
-            endIndex,
-            dataLength: currentPageData.length,
-            totalData: allMockData.value.length
-          })
+          // console.log(`第${page.currentPage}页数据:`, {
+          //   startIndex,
+          //   endIndex,
+          //   dataLength: currentPageData.length,
+          //   totalData: allMockData.value.length
+          // })
           if (pullDown.value) {
             // 下拉刷新：重置数据
             faultsList.value = currentPageData
@@ -150,14 +150,14 @@ export default defineComponent({
           // 判断是否还有更多数据
           const hasMoreData = endIndex < allMockData.value.length
           pullUpFinish.value = !hasMoreData
-          console.log('分页状态:', {
-            currentPage: page.currentPage,
-            pageSize: page.pageSize,
-            currentDataLength: faultsList.value.length,
-            totalData: allMockData.value.length,
-            hasMoreData,
-            pullUpFinish: pullUpFinish.value
-          })
+          // console.log('分页状态:', {
+          //   currentPage: page.currentPage,
+          //   pageSize: page.pageSize,
+          //   currentDataLength: faultsList.value.length,
+          //   totalData: allMockData.value.length,
+          //   hasMoreData,
+          //   pullUpFinish: pullUpFinish.value
+          // })
         } catch (error) {
           // 异常情况下重置状态
           pullDown.value = false
@@ -243,7 +243,7 @@ export default defineComponent({
               font-weight: 700;
               line-height: 60px;
               text-align: justify;
-              @include textEllipsis1;
+              @include textEllipsis2;
             }
             .cardDescribe {
               padding: 12px 8px 0 0;

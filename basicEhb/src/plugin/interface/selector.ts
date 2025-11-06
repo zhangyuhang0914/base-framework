@@ -2,17 +2,17 @@
  * 鄂汇办选择器组件类型定义
  */
 
+// 选择器数据
+export interface SelectorItem {
+  label: string
+  value: string
+}
+
 // 三级联动选择器数据结构
 export interface LinkagePickerItem {
   value: string
   text: string
   children?: LinkagePickerItem[]
-}
-// 选择器项类型
-export interface SelectorItem {
-  title: string
-  subTitle?: string
-  onClick?: () => void
 }
 // 单项选择器（单列）选项类型
 export interface ActionSheetOptions {
@@ -23,7 +23,12 @@ export interface ActionSheetOptions {
   // 选择器选项按钮
   otherButtons: string[]
   // 成功的回调
-  success: (res: { buttonIndex: string; buttonName: string }) => void
+  success: (res: string) => void
+}
+export interface ActionSheetOptionsParams {
+  title?: string
+  cancelButton?: string
+  success: (res: SelectorItem) => void
 }
 // 单项选择器（多列单行/单列单行/单列多行）选项类型
 export interface ActionSheetMultiColumnsOptions {
@@ -57,13 +62,7 @@ export interface DatePickerOptions {
   // 最大范围
   maxDate: string
   // 成功的回调
-  success: (res: {
-    year?: string
-    month?: string
-    day?: string
-    hour?: string
-    minute?: string
-  }) => void
+  success: (res: string) => void
 }
 // 三级联动选择器选项类型
 export interface LinkagePickerOptions {
@@ -78,16 +77,15 @@ export interface LinkagePickerOptions {
   // 数据来源，'1':底层（data参数传空），'2':传参
   dataOrigin?: '1' | '2'
   // 成功的回调
-  success: (
-    res: Record<
-      string,
-      {
-        id: number
-        text: string
-        value: string
-      }
-    >
-  ) => void
+  success: (res: string) => void
+}
+// 三级联动选择器结果类型定义
+export interface LinkagePickerResult {
+  [key: string]: {
+    id: number
+    text: string
+    value: string
+  }
 }
 
 // 鄂汇办选择器接口类型定义

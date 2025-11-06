@@ -1,0 +1,327 @@
+html {
+  font-size: 100px;
+}
+
+@media (min-width: 828px) {
+  body {
+    width: 10rem;
+    margin: 0 auto !important;
+  }
+}
+
+.wrap {
+  background: linear-gradient(0deg, #217af6, #0833b4);
+}
+
+.header {
+  position: relative;
+  padding-bottom: 0.97rem;
+}
+
+.logo {
+  position: relative;
+  padding-top: 0.4rem;
+}
+
+.logo p {
+  font-weight: normal;
+  font-size: 0.37rem;
+  line-height: 0.37rem;
+  text-align: center;
+  color: #fff;
+}
+
+.logo i {
+  position: absolute;
+  left: 0.14rem;
+  top: 0.44rem;
+  width: 0.14rem;
+  height: 0.28rem;
+  background: url('../images/ehb_robot/jiantouwhite.png') center center no-repeat;
+  background-size: 100% 100%;
+}
+
+.header h2 {
+  font-size: 0.56rem;
+  font-weight: bold;
+  line-height: 0.56rem;
+  padding-left: 0.43rem;
+  color: #fff;
+  margin-top: 0.98rem;
+  margin-bottom: 0.26rem;
+}
+
+.header span {
+  font-size: 0.28rem;
+  padding-left: 0.43rem;
+  color: #fff;
+}
+
+.header img {
+  width: 2.52rem;
+  height: 2.35rem;
+  position: absolute;
+  bottom: 0.13rem;
+  right: 0.03rem;
+}
+
+.content {
+  padding: 0.03rem;
+  width: 100%;
+}
+
+.content #znwd {
+  width: 100%;
+  background: #fff;
+  border-radius: 0.24rem 0.24rem 0 0;
+  padding: 0.77rem 0.3rem 0.47rem 0.3rem;
+  height: auto;
+  overflow-y: scroll;
+}
+
+#intelligentQAInfo li {
+  margin-bottom: 0.4rem;
+}
+
+.czkj-robot1 .czkj-msg {
+  background: url('../images/ehb_robot/tsbg.png') center top no-repeat;
+  background-size: 100% 100%;
+  border-radius: 0.3rem;
+}
+.czkj-robot1 .overlay {
+  position: relative;
+  padding-top: 0.35rem;
+}
+.czkj-robot1 .czkj-msg-top {
+  padding: 0.26rem 0.49rem;
+  padding-bottom: 0.2rem;
+}
+
+.czkj-robot1 .czkj-msg-top img {
+  width: 1.01rem;
+  height: 1.01rem;
+  position: absolute;
+  left: 0;
+  top: 0rem;
+}
+
+.czkj-robot1 .czkj-msg-top p {
+  font-weight: bold;
+  color: #042d61;
+  font-size: 0.32rem;
+  line-height: 0.44rem;
+  text-indent: 0.74rem;
+  text-align: justify;
+}
+
+.czkj-msg-bottom {
+  padding: 0.26rem 0.3rem;
+  background: #ffffffb3;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.1rem 0.08rem 0 #a6a6a626;
+}
+
+.czkj-msg-bottom p {
+  font-size: 0.26rem;
+  line-height: 0.34rem;
+  color: #176ef5;
+}
+
+.czkj-msg-bottom span {
+  float: right;
+  cursor: pointer;
+}
+
+.czkj-msg-bottom .icon1 {
+  width: 0.32rem;
+  height: 0.34rem;
+  margin-right: 0.03rem;
+}
+
+.czkj-msg-bottom .icon2 {
+  width: 0.24rem;
+  height: 0.24rem;
+  margin-right: 0.03rem;
+}
+
+#czkj-question {
+  margin-top: 0.21rem;
+}
+
+#czkj-question ul li {
+  background: #fff;
+  border-radius: 0.28rem;
+  display: flex;
+  align-items: center;
+  padding: 0.08rem 0.35rem;
+  padding-right: 0.5rem;
+  margin-bottom: 0.21rem;
+  position: relative;
+}
+
+#czkj-question ul li:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0.35rem;
+  margin-top: -0.09rem;
+  background: url('../images/ehb_robot/jiantougrey.png') center center no-repeat;
+  width: 0.11rem;
+  height: 0.19rem;
+  cursor: pointer;
+  background-size: 100% 100%;
+}
+
+#czkj-question ul li:hover:after {
+  transform: translateY(-3px);
+  transition: 0.3s;
+}
+
+#czkj-question ul li:last-child {
+  margin-bottom: 0;
+}
+
+#czkj-question ul li a {
+  color: #333;
+  font-size: 0.26rem;
+  line-height: 0.34rem;
+  font-weight: bold;
+  width: 100%;
+}
+
+#intelligentQAInfo .czkj-user,
+#intelligentQAInfo .czkj-robot {
+  overflow: hidden;
+}
+
+#intelligentQAInfo .czkj-user .czkj-msg,
+#intelligentQAInfo .czkj-robot .czkj-msg {
+  font-size: 0.26rem;
+  line-height: 0.34rem;
+  font-weight: bold;
+  padding: 0.16rem 0.3rem;
+  width: auto;
+  max-width: 100%;
+  position: relative;
+  overflow: hidden;
+  word-break: break-all;
+}
+#intelligentQAInfo .czkj-robot .czkj-msg {
+}
+#intelligentQAInfo .czkj-robot .czkj-msg p {
+  font-size: 0.26rem !important;
+  line-height: 0.34rem;
+  font-weight: bold;
+  word-break: break-all;
+  text-indent: 0.52rem !important;
+}
+#intelligentQAInfo .czkj-user .czkj-msg {
+  background: #217af6;
+  border-radius: 0.17rem 0 0.17rem 0.17rem;
+  color: #fff;
+  text-align: justify;
+  float: right;
+}
+
+#intelligentQAInfo .czkj-robot {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 0rem 0.17rem 0.17rem 0.17rem;
+}
+
+#intelligentQAInfo .czkj-robot .czkj-msg {
+  background: #ffffff;
+  text-align: justify;
+  float: left;
+}
+
+.czkj-chat-input {
+  position: relative;
+  height: 1.1rem;
+  margin-top: 2.5rem;
+}
+
+.czkj-chat-input textarea {
+  border: 1px solid rgba(25, 113, 245, 0.5);
+  border-radius: 0.08rem 0.08rem 0.08rem 0.08rem;
+  background: #ffffff;
+  box-shadow: 0 0.03rem 0.1rem 0 #1932641a;
+  width: 100%;
+  font-size: 0.24rem;
+  line-height: 0.34rem;
+  color: #a1a1a1;
+  padding: 0.33rem 0.3rem;
+  padding-right: 1rem;
+  height: 100%;
+}
+
+.czkj-chat-input .czkj-enter-btn {
+  position: absolute;
+  right: 0.16rem;
+  top: 50%;
+  margin-top: -0.39rem;
+}
+
+.czkj-chat-input .czkj-enter-btn {
+  border-radius: 0.08rem;
+  background: linear-gradient(-90deg, #3d96e9, #5a75d0);
+  width: 0.8rem;
+  height: 0.78rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.czkj-chat-input .czkj-enter-btn i {
+  background: url(../images/ehb_robot/send.png) center center no-repeat;
+  background-size: 100% 100%;
+  display: block;
+  width: 0.37rem;
+  height: 0.39rem;
+}
+
+.jt1 table {
+  bottom: 1.14rem;
+  left: 0;
+  width: 50%;
+  z-index: 999;
+  background: #dfefff;
+  color: #0053a5;
+  font-size: 0.26rem;
+  border-radius: 6px;
+}
+.hint-input-list {
+  display: none;
+  position: absolute;
+  bottom: 1.14rem;
+  z-index: 1007;
+  max-width: 100%;
+}
+.hint-input-list .full-screen {
+  max-width: 100%;
+}
+.hint-input-list ul {
+  max-height: 2.5rem;
+  overflow-y: auto;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  background-color: #dfefff;
+  border: 1px solid #f5fafb;
+  border-radius: 4px;
+}
+.hint-input-list ul li:hover {
+  color: #949292;
+  background-color: #fafafa;
+}
+.hint-input-list ul li {
+  list-style-type: none;
+  padding: 0.1rem 0.15rem;
+  border-radius: 4px;
+  color: #949292;
+  white-space: nowrap;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  font-size: 0.22rem;
+  overflow: hidden;
+}

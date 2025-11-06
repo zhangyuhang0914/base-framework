@@ -57,23 +57,26 @@ export interface ApiResponse<T> {
    * 接口状态
    */
   code: number
-  /**
-   * 接口数据
-   */
-  data?: T
-  /**
-   * 分页数据
-   */
-  page?: ApiResponsePage<T>
-  /**
-   * 接口提示
-   */
+  // 接口数据
+  data: {
+    // 每页条数
+    limit: number
+    // 数据列表
+    list: T[]
+    // 排序
+    order: string
+    // 当前页
+    page: number
+    param: string
+    // 排序字段
+    sidx: string
+    // 总条目数
+    totalCount: number
+  }
+  // 接口提示
   msg?: string
-  message?: string
-  // 时间戳
-  timestamp?: number
-  // 请求ID
-  requestId?: string
+  // 错误信息
+  bz?: string
 }
 
 export interface ApiResponsePage<T> {
@@ -134,9 +137,12 @@ export interface ApiError {
 // HTTP 请求方法类型
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS'
 
-// 前端分页
+// 分页
 export interface PageType {
+  // 当前页
   currentPage: number
+  // 每页条数
   pageSize: number
+  // 总条数
   total: number
 }

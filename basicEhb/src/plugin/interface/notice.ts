@@ -20,20 +20,24 @@ export interface AlertOptions {
   // 成功的回调，无返回值
   success: () => void
 }
+export interface AlertButtonParams {
+  text: string
+  callback: () => void
+}
 // Confirm弹窗选项类型
 export interface ConfirmOptions {
   // 弹窗标题
   title: string
   // 弹窗内容
   message: string
-  // 确认按钮名称
-  confirmButtonName: string
-  // 取消按钮名称
-  cancelButtonName: string
+  // 弹窗按钮，按钮数量为2 - ['取消','确定']
+  buttonLabels: string[]
   // 成功的回调
-  success: () => void
-  // 失败的回调
-  fail: () => void
+  success: (res: string) => void
+}
+export interface ConfirmButtonParams {
+  text: string
+  callback: () => void
 }
 // prompt输入框选项类型
 export interface PromptOptions {
@@ -46,7 +50,15 @@ export interface PromptOptions {
   // 弹窗按钮，按钮数量为2
   buttonLabels: string[]
   // 成功的回调
-  success: (res: { buttonIndex: string; value: string }) => void
+  success: (res: string) => void
+}
+export interface PromptButtonParams {
+  text: string
+  callback: (res: string) => void
+}
+export interface PromptOptionsParams {
+  message?: string
+  placeholder?: string
 }
 // 加载弹窗选项类型
 export interface PreloaderOptions {

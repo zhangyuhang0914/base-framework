@@ -8,7 +8,7 @@ const commonServiceRouter: AppRouteModule[] = [
   {
     path: '/commonService',
     name: 'CommonServiceRouter',
-    redirect: '/commonService/matterList',
+    redirect: '/commonService/serviceOutlets',
     children: [
       {
         path: 'serviceOutlets',
@@ -56,8 +56,8 @@ const commonServiceRouter: AppRouteModule[] = [
         }
       },
       {
-        path: 'governmentService',
-        name: 'GovernmentService',
+        path: 'governmentServicePage',
+        name: 'GovernmentServicePage',
         component: () => import('@/pages/commonService/governmentService/index.vue'),
         meta: {
           title: '智慧广电乡村工程',

@@ -2,10 +2,6 @@
 .mapContainer.w-100.h-100
   #tMap(ref="mapContainer" :style="{ height: height }")
   SearchInput(v-if="showSearch" :showSearchIcon="showSearchIcon" isMap placeholder="请输入网点名称" :shape="shape" @select="handleSearch")
-  VanLoading(v-if="!isLoaded && !loadError")
-  .errorState(v-if="loadError")
-    VanEmpty(description="地图加载失败")
-    VanButton.reloadBtn(@click="handleReload" size="small") 重新加载
 </template>
 
 <script lang="ts">
@@ -13,6 +9,8 @@ import { defineComponent, onMounted, ref, watch } from 'vue'
 import SearchInput from '@/components/searchInput/index.vue'
 import { useTMap } from '@/hooks/useTMap'
 import type { GetLocationSuccessResult } from '@/plugin/interface/map'
+import { MapSearch } from '@/hooks/mapModules/mapSearch'
+import { MapLngLat } from '@/hooks/mapModules/mapLngLat'
 
 export default defineComponent({
   name: 'TMap',
@@ -41,32 +39,45 @@ export default defineComponent({
       default: 'square'
     }
   },
-  setup() {
+  emits: ['onSearch', 'searchComplete'],
+  setup(props, context) {
     const wordKey = ref()
-    // 加载失败
-    const loadError = ref(false)
+    const mapContainer = ref<HTMLElement | null>(null)
     // 定位信息
+    // const location = ref<GetLocationSuccessResult | null>(null)
     const location = ref<GetLocationSuccessResult | null>({
       address: '中国湖北省武汉市洪山区关山街道软件园东路（在光谷软件园附近）',
       areaCode: '420111',
       city: '武汉市',
       district: '洪山区',
-      latitude: 30.480833,
-      longitude: 114.412708,
+      longitude: 114.412746,
+      latitude: 30.480959,
       province: '湖北省'
     })
     // 周边搜索半径
     const radius = ref(10000)
-    const { mapContainer, isLoaded, searchModule, reloadMap } = useTMap()
+    const { mapInstance, initMap, reloadMap } = useTMap()
+    const searchModule = ref<MapSearch | null>(null)
+    const lonLatModule = ref<MapLngLat | null>(null)
     // 初始化定位信息
     const initLocation = () => {
       ehbAppJssdk.map.getLocation({
         success: (res: string) => {
-          // location.value = JSON.parse(res) as GetLocationSuccessResult
+          location.value = JSON.parse(res) as GetLocationSuccessResult
         }
       })
     }
-    // 处理搜索结果（假设搜索接口返回坐标）
+    // 初始化地图
+    const initTMap = () => {
+      mapContainer.value && initMap(mapContainer.value)
+      // 初始化服务类-搜索
+      searchModule.value = new MapSearch(mapInstance.value, result => {
+        context.emit('searchComplete', result)
+      })
+      // 初始化实体类-经纬度
+      lonLatModule.value = new MapLngLat(mapInstance.value)
+    }
+    // 处理搜索结果
     const handleSearch = (keyword: string) => {
       if (!keyword.trim()) {
         ehbAppJssdk.notice.toast({
@@ -87,46 +98,39 @@ export default defineComponent({
         return
       }
       try {
+        context.emit('onSearch')
         // 使用初始化时缓存的定位中心点
         const { longitude, latitude } = location.value
-        const params = {
-          keyword,
-          center: { lng: longitude, lat: latitude },
-          radius: radius.value
-        }
         // 执行周边搜索
-        searchModule.value?.searchNearby(params.keyword, params.center, params.radius)
+        // searchModule.value.searchNearby(keyword, { lng: longitude, lat: latitude }, radius.value)
+        // 关键词搜索
+        searchModule.value.searchByKeyword(keyword)
       } catch (error) {
         console.error('搜索异常:', error)
       }
     }
     // 重新加载地图
     const handleReload = () => {
-      loadError.value = false
-      reloadMap()
+      mapContainer.value && reloadMap(mapContainer.value)
+      // 初始化服务类-搜索
+      searchModule.value = new MapSearch(mapInstance.value, result => {
+        context.emit('searchComplete', result)
+      })
     }
-    // 监听加载状态，处理错误
-    watch(isLoaded, (newVal: boolean) => {
-      if (!newVal) {
-        // 如果加载失败，设置错误状态
-        setTimeout(() => {
-          if (!isLoaded.value) {
-            loadError.value = true
-          }
-        }, 3000)
-      } else {
-        loadError.value = false
-      }
-    })
     onMounted(() => {
-      // 初始化定位
+      // 初始化定位信息
       initLocation()
+      // 初始化地图
+      initTMap()
+    })
+    context.expose({
+      location,
+      searchModule,
+      lonLatModule
     })
     return {
       mapContainer,
       wordKey,
-      isLoaded,
-      loadError,
       handleSearch,
       handleReload
     }

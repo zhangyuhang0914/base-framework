@@ -188,7 +188,7 @@ export interface LocalSearchResult {
 
   // 实例方法（天地图提供的辅助方法）
   getResultType: () => SearchResultType // 返回 resultType
-  getCount: () => number // 返回 count 转成的数字
+  getCountNumber: () => number // 返回 count 转成的数字
   getKeyword: () => string // 返回 keyWord
   getPois: () => PoiItem[] // 返回 pois（无结果时返回空数组）
   getStatistics: () => SearchStatistics // 返回 statistics（无结果时返回空对象）

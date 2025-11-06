@@ -7,6 +7,7 @@ const images = {
     iconMatter: `${BASE_URL}static/images/common/iconMatter.png`,
     iconService: `${BASE_URL}static/images/common/iconService.png`,
     iconFaults: `${BASE_URL}static/images/common/iconFaults.png`,
+    iconQuestion: `${BASE_URL}static/images/common/iconQuestion.png`,
     noData: `${BASE_URL}static/images/common/noData.png`,
     nSearchData: `${BASE_URL}static/images/common/nSearchData.png`
   },
@@ -30,7 +31,11 @@ const images = {
   },
   commonService: {
     iconOutletsRecommendation: `${BASE_URL}static/images/commonService/iconOutletsRecommendation.png`,
-    iconOutletsRoad: `${BASE_URL}static/images/commonService/iconOutletsRoad.png`
+    iconOutletsRoad: `${BASE_URL}static/images/commonService/iconOutletsRoad.png`,
+    maintenanceBanner: `${BASE_URL}static/images/commonService/maintenanceBanner.png`,
+    maintenanceBannerLogo: `${BASE_URL}static/images/commonService/maintenanceBannerLogo.png`,
+    maintenanceBannerTitle: `${BASE_URL}static/images/commonService/maintenanceBannerTitle.png`,
+    maintenanceFormTitle: `${BASE_URL}static/images/commonService/maintenanceFormTitle.png`
   },
   default: {
     placeholder: `${BASE_URL}static/images/common/noData.png`

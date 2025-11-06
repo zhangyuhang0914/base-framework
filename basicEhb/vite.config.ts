@@ -164,10 +164,10 @@ export default defineConfig(({ command, mode }) => {
       https: true,
       // 设置 http 代理
       proxy: {
-        '/api': {
-          target: 'https://jrb.hubei.gov.cn/szxqyxyxx',
+        '/iframework': {
+          target: 'http://172.16.80.33:8081/iframework',
           changeOrigin: true,
-          rewrite: path => path.replace(/^\/baseServer/, '')
+          rewrite: path => path.replace(/^\/iframework/, '')
         }
       }
     }

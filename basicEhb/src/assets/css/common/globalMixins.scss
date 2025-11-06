@@ -9,9 +9,25 @@
   align-items: center;
 }
 
+@mixin flexAlignStart {
+  display: flex;
+  align-items: flex-start;
+}
+
+@mixin flexAlignStartCenter {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
 @mixin flexJustifyCenter {
   display: flex;
   justify-content: center;
+}
+
+@mixin flexJustifyStart {
+  display: flex;
+  justify-content: flex-start;
 }
 
 @mixin flexJustifyEnd {

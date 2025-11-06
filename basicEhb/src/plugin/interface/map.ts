@@ -52,6 +52,8 @@ export interface ConvertCoordinateOptions {
   longitude: number
   // 纬度
   latitude: number
+  // 成功回调
+  success: (res: { longitude: number; latitude: number }) => void
 }
 
 // 鄂汇办位置接口类型定义

@@ -35,6 +35,10 @@ export default defineComponent({
     )
     // 配置vant主题
     const themeVars: ConfigProviderThemeVars = reactive({
+      // 按钮组件
+      buttonPrimaryColor: '#FFFFFF',
+      buttonPrimaryBackground: '#3181FC',
+      buttonPrimaryBorderColor: '#3181FC',
       // 搜索组件
       searchInputHeight: '40px',
       searchContentBackground: '#FFFFFF',
