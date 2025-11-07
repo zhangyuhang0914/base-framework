@@ -20,7 +20,7 @@
     ItemCard.transactServiceCard(title="便民查询" showMore @more="handleMore('matter')")
       template(#content)
         .content(v-if="matterList.length")
-          VanCell(v-for="(item, index) in matterList" :key="index" inset center @click="handleItemClick(item)")
+          VanCell(v-for="(item, index) in matterList" :key="index" inset center @click="handleServiceClick(item)")
             template(#icon)
               VanImage(width="36" height="auto" :src="getImage('common.iconMatter')" fit="contain")
             template(#title)
@@ -29,11 +29,11 @@
     ItemCard.transactServiceCard(title="办事服务" showMore @more="handleMore('service')")
       template(#content)
         .content(v-if="serviceList.length")
-          VanCell(v-for="(item, index) in serviceList" :key="index" inset center @click="handleItemClick(item)")
+          VanCell(v-for="(item, index) in serviceList" :key="index" inset center @click="handleMatterClick(item)")
             template(#icon)
               VanImage(width="36" height="auto" :src="getImage('common.iconService')" fit="contain")
             template(#title)
-              span.text {{ item.name }}
+              span.text {{ item.ITEM_NAME }}
         NoData(v-else showText) 
     ItemCard.tMapCard(title="办事网点" showMore @more="handleMore('outlets')")
       template(#content)
@@ -52,6 +52,7 @@ import CommonFooter from '@/pages/layout/components/footer.vue'
 import RegionSelect from '@/components/regionSelect/index.vue'
 import { useRouter } from 'vue-router'
 import { itemInfosEhbList } from '@/api/helper/commonService'
+import type { ItemInfosEhbItem } from '@/api/interface/commonService'
 
 type ModulesType = 'matter' | 'service'
 export default defineComponent({
@@ -119,7 +120,7 @@ export default defineComponent({
     // 便民查询数据源
     const matterList: any = ref([])
     // 办事服务数据源
-    const serviceList: any = ref([])
+    const serviceList = ref<ItemInfosEhbItem[]>([])
     // 办事服务数据源
     const getMatterList = () => {
       matterList.value = [
@@ -167,16 +168,18 @@ export default defineComponent({
       })
     }
     // 处理事项/服务
-    const handleItemClick = (item: any) => {
-      if (item.type === 'service') {
-        const params = {
-          id: item.serviceId
-        }
-        ehbAppJssdk.operateWindow.openService(params)
-      } else {
-        regionSelectRef.value && regionSelectRef.value?.openActiveSheet(item)
+    const handleServiceClick = (item: any) => {
+      if (!item.serviceId) return
+      const params = {
+        id: item.serviceId
       }
+      ehbAppJssdk.operateWindow.openService(params)
       // console.log('handleItemClick:', item)
+    }
+    const handleMatterClick = (item: ItemInfosEhbItem) => {
+      if (!item.ITEM_CODE) return
+      // regionSelectRef.value.actionSheetShow = true
+      regionSelectRef.value && regionSelectRef.value?.openActiveSheet(item)
     }
     onMounted(() => {
       // 获取便民查询数据
@@ -194,7 +197,8 @@ export default defineComponent({
       getImage,
       handleMore,
       handleRouterLink,
-      handleItemClick
+      handleServiceClick,
+      handleMatterClick
     }
   }
 })

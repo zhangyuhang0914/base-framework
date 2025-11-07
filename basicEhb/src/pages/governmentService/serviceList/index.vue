@@ -2,7 +2,10 @@
 .pageWrapper
   .pageHeader
     SearchInput(showSearchIcon @select="onSelect")
-    HotSearch
+    .hotSearch
+      span {{ '热门检索：' }}
+      .hotTags
+        .tagItem(v-for="(item, index) in hotTags" :key="index") {{ item.label }}
   .pageContent
     ScrollList(
       ref="scrollerRef"
@@ -34,19 +37,18 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, reactive, nextTick } from 'vue'
 import SearchInput from '@/components/searchInput/index.vue'
-import HotSearch from '@/pages/governmentService/components/hotSearch/index.vue'
 import ScrollList from '@/components/scrollList/index.vue'
 import NoData from '@/components/noData/index.vue'
 import RegionSelect from '@/components/regionSelect/index.vue'
 import type { PageType } from '@/common/interface/http'
 import { itemInfosEhbList } from '@/api/helper/commonService'
 import type { ItemInfosEhbItem } from '@/api/interface/commonService'
+import { dictUtils, type DictOption } from '@/constants/dictionary'
 
 export default defineComponent({
   name: 'ServiceList',
   components: {
     SearchInput,
-    HotSearch,
     ScrollList,
     NoData,
     RegionSelect
@@ -60,6 +62,7 @@ export default defineComponent({
     const pullUp = ref(false)
     // 是否已加载完成，加载完成后不再触发 load 事件
     const pullUpFinish = ref(false)
+    const hotTags = ref<DictOption[]>([])
     const serviceList = ref<ItemInfosEhbItem[]>([])
     const page = reactive<PageType>({
       currentPage: 1,
@@ -77,6 +80,11 @@ export default defineComponent({
           scrollerRef.value.vanScrollBox.scrollTop = 0
         }
       })
+    }
+    // 获取热门搜索
+    const getHotTags = async () => {
+      const result = (await dictUtils.getData('governmentService.HOT_SEARCH')) || []
+      hotTags.value = result.splice(0, 3)
     }
     // 获取列表
     const getList = () => {
@@ -153,6 +161,9 @@ export default defineComponent({
       }
     }
     onMounted(() => {
+      // 获取热门搜索
+      getHotTags()
+      // 初始化数据
       initData()
     })
     return {
@@ -161,6 +172,7 @@ export default defineComponent({
       pullDown,
       pullUp,
       pullUpFinish,
+      hotTags,
       serviceList,
       handleRefresh,
       handleLoadMore,
@@ -180,6 +192,22 @@ export default defineComponent({
   @include flexColumn;
   .pageHeader {
     padding: 12px 12px 0 12px;
+    .hotSearch {
+      padding: 10px 21px 30px 21px;
+      color: $colorWhite;
+      font-size: $fontSize24;
+      @include flexAlignCenter;
+      .hotTags {
+        display: flex;
+        gap: $gap16;
+        .tagItem {
+          padding: 6px 14px;
+          background: #2755df;
+          border-radius: $borderRadius4;
+          @include flexCenter;
+        }
+      }
+    }
   }
   .pageContent {
     flex: 1;

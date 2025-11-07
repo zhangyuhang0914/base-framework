@@ -17,26 +17,50 @@ export enum EnvType {
 }
 
 /**
+ * 基础路径配置对象
+ */
+export const BASE_URL = {
+  // 开发环境
+  [EnvType.DEVELOPMENT]: {
+    [ApiServiceType.DEFAULT]: import.meta.env.VITE_BASE_URL,
+    [ApiServiceType.BASE]: import.meta.env.VITE_BASE_URL,
+    [ApiServiceType.FILE]: import.meta.env.VITE_BASE_URL
+  },
+  // 测试环境
+  [EnvType.TEST]: {
+    [ApiServiceType.DEFAULT]: import.meta.env.VITE_BASE_URL,
+    [ApiServiceType.BASE]: import.meta.env.VITE_BASE_URL,
+    [ApiServiceType.FILE]: import.meta.env.VITE_BASE_URL
+  },
+  // 生产环境
+  [EnvType.PRODUCTION]: {
+    [ApiServiceType.DEFAULT]: import.meta.env.VITE_BASE_URL,
+    [ApiServiceType.BASE]: import.meta.env.VITE_BASE_URL,
+    [ApiServiceType.FILE]: import.meta.env.VITE_BASE_URL
+  }
+}
+
+/**
  * API配置对象，包含不同环境下的各服务基础URL
  */
 export const API = {
   // 开发环境
   [EnvType.DEVELOPMENT]: {
-    [ApiServiceType.DEFAULT]: import.meta.env.BASE_URL,
-    [ApiServiceType.BASE]: import.meta.env.BASE_URL,
-    [ApiServiceType.FILE]: import.meta.env.BASE_URL
+    [ApiServiceType.DEFAULT]: import.meta.env.VITE_BASE_API,
+    [ApiServiceType.BASE]: import.meta.env.VITE_BASE_API,
+    [ApiServiceType.FILE]: import.meta.env.VITE_BASE_API
   },
   // 测试环境
   [EnvType.TEST]: {
-    [ApiServiceType.DEFAULT]: import.meta.env.BASE_URL,
-    [ApiServiceType.BASE]: import.meta.env.BASE_URL,
-    [ApiServiceType.FILE]: import.meta.env.BASE_URL
+    [ApiServiceType.DEFAULT]: import.meta.env.VITE_BASE_API,
+    [ApiServiceType.BASE]: import.meta.env.VITE_BASE_API,
+    [ApiServiceType.FILE]: import.meta.env.VITE_BASE_API
   },
   // 生产环境
   [EnvType.PRODUCTION]: {
-    [ApiServiceType.DEFAULT]: import.meta.env.BASE_URL,
-    [ApiServiceType.BASE]: import.meta.env.BASE_URL,
-    [ApiServiceType.FILE]: import.meta.env.BASE_URL
+    [ApiServiceType.DEFAULT]: import.meta.env.VITE_BASE_API,
+    [ApiServiceType.BASE]: import.meta.env.VITE_BASE_API,
+    [ApiServiceType.FILE]: import.meta.env.VITE_BASE_API
   }
 }
 
@@ -56,6 +80,14 @@ export const getCurrentEnv = (): EnvType => {
 }
 
 /**
+ * 获取当前环境的基础路径配置
+ */
+export const getCurrentBaseUrlConfig = () => {
+  const env = getCurrentEnv()
+  return BASE_URL[env]
+}
+
+/**
  * 获取当前环境的API配置
  */
 export const getCurrentApiConfig = () => {
@@ -64,10 +96,21 @@ export const getCurrentApiConfig = () => {
 }
 
 /**
- * 根据服务类型获取基础URL
+ * 根据服务类型获取基础 URL
  * @param serviceType 服务类型
  */
 export const getBaseUrlByService = (
+  serviceType: ApiServiceType = ApiServiceType.DEFAULT
+): string => {
+  const config = getCurrentBaseUrlConfig()
+  return config[serviceType] || config[ApiServiceType.DEFAULT]
+}
+
+/**
+ * 根据服务类型获取基础 API
+ * @param serviceType 服务类型
+ */
+export const getBaseApiByService = (
   serviceType: ApiServiceType = ApiServiceType.DEFAULT
 ): string => {
   const config = getCurrentApiConfig()

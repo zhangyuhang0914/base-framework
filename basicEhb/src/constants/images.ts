@@ -1,3 +1,6 @@
+/**
+ * 图片资源管理
+ */
 import { getBaseUrlByService } from '@/config/apiConfig'
 
 const BASE_URL = getBaseUrlByService()

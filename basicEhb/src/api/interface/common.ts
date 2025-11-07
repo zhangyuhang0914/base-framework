@@ -1,3 +1,21 @@
+// 字典数据
+export interface DictItem {
+  // 创建时间
+  createTime: string
+  // 删除标志
+  deleteFlag: boolean
+  // 字典编码
+  dictcode: string
+  dictionaryId: string
+  dictionaryValues: string
+  // 唯一标识 id
+  id: string
+  ordernum: number
+  pid: string
+  // 描述
+  remarks: string
+}
+
 // 查询事项、部门及区划请求参数
 export interface Base64AreaCodeParams {
   // 事项base64编码

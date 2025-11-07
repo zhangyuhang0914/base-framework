@@ -123,7 +123,7 @@ export default defineConfig(({ command, mode }) => {
     // 构建配置
     build: {
       assetsDir: 'assets',
-      outDir: 'dist',
+      outDir: viteEnvConf.VITE_BUILD_OUT_DIR,
       // esbuild 打包更快，但是不能去除 console.log，去除 console 使用 terser 模式
       minify: 'esbuild',
       // minify: 'terser',
@@ -154,6 +154,7 @@ export default defineConfig(({ command, mode }) => {
     optimizeDeps: {
       include: ['vue', 'vue-router', 'vant']
     },
+    base: viteEnvConf.VITE_BASE_URL,
     // 服务器配置
     server: {
       host: viteEnvConf.VITE_HOST,
@@ -164,10 +165,11 @@ export default defineConfig(({ command, mode }) => {
       https: true,
       // 设置 http 代理
       proxy: {
-        '/iframework': {
-          target: 'http://172.16.80.33:8081/iframework',
+        // 配置自定义代理规则
+        [env.VITE_BASE_API]: {
+          target: env.VITE_BASE_API_URL,
           changeOrigin: true,
-          rewrite: path => path.replace(/^\/iframework/, '')
+          rewrite: path => path.replace(new RegExp('^' + env.VITE_BASE_API), '')
         }
       }
     }

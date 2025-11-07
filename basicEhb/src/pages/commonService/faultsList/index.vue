@@ -2,7 +2,10 @@
 .pageWrapper
   .pageHeader
     SearchInput(showSearchIcon)
-    HotSearch
+    .hotSearch
+      span {{ '热门检索：' }}
+      .hotTags
+        .tagItem(v-for="(item, index) in hotTags" :key="index") {{ item.label }}
   .pageContent
     ScrollList(
       ref="scrollerRef"
@@ -36,19 +39,18 @@
 <script lang="ts">
 import { defineComponent, nextTick, onMounted, reactive, ref } from 'vue'
 import SearchInput from '@/components/searchInput/index.vue'
-import HotSearch from '@/pages/governmentService/components/hotSearch/index.vue'
 import ScrollList from '@/components/scrollList/index.vue'
 import NoData from '@/components/noData/index.vue' // 统一导入 NoData 组件
 import { ChevronRight } from 'lucide-vue-next'
 import type { PageType } from '@/common/interface/http'
 import { getImage } from '@/constants/images'
 import { useRouter } from 'vue-router'
+import { dictUtils, type DictOption } from '@/constants/dictionary'
 
 export default defineComponent({
   name: 'FaultsList',
   components: {
     SearchInput,
-    HotSearch,
     ScrollList,
     NoData, // 注册 NoData 组件
     ChevronRight
@@ -62,6 +64,7 @@ export default defineComponent({
     const pullUp = ref(false)
     // 是否已加载完成，加载完成后不再触发 load 事件
     const pullUpFinish = ref(false)
+    const hotTags = ref<DictOption[]>([])
     const faultsList = ref<any[]>([])
     const page = reactive<PageType>({
       currentPage: 1,
@@ -101,6 +104,12 @@ export default defineComponent({
       }))
       allMockData.value = [...baseData, ...dynamicData]
       page.total = allMockData.value.length // 同步总数据量
+    }
+    // 获取热门搜索
+    const getHotTags = async () => {
+      const result = (await dictUtils.getData('governmentService.HOT_SEARCH')) || []
+      console.log('result', result)
+      hotTags.value = result.splice(0, 3)
     }
     // 初始化数据
     const initData = () => {
@@ -189,6 +198,9 @@ export default defineComponent({
       })
     }
     onMounted(() => {
+      // 获取热门搜索
+      getHotTags()
+      // 初始化数据
       initData()
     })
     return {
@@ -197,6 +209,7 @@ export default defineComponent({
       pullDown,
       pullUp,
       pullUpFinish,
+      hotTags,
       faultsList,
       getImage,
       handleRefresh,
@@ -216,6 +229,22 @@ export default defineComponent({
   @include flexColumn;
   .pageHeader {
     padding: 12px 12px 0 12px;
+    .hotSearch {
+      padding: 10px 21px 30px 21px;
+      color: $colorWhite;
+      font-size: $fontSize24;
+      @include flexAlignCenter;
+      .hotTags {
+        display: flex;
+        gap: $gap16;
+        .tagItem {
+          padding: 6px 14px;
+          background: #2755df;
+          border-radius: $borderRadius4;
+          @include flexCenter;
+        }
+      }
+    }
   }
   .pageContent {
     flex: 1;

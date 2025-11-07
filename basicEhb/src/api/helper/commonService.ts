@@ -3,14 +3,15 @@
  */
 
 import type { ItemInfosEhbItem, ItemInfosEhbParam } from '@/api/interface/commonService'
-import { post, type ApiResponse, type httpRequestConfig } from '@/common/http/index'
+import { post, type httpRequestConfig } from '@/common/http/index'
+import type { ApiPageResponse } from '@/common/interface/http'
 
 // 查询事项列表
 export const itemInfosEhbList = (
   params: ItemInfosEhbParam
-): Promise<ApiResponse<ItemInfosEhbItem>> => {
+): Promise<ApiPageResponse<ItemInfosEhbItem>> => {
   const param: httpRequestConfig = {
-    url: '/iframework/iteminfos/ehb/list',
+    url: '/iteminfos/ehb/list',
     cacheFor: {
       mode: 'memory',
       expire: 0

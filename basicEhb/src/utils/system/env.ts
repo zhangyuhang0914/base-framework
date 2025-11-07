@@ -1,6 +1,8 @@
 export type RecordT<T = any> = Record<string, T>
 export interface ViteEnv {
+  // 环境变量
   NODE_ENV: string
+  // 请求基础路径
   VITE_API_BASE_URL: string
   VITE_ENABLE_VCONSOLE: boolean
   VITE_GLOBAL_APP_TITLE: string
@@ -8,6 +10,7 @@ export interface ViteEnv {
   VITE_GLOBAL_APP_KEYWORDS: string
   VITE_GLOBAL_APP_VERSION: string
   VITE_BASE_URL: string
+  VITE_BUILD_OUT_DIR: string
   VITE_HOST: string | boolean
   VITE_PORT: number
   VITE_OPEN: boolean

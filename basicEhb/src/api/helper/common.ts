@@ -1,10 +1,10 @@
-import type { Base64AreaCodeParams, Base64AreaCodeResponse } from '@/api/interface/common'
-import { get, type httpRequestConfig } from '@/common/http/index'
+import type { Base64AreaCodeParams, Base64AreaCodeResponse, DictItem } from '@/api/interface/common'
+import { get, type ApiResponse, type httpRequestConfig } from '@/common/http/index'
 
 // 字典数据
-export const getDictionaryData = (dictName: string) => {
+export const getDictionaryData = (dictName: string): Promise<ApiResponse<DictItem[]>> => {
   const param: httpRequestConfig = {
-    url: `/iframework/api/dictionary/findByClass?value=${dictName}`,
+    url: `/api/dictionary/findByClass?value=${dictName}`,
     cacheFor: {
       mode: 'memory',
       expire: 0

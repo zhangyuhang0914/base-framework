@@ -29,8 +29,8 @@ export interface httpRequestConfig extends Partial<Omit<Method, 'url'>> {
    * expire: number // 缓存过期时间，单位秒，0表示关闭默认的响应缓存；Infinity表示永不过期
    */
   cacheFor?: {
-    mode: 'memory' | 'restore'
-    expire: number | string
+    mode?: 'memory' | 'restore'
+    expire?: number | string
   }
   // 表单上传
   isForm?: boolean
@@ -58,49 +58,45 @@ export interface ApiResponse<T> {
    */
   code: number
   // 接口数据
-  data: {
-    // 每页条数
-    limit: number
-    // 数据列表
-    list: T[]
-    // 排序
-    order: string
-    // 当前页
-    page: number
-    param: string
-    // 排序字段
-    sidx: string
-    // 总条目数
-    totalCount: number
-  }
+  data: T
   // 接口提示
   msg?: string
   // 错误信息
   bz?: string
 }
-
-export interface ApiResponsePage<T> {
-  /**
-   * 当前页数
-   */
-  currPage: number
-  /**
-   * 接口数据
-   */
-  list: T
+// 分页数据结构
+export interface PageResponse<T> {
   /**
    * 每页条数
    */
-  pageSize: number
+  limit: number
+  /**
+   * 数据列表
+   */
+  list: T[]
+  /**
+   * 排序
+   */
+  order: string
+  /**
+   * 当前页
+   */
+  page: number
+  /**
+   * 参数
+   */
+  param: string
+  /**
+   * 排序字段
+   */
+  sidx: string
   /**
    * 总条目数
    */
   totalCount: number
-  /**
-   * 总页数
-   */
-  totalPage: number
 }
+// 分页查询的响应类型
+export type ApiPageResponse<T> = ApiResponse<PageResponse<T>>
 
 // 请求拦截器配置
 export interface RequestInterceptor {

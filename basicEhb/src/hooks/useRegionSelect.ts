@@ -39,7 +39,7 @@ export function useRegionSelect() {
     transactItemData?: AreaItem
   ) => {
     const params: Base64AreaCodeParams = {
-      transactNameBase64: currentItemData?.serviceId || '',
+      transactNameBase64: currentItemData?.ITEM_CODE || '',
       regionCode: regionCode,
       source: '1',
       isOnline: ''

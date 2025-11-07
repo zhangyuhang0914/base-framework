@@ -95,7 +95,7 @@ export default defineComponent({
 .mapSearch {
   position: absolute;
   top: 0;
-  z-index: 99999;
+  z-index: 1999;
 }
 .squareSearch {
   :deep(.van-search__content) {

@@ -9,7 +9,7 @@ import qs from 'qs'
 import type { httpRequestConfig, ApiResponse, ApiError } from '../interface/http'
 import { getToken } from '@/utils/storage/cookie'
 import {
-  getBaseUrlByService,
+  getBaseApiByService,
   ApiServiceType,
   CURRENT_ENV,
   CURRENT_API_CONFIG
@@ -43,7 +43,7 @@ export class Request {
    */
   constructor(options: httpRequestConfig, serviceType: ApiServiceType = ApiServiceType.DEFAULT) {
     this.serviceType = serviceType
-    const baseURL = getBaseUrlByService(serviceType)
+    const baseURL = getBaseApiByService(serviceType)
     // 创建alova实例
     this.instance = createAlova({
       baseURL,

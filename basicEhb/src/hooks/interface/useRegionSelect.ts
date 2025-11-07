@@ -1,3 +1,3 @@
 export interface RegionItem {
-  serviceId?: string
+  ITEM_CODE?: string
 }
