@@ -13,12 +13,12 @@ import legacy from '@vitejs/plugin-legacy'
 // 静态资源压缩
 import VitePluginCompression from 'vite-plugin-compression'
 import path from 'path'
+import zipPackPlugin from 'vite-plugin-zip-pack'
 
 // @ts-ignore
 export default defineConfig(({ command, mode }) => {
-  const env = loadEnv(mode, process.cwd())
+  const env = loadEnv(mode, process.cwd(), '')
   const viteEnvConf = loadEnvConf(env)
-  const isBuild = command === 'build'
   return {
     plugins: [
       vue(),
@@ -79,7 +79,22 @@ export default defineConfig(({ command, mode }) => {
         ext: '.gz'
       }),
       // 开启 HTTPS
-      basicSsl()
+      basicSsl(),
+      // 压缩包插件
+      zipPackPlugin({
+        // 要打包的文件夹
+        inDir: viteEnvConf.VITE_BUILD_OUT_DIR,
+        // 打包好的 zip 文件放到哪个文件夹下
+        outDir: viteEnvConf.VITE_BUILD_OUT_DIR,
+        // 打包好的文件名
+        outFileName: `${viteEnvConf.VITE_BUILD_OUT_DIR}.zip`
+      })
+      // zipPackPlugin({
+      //   zipName: viteEnvConf.VITE_BUILD_OUT_DIR,
+      //   outputPath: process.cwd(),
+      //   targetDir: viteEnvConf.VITE_BUILD_OUT_DIR,
+      //   enabled: enableZip
+      // })
     ],
     // CSS 配置
     css: {
@@ -133,7 +148,7 @@ export default defineConfig(({ command, mode }) => {
       //     drop_debugger: viteEnvConf.VITE_DROP_DEBUGGER as unknown as boolean // 删除debugger
       //   }
       // },
-      sourcemap: !isBuild,
+      sourcemap: command !== 'build',
       rollupOptions: {
         output: {
           chunkFileNames: 'assets/js/[name]-[hash].js',
@@ -165,11 +180,38 @@ export default defineConfig(({ command, mode }) => {
       https: true,
       // 设置 http 代理
       proxy: {
-        // 配置自定义代理规则
+        // 审批4.0环境
         [env.VITE_BASE_API]: {
           target: env.VITE_BASE_API_URL,
           changeOrigin: true,
           rewrite: path => path.replace(new RegExp('^' + env.VITE_BASE_API), '')
+        },
+        // 审批4.0环境-第三方代理接口
+        [env.VITE_BASE_API_RADIO_TELEVISION]: {
+          target: env.VITE_BASE_API_URL_RADIO_TELEVISION,
+          changeOrigin: true,
+          rewrite: path => path.replace(new RegExp('^' + env.VITE_BASE_API_RADIO_TELEVISION), '')
+        },
+        // 湖北广电请求地址 - robot
+        [env.VITE_BASE_API_RADIO_TELEVISION_ROBOT]: {
+          target: env.VITE_BASE_API_URL_RADIO_TELEVISION_ROBOT,
+          changeOrigin: true,
+          rewrite: path =>
+            path.replace(new RegExp('^' + env.VITE_BASE_API_RADIO_TELEVISION_ROBOT), '')
+        },
+        // 湖北广电请求地址 - igs
+        [env.VITE_BASE_API_RADIO_TELEVISION_IGS]: {
+          target: env.VITE_BASE_API_URL_RADIO_TELEVISION_IGS,
+          changeOrigin: true,
+          rewrite: path =>
+            path.replace(new RegExp('^' + env.VITE_BASE_API_RADIO_TELEVISION_IGS), '')
+        },
+        // 湖北广电请求地址 - sup
+        [env.VITE_BASE_API_RADIO_TELEVISION_SUP]: {
+          target: env.VITE_BASE_API_URL_RADIO_TELEVISION_SUP,
+          changeOrigin: true,
+          rewrite: path =>
+            path.replace(new RegExp('^' + env.VITE_BASE_API_RADIO_TELEVISION_SUP), '')
         }
       }
     }
